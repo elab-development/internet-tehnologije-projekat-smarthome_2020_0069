@@ -7,6 +7,6 @@ defmodule SmartHomeApiWeb.Router do
 
   scope "/api", SmartHomeApiWeb do
     pipe_through :api
-    get "/", DefaultController, :index
+    get "/paja", DefaultController, :index
   end
 end
