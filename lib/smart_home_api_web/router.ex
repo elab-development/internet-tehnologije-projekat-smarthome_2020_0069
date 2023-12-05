@@ -5,8 +5,8 @@ defmodule SmartHomeApiWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", SmartHomeApiWeb do
+  scope "/auth", SmartHomeApiWeb do
     pipe_through :api
-    get "/paja", DefaultController, :index
+    post "/register", UserController, :create
   end
 end

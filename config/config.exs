@@ -27,6 +27,10 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :smart_home_api, SmartHomeApiWeb.Auth.Guardian,
+    issuer: "smart_home_api",
+    secret_key: "l9fX5kRO/9H2t1LqiZY+R81qxpVUKApunmgtoki7cqrXcBz2CLDQKkjLt4K13R5O"
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

@@ -12,11 +12,11 @@ defmodule SmartHomeApiWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Users.create_user(user_params) do
+    with {:ok, %User{} = user} <- Users.create_user(user_params),
+        {:ok, token, _claims} <- SmartHomeApiWeb.Auth.Guardian.encode_and_sign(user) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/users/#{user}")
-      |> render(:show, user: user)
+      |> render("user_token.json", %{user: user, token: token})
     end
   end
 

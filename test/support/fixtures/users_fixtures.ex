@@ -11,10 +11,6 @@ defmodule SmartHomeApi.UsersFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        : "some ",
-        : "some ",
-        : "some ",
-        : "some ",
         name: "some name",
         password: "some password",
         surname: "some surname",

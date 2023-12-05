@@ -19,32 +19,53 @@ defmodule SmartHomeApiWeb do
 
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
+  def controller do
+    quote do
+      use Phoenix.Controller, namespace: SmartHomeApiWeb
+
+      import Plug.Conn
+      import SmartHomeApiWeb.Gettext
+      alias SmartHomeApiWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
+    end
+  end
+
   def router do
     quote do
-      use Phoenix.Router, helpers: false
-
+      use Phoenix.Router
       # Import common connection and controller functions to use in pipelines
       import Plug.Conn
       import Phoenix.Controller
     end
   end
 
-  def channel do
+  def view do
     quote do
-      use Phoenix.Channel
+      use Phoenix.View,
+      root: "lib/smart_home_api_web/templates",
+      namespace: SmartHomeApiWeb
+
+      import Phoenix.Controller,
+      only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+      unquote(view_helpers())
     end
   end
 
-  def controller do
+  def channel do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: SmartHomeApiWeb.Layouts]
-
-      import Plug.Conn
+      use Phoenix.Channel
       import SmartHomeApiWeb.Gettext
+    end
+  end
 
-      unquote(verified_routes())
+  defp view_helpers do
+    quote do
+      import Phoenix.View
+
+      import SmartHomeApiWeb.Gettext
+      alias SmartHomeApiWeb.Router.Helpers, as: Routes
     end
   end
 

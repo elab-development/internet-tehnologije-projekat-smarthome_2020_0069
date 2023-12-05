@@ -37,6 +37,12 @@ defmodule SmartHomeApi.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_username(username) do
+    User
+    |> where(username: ^username)
+    |> Repo.one()
+  end
+
   @doc """
   Creates a user.
 
