@@ -25,5 +25,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 smart_home_api-*.tar
 
-/config/
+config/
 

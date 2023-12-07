@@ -18,6 +18,7 @@ defmodule SmartHomeApi.Users.User do
     user
     |> cast(attrs, [:name, :surname, :username, :password])
     |> validate_required([:name, :surname, :username, :password])
+    |> unique_constraint(:username,name: :users_username_key)
     |> put_password_hash()
   end
 

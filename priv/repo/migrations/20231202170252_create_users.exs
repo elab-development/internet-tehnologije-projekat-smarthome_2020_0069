@@ -6,10 +6,11 @@ defmodule SmartHomeApi.Repo.Migrations.CreateUsers do
       add :id, :binary_id, primary_key: true
       add :name, :string
       add :surname, :string
-      add :username, :string
+      add :username, :string, unique: true
       add :password, :string
 
       timestamps(type: :utc_datetime)
     end
+    create(unique_index(:users, [:username]))
   end
 end

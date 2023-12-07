@@ -28,7 +28,7 @@ defmodule SmartHomeApiWeb.Auth.Guardian do
       user ->
         case validate_password(password, user.password) do
           true -> create_token(user)
-           false -> {:error, :unauthorized}
+          false -> {:error, :unauthorized}
         end
 
     end
