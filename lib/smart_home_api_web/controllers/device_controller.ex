@@ -11,14 +11,14 @@ defmodule SmartHomeApiWeb.DeviceController do
     render(conn, :index, devices: devices)
   end
 
-  def create(conn, %{"device" => device_params}) do
-    with {:ok, %Device{} = device} <- Devices.create_device(device_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/devices/#{device}")
-      |> render(:show, device: device)
-    end
-  end
+  # def create(conn, %{"device" => device_params}) do
+  #   with {:ok, %Device{} = device} <- Devices.create_device(device_params) do
+  #     conn
+  #     |> put_status(:created)
+  #     |> put_resp_header("location", ~p"/api/devices/#{device}")
+  #     |> render(:show, device: device)
+  #   end
+  # end
 
   def show(conn, %{"id" => id}) do
     device = Devices.get_device!(id)

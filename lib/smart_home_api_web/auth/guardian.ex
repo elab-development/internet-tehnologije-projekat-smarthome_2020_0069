@@ -34,7 +34,7 @@ defmodule SmartHomeApiWeb.Auth.Guardian do
     end
   end
 
-  defp validate_password(password, hash_password) do
+  def validate_password(password, hash_password) do
     Bcrypt.verify_pass(password, hash_password)
   end
 
@@ -42,4 +42,23 @@ defmodule SmartHomeApiWeb.Auth.Guardian do
     {:ok, token, _claims} = encode_and_sign(user)
     {:ok, user, token}
   end
+
+  def after_encode_and_sign(resource, claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.after_encode_and_sign(resource, claims["typ"], claims, token) do
+      {:ok, token}
+    end
+  end
+
+  def on_verify(claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.on_verify(claims, token) do
+      {:ok, claims}
+    end
+  end
+
+  def on_revoke(claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.on_revoke(claims, token) do
+      {:ok, claims}
+    end
+  end
+
 end

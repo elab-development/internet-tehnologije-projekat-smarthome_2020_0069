@@ -35,7 +35,11 @@ defmodule SmartHomeApi.Users do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user!(id) do
+    User
+    |> where(id: ^id)
+    |> Repo.one()
+  end
 
   def get_user_by_username(username) do
     User
