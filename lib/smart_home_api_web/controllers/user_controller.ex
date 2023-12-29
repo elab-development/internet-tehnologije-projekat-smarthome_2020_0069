@@ -108,10 +108,14 @@ defmodule SmartHomeApiWeb.UserController do
     |> render("users.json", %{user: user})
   end
 
-  def update_password(conn, %{"current_password" => current_password, "user" => user_params}) do
+  def update_password(conn, %{"current_password" => current_password, "user" => %{"password" => _password} = user_params}) do
+
+    undefined_keys = Map.keys(user_params) -- ["password"]
+    new_params = Map.drop(user_params, undefined_keys)
+
     case Guardian.validate_password(current_password, conn.assigns.user.password) do
       true ->
-        {:ok, user} = Users.update_user(conn.assigns.user, user_params)
+        {:ok, user} = Users.update_user(conn.assigns.user, new_params)
         render(conn, "show.json", user: user)
 
       false ->
