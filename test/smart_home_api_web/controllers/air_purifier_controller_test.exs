@@ -9,15 +9,17 @@ defmodule SmartHomeApiWeb.AirPurifierControllerTest do
     filter: 120.5,
     pm10: 42,
     pm1_0: 42,
-    pm2_5: 42
+    pm2_5: 42,
+    timer: 42
   }
   @update_attrs %{
     filter: 456.7,
     pm10: 43,
     pm1_0: 43,
-    pm2_5: 43
+    pm2_5: 43,
+    timer: 43
   }
-  @invalid_attrs %{filter: nil, pm10: nil, pm1_0: nil, pm2_5: nil}
+  @invalid_attrs %{filter: nil, pm10: nil, pm1_0: nil, pm2_5: nil, timer: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -42,7 +44,8 @@ defmodule SmartHomeApiWeb.AirPurifierControllerTest do
                "filter" => 120.5,
                "pm10" => 42,
                "pm1_0" => 42,
-               "pm2_5" => 42
+               "pm2_5" => 42,
+               "timer" => 42
              } = json_response(conn, 200)["data"]
     end
 
@@ -66,7 +69,8 @@ defmodule SmartHomeApiWeb.AirPurifierControllerTest do
                "filter" => 456.7,
                "pm10" => 43,
                "pm1_0" => 43,
-               "pm2_5" => 43
+               "pm2_5" => 43,
+               "timer" => 43
              } = json_response(conn, 200)["data"]
     end
 

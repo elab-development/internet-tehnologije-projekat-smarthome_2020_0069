@@ -2,13 +2,13 @@ defmodule SmartHomeApi.Speakers.Speaker do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key {:device_id, :binary_id, []}
   @foreign_key_type :binary_id
+  @derive {Phoenix.Param, key: :device_id}
   schema "speakers" do
     field :bass, :integer
-    field :battery, :float
+    field :battery, :integer
     field :volume, :integer
-    field :device_id, :binary_id
 
     timestamps(type: :utc_datetime)
   end
@@ -16,7 +16,7 @@ defmodule SmartHomeApi.Speakers.Speaker do
   @doc false
   def changeset(speaker, attrs) do
     speaker
-    |> cast(attrs, [:bass, :battery, :volume])
-    |> validate_required([:bass, :battery, :volume])
+    |> cast(attrs, [:device_id, :volume, :bass, :battery])
+    |> validate_required([:volume, :bass, :battery])
   end
 end

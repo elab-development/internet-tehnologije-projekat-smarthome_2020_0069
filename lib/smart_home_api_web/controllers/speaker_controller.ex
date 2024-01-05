@@ -15,7 +15,6 @@ defmodule SmartHomeApiWeb.SpeakerController do
     with {:ok, %Speaker{} = speaker} <- Speakers.create_speaker(speaker_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/speakers/#{speaker}")
       |> render(:show, speaker: speaker)
     end
   end

@@ -3,11 +3,10 @@ defmodule SmartHomeApi.Repo.Migrations.CreateThermostats do
 
   def change do
     create table(:thermostats, primary_key: false) do
-      add :id, :binary_id, primary_key: true
       add :temperature, :float
-      add :humidity, :float
       add :timer, :integer
-      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id)
+      add :humidity, :float
+      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id), primary_key: true
 
       timestamps(type: :utc_datetime)
     end

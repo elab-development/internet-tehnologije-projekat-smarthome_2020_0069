@@ -3,12 +3,16 @@ defmodule SmartHomeApiWeb.DeviceController do
 
   alias SmartHomeApi.Devices
   alias SmartHomeApi.Devices.Device
+  alias SmartHomeApiWeb.Auth.ErrorResponse
 
   action_fallback SmartHomeApiWeb.FallbackController
 
-  def index(conn, _params) do
-    devices = Devices.list_devices()
-    render(conn, :index, devices: devices)
+  def index(conn, _) do
+    user_id = conn.assigns.user.id
+    devices = Devices.list_devices(user_id)
+    conn
+    |> put_status(:ok)
+    |> render("index.json", %{devices: devices})
   end
 
   # def create(conn, %{"device" => device_params}) do
@@ -21,12 +25,12 @@ defmodule SmartHomeApiWeb.DeviceController do
   # end
 
   def show(conn, %{"id" => id}) do
-    device = Devices.get_device!(id)
+    device = Devices.get_device(id)
     render(conn, :show, device: device)
   end
 
   def update(conn, %{"id" => id, "device" => device_params}) do
-    device = Devices.get_device!(id)
+    device = Devices.get_device(id)
 
     with {:ok, %Device{} = device} <- Devices.update_device(device, device_params) do
       render(conn, :show, device: device)
@@ -34,10 +38,17 @@ defmodule SmartHomeApiWeb.DeviceController do
   end
 
   def delete(conn, %{"id" => id}) do
-    device = Devices.get_device!(id)
 
-    with {:ok, %Device{}} <- Devices.delete_device(device) do
-      send_resp(conn, :no_content, "")
+    case device = Devices.get_device(id) do
+      nil ->
+        raise ErrorResponse.BadRequest, message: "Invalid device id"
+      _ ->
+      if device.user_id == conn.assigns.user.id do
+          Devices.delete_device(device)
+          render(conn, "device.json", %{device: device})
+      else
+        raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+      end
     end
   end
 end

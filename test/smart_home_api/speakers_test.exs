@@ -21,11 +21,11 @@ defmodule SmartHomeApi.SpeakersTest do
     end
 
     test "create_speaker/1 with valid data creates a speaker" do
-      valid_attrs = %{bass: 42, battery: 120.5, volume: 42}
+      valid_attrs = %{bass: 42, battery: 42, volume: 42}
 
       assert {:ok, %Speaker{} = speaker} = Speakers.create_speaker(valid_attrs)
       assert speaker.bass == 42
-      assert speaker.battery == 120.5
+      assert speaker.battery == 42
       assert speaker.volume == 42
     end
 
@@ -35,11 +35,11 @@ defmodule SmartHomeApi.SpeakersTest do
 
     test "update_speaker/2 with valid data updates the speaker" do
       speaker = speaker_fixture()
-      update_attrs = %{bass: 43, battery: 456.7, volume: 43}
+      update_attrs = %{bass: 43, battery: 43, volume: 43}
 
       assert {:ok, %Speaker{} = speaker} = Speakers.update_speaker(speaker, update_attrs)
       assert speaker.bass == 43
-      assert speaker.battery == 456.7
+      assert speaker.battery == 43
       assert speaker.volume == 43
     end
 

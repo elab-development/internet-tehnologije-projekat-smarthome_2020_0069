@@ -21,7 +21,12 @@ defmodule SmartHomeApiWeb.Router do
   end
 
   pipeline :user do
-    plug SmartHomeApiWeb.Auth.Pipline
+    plug SmartHomeApiWeb.Auth.Pipeline
+    plug SmartHomeApiWeb.Auth.SetUser
+  end
+
+  pipeline :device do
+    plug SmartHomeApiWeb.Auth.Pipeline
     plug SmartHomeApiWeb.Auth.SetUser
   end
 
@@ -36,6 +41,28 @@ defmodule SmartHomeApiWeb.Router do
     get "/sign_out", UserController, :sign_out
     get "/id/:id", UserController, :show
     post "/update_password", UserController, :update_password
+  end
+
+  scope "/device", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/get_devices", DeviceController, :index
+    delete "/:id", DeviceController, :delete
+  end
+
+  scope "/device/thermostat", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/:id", ThermostatController, :show
+    post "/", ThermostatController, :create
+    patch "/:id", ThermostatController, :update
+  end
+
+  scope "/device/light", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/:id", LightController, :show
+    post "/", LightController, :create
+    patch "/:id", LightController, :update
+    get "/:id/turn_on", LightController, :turn_on
+    get "/:id/turn_off", LightController, :turn_off
   end
 
 end

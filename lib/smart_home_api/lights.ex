@@ -5,6 +5,7 @@ defmodule SmartHomeApi.Lights do
 
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
+  alias SmartHomeApi.Devices.Device
 
   alias SmartHomeApi.Lights.Light
 
@@ -36,6 +37,22 @@ defmodule SmartHomeApi.Lights do
 
   """
   def get_light!(id), do: Repo.get!(Light, id)
+
+  def get_full_light(id) do
+    query = from l in Light,
+      join: d in Device, on: l.device_id == d.id,
+      where: l.device_id == ^id,
+      select: %{
+        light_level: l.light_level,
+        rgb_color: l.rgb_color,
+        device_id: l.device_id,
+        user_id: d.user_id,
+        geolocation: d.geolocation,
+        place: d.place,
+        state: d.state
+      }
+    Repo.one(query)
+  end
 
   @doc """
   Creates a light.

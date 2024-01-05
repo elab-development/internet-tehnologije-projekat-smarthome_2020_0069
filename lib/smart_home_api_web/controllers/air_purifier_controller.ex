@@ -15,7 +15,6 @@ defmodule SmartHomeApiWeb.AirPurifierController do
     with {:ok, %AirPurifier{} = air_purifier} <- AirPurifiers.create_air_purifier(air_purifier_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/air_purifiers/#{air_purifier}")
       |> render(:show, air_purifier: air_purifier)
     end
   end

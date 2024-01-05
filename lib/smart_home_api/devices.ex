@@ -17,8 +17,11 @@ defmodule SmartHomeApi.Devices do
       [%Device{}, ...]
 
   """
-  def list_devices do
-    Repo.all(Device)
+  def list_devices(user_id) do
+    query = from d in Device,
+      where: d.user_id == ^user_id,
+      select: d
+    Repo.all(query)
   end
 
   @doc """
@@ -35,7 +38,7 @@ defmodule SmartHomeApi.Devices do
       ** (Ecto.NoResultsError)
 
   """
-  def get_device!(id), do: Repo.get!(Device, id)
+  def get_device(id), do: Repo.get(Device, id)
 
   @doc """
   Creates a device.

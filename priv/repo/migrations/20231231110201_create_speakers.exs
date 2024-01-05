@@ -3,11 +3,10 @@ defmodule SmartHomeApi.Repo.Migrations.CreateSpeakers do
 
   def change do
     create table(:speakers, primary_key: false) do
-      add :id, :binary_id, primary_key: true
-      add :bass, :integer
-      add :battery, :float
       add :volume, :integer
-      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id)
+      add :bass, :integer
+      add :battery, :integer
+      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id), primary_key: true
 
       timestamps(type: :utc_datetime)
     end

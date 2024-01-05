@@ -7,12 +7,12 @@ defmodule SmartHomeApiWeb.SpeakerControllerTest do
 
   @create_attrs %{
     bass: 42,
-    battery: 120.5,
+    battery: 42,
     volume: 42
   }
   @update_attrs %{
     bass: 43,
-    battery: 456.7,
+    battery: 43,
     volume: 43
   }
   @invalid_attrs %{bass: nil, battery: nil, volume: nil}
@@ -38,7 +38,7 @@ defmodule SmartHomeApiWeb.SpeakerControllerTest do
       assert %{
                "id" => ^id,
                "bass" => 42,
-               "battery" => 120.5,
+               "battery" => 42,
                "volume" => 42
              } = json_response(conn, 200)["data"]
     end
@@ -61,7 +61,7 @@ defmodule SmartHomeApiWeb.SpeakerControllerTest do
       assert %{
                "id" => ^id,
                "bass" => 43,
-               "battery" => 456.7,
+               "battery" => 43,
                "volume" => 43
              } = json_response(conn, 200)["data"]
     end

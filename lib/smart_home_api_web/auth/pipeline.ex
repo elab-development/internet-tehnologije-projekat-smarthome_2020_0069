@@ -1,4 +1,4 @@
-defmodule SmartHomeApiWeb.Auth.Pipline do
+defmodule SmartHomeApiWeb.Auth.Pipeline do
   use Guardian.Plug.Pipeline, otp_app: :smart_home_api,
   module: SmartHomeApiWeb.Auth.Guardian,
   error_handler: SmartHomeApiWeb.Auth.GuardianErrorHandler

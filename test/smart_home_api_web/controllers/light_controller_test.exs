@@ -6,14 +6,14 @@ defmodule SmartHomeApiWeb.LightControllerTest do
   alias SmartHomeApi.Lights.Light
 
   @create_attrs %{
-    light_power: 42,
-    rgb_value: 42
+    light_level: 42,
+    rgb_color: 42
   }
   @update_attrs %{
-    light_power: 43,
-    rgb_value: 43
+    light_level: 43,
+    rgb_color: 43
   }
-  @invalid_attrs %{light_power: nil, rgb_value: nil}
+  @invalid_attrs %{light_level: nil, rgb_color: nil}
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
@@ -35,8 +35,8 @@ defmodule SmartHomeApiWeb.LightControllerTest do
 
       assert %{
                "id" => ^id,
-               "light_power" => 42,
-               "rgb_value" => 42
+               "light_level" => 42,
+               "rgb_color" => 42
              } = json_response(conn, 200)["data"]
     end
 
@@ -57,8 +57,8 @@ defmodule SmartHomeApiWeb.LightControllerTest do
 
       assert %{
                "id" => ^id,
-               "light_power" => 43,
-               "rgb_value" => 43
+               "light_level" => 43,
+               "rgb_color" => 43
              } = json_response(conn, 200)["data"]
     end
 

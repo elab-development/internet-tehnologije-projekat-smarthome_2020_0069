@@ -3,10 +3,9 @@ defmodule SmartHomeApi.Repo.Migrations.CreateLights do
 
   def change do
     create table(:lights, primary_key: false) do
-      add :id, :binary_id, primary_key: true
-      add :rgb_value, :integer
-      add :light_power, :integer
-      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id)
+      add :rgb_color, :integer
+      add :light_level, :integer
+      add :device_id, references(:devices, on_delete: :nothing, type: :binary_id), primary_key: true
 
       timestamps(type: :utc_datetime)
     end

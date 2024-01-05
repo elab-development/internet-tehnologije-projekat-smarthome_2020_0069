@@ -5,9 +5,8 @@ defmodule SmartHomeApi.Thermostats do
 
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
-
+  alias SmartHomeApi.Devices.Device
   alias SmartHomeApi.Thermostats.Thermostat
-
   @doc """
   Returns the list of thermostats.
 
@@ -36,6 +35,24 @@ defmodule SmartHomeApi.Thermostats do
 
   """
   def get_thermostat!(id), do: Repo.get!(Thermostat, id)
+
+
+  def get_full_thermostat(id) do
+    query = from t in Thermostat,
+      join: d in Device, on: t.device_id == d.id,
+      where: t.device_id == ^id,
+      select: %{
+        humidity: t.humidity,
+        temperature: t.temperature,
+        timer: t.timer,
+        device_id: t.device_id,
+        user_id: d.user_id,
+        geolocation: d.geolocation,
+        place: d.place,
+        state: d.state
+      }
+    Repo.one(query)
+  end
 
   @doc """
   Creates a thermostat.
@@ -68,7 +85,7 @@ defmodule SmartHomeApi.Thermostats do
 
   """
   def update_thermostat(%Thermostat{} = thermostat, attrs) do
-    thermostat
+    get_thermostat!(thermostat.device_id)
     |> Thermostat.changeset(attrs)
     |> Repo.update()
   end
