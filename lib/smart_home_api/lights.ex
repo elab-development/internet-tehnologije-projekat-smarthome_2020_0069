@@ -49,7 +49,8 @@ defmodule SmartHomeApi.Lights do
         user_id: d.user_id,
         geolocation: d.geolocation,
         place: d.place,
-        state: d.state
+        state: d.state,
+        light_state: l.light_state
       }
     Repo.one(query)
   end

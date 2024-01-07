@@ -65,4 +65,25 @@ defmodule SmartHomeApiWeb.Router do
     get "/:id/turn_off", LightController, :turn_off
   end
 
+  scope "/device/speaker", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/:id", SpeakerController, :show
+    post "/", SpeakerController, :create
+    patch "/:id", SpeakerController, :update
+  end
+
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :smart_home_api, swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "My App"
+      }
+    }
+  end
+
+
 end

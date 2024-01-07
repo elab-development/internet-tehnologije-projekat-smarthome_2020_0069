@@ -75,4 +75,57 @@ defmodule SmartHomeApiWeb.LightController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def turn_off(conn, %{"id" => id}) do
+    case light = Lights.get_full_light(id) do
+      nil ->
+        raise ErrorResponse.BadRequest, message: "Invalid light id."
+      _ ->
+      if light.user_id == conn.assigns.user.id do
+        light_object = %Light{
+          device_id: light.device_id,
+          light_level: light.light_level,
+          rgb_color: light.rgb_color
+        }
+        light_params = %{
+          light_state: :false
+        }
+        case Lights.update_light(light_object, light_params) do
+          {:ok, %Light{} = lightNew} ->
+            render(conn, "patch.json", %{light: lightNew})
+          _ ->
+            raise ErrorResponse.DatabaseError, message: "Error while patching data."
+        end
+      else
+        raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+      end
+    end
+  end
+
+  def turn_on(conn, %{"id" => id}) do
+    case light = Lights.get_full_light(id) do
+      nil ->
+        raise ErrorResponse.BadRequest, message: "Invalid light id."
+      _ ->
+      if light.user_id == conn.assigns.user.id do
+        light_object = %Light{
+          device_id: light.device_id,
+          light_level: light.light_level,
+          rgb_color: light.rgb_color
+        }
+        light_params = %{
+          light_state: :true
+        }
+        case Lights.update_light(light_object, light_params) do
+          {:ok, %Light{} = lightNew} ->
+            render(conn, "patch.json", %{light: lightNew})
+          _ ->
+            raise ErrorResponse.DatabaseError, message: "Error while patching data."
+        end
+      else
+        raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+      end
+    end
+  end
+
 end

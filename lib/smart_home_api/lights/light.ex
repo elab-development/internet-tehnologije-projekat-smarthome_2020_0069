@@ -8,6 +8,7 @@ defmodule SmartHomeApi.Lights.Light do
   schema "lights" do
     field :light_level, :integer
     field :rgb_color, :integer
+    field :light_state, :boolean
 
     timestamps(type: :utc_datetime)
   end
@@ -15,7 +16,7 @@ defmodule SmartHomeApi.Lights.Light do
   @doc false
   def changeset(light, attrs) do
     light
-    |> cast(attrs, [:device_id, :rgb_color, :light_level])
+    |> cast(attrs, [:device_id, :rgb_color, :light_level, :light_state])
     |> validate_required([:rgb_color, :light_level])
   end
 end

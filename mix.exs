@@ -9,7 +9,8 @@ defmodule SmartHomeApi.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      compilers: Mix.compilers ++ [:phoenix_swagger]
     ]
   end
 
@@ -45,7 +46,9 @@ defmodule SmartHomeApi.MixProject do
       {:guardian, "~> 2.3"},
       {:bcrypt_elixir, "~>3.0"},
       {:guardian_db, "~> 2.0"},
-      {:phoenix_view, "~> 2.0"}
+      {:phoenix_view, "~> 2.0"},
+      {:phoenix_swagger, "~> 0.8"},
+      {:ex_json_schema, "~> 0.5"}
     ]
   end
 
