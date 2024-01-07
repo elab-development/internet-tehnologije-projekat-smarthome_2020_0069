@@ -2,8 +2,9 @@ defmodule SmartHomeApi.Cameras.Camera do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key {:device_id, :binary_id, []}
   @foreign_key_type :binary_id
+  @derive {Phoenix.Param, key: :device_id}
   schema "cameras" do
     field :autofocus, :boolean, default: false
     field :flashlight, :boolean, default: false
@@ -11,7 +12,6 @@ defmodule SmartHomeApi.Cameras.Camera do
     field :resolution, :integer
     field :timer, :integer
     field :zoom, :float
-    field :device_id, :binary_id
 
     timestamps(type: :utc_datetime)
   end

@@ -1,0 +1,49 @@
+***authenticate***
+/auth/login
+/auth/register
+/auth/logout
+/auth/reset_password
+
+***devices***
+
+definisanje modela i migracija gasa14
+
+!!!BITNO!!! revidirati sta je sve potrebno od parametara za kreiranje uredjaja, validate_required u model.ex i proveriti sta se vraca u view-ovima
+
+GET /DEVICE/GET_DEVICES GASA14 URADJENO
+DELETE /DEVICE/:ID URADJENO
+
+GET /device/speaker/:id gasa14 uradjeno
+GET /device/speaker/:id/search?song="pesma"
+GET /device/speaker/:id/play?songId=songId
+GET /device/speaker/:id/pause
+POST? /device/speaker uradjeno
+PATCH /device/speaker/:id uradjeno
+
+???stream ili slika na zahtev
+GET /device/camera/:id stefanJo
+GET /device/camera/:id/pictures - dobija slike sa vremenima
+GET /device/camera/:id/capture - (uredjaj salje sliku)
+POST? /device/camera
+PATCH /device/camera/:id
+
+GET /device/air_purifier/:id stefanJo
+POST? /device/air_purifier
+PATCH /device/air_purifier/:id
+
+GET /DEVICE/LIGHT/:ID GASA14 URADJENO
+GET /DEVICE/LIGHT/:ID/TURN_ON ( LIGHT_STATE BOOL ) URADJENO
+GET /DEVICE/LIGHT/:ID/TURN_OFF URADJENO
+POST? /DEVICE/LIGHT URADJENO
+PATCH /DEVICE/LIGHT/:ID URADJENO
+
+GET /DEVICE/THERMOSTAT/:ID GASA14 URADJENO
+POST? /DEVICE/THERMOSTAT URADJENO
+PATCH /DEVICE/THERMOSTAT/:ID URADJENO 
+
+gasa14 frontend
+stefanJo simulatoriZaPodatce, predlogDizajna
+
+
+
+
