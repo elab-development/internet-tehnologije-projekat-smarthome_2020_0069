@@ -8,8 +8,7 @@ defmodule SmartHomeApi.Devices.Device do
   schema "devices" do
     field :place, :string
     field :state, :string
-    field :user_id, :binary_id
-    field :geolocation, :string
+    field :location_id, :binary_id
 
     timestamps(type: :utc_datetime)
   end
@@ -17,7 +16,7 @@ defmodule SmartHomeApi.Devices.Device do
   @doc false
   def changeset(device, attrs) do
     device
-    |> cast(attrs, [:place, :state, :geolocation, :user_id])
+    |> cast(attrs, [:place, :state, :geolocation, :location_id])
     |> validate_required([:place, :state])
   end
 end

@@ -7,12 +7,17 @@ defmodule SmartHomeApiWeb.DeviceController do
 
   action_fallback SmartHomeApiWeb.FallbackController
 
-  def index(conn, _) do
+  def index(conn, %{"page_number" => page_number, "page_size" => page_size}) do
     user_id = conn.assigns.user.id
-    devices = Devices.list_devices(user_id)
-    conn
-    |> put_status(:ok)
-    |> render("index.json", %{devices: devices})
+    devices = Devices.list_devices(user_id, page_number, page_size)
+
+    if page_number > 0 && page_size > 0 do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", %{devices: devices})
+    else
+      raise ErrorResponse.BadRequest, message: "Page number or/and page size is/are invalid."
+    end
   end
 
   # def create(conn, %{"device" => device_params}) do
