@@ -16,7 +16,7 @@ defmodule SmartHomeApi.Devices.Device do
   @doc false
   def changeset(device, attrs) do
     device
-    |> cast(attrs, [:place, :state, :geolocation, :location_id])
+    |> cast(attrs, [:place, :state, :location_id])
     |> validate_required([:place, :state])
   end
 end

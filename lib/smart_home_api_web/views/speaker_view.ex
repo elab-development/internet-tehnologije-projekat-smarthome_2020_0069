@@ -7,7 +7,6 @@ defmodule SmartHomeApiWeb.SpeakerView do
       bass: speaker.bass,
       battery: speaker.battery,
       volume: speaker.volume,
-      geolocation: speaker.geolocation,
       state: speaker.state,
       user_id: speaker.user_id,
       place: speaker.place

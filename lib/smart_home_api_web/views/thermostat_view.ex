@@ -7,7 +7,6 @@ defmodule SmartHomeApiWeb.ThermostatView do
       humidity: thermostat.humidity,
       temperature: thermostat.temperature,
       timer: thermostat.timer,
-      geolocation: thermostat.geolocation,
       state: thermostat.state,
       user_id: thermostat.user_id,
       place: thermostat.place
@@ -25,7 +24,6 @@ defmodule SmartHomeApiWeb.ThermostatView do
 
   def render("create.json", %{thermostat: thermostat}) do
     %{
-      geolocation: thermostat.geolocation,
       place: thermostat.place,
       state: thermostat.state,
       humidity: thermostat.humidity,

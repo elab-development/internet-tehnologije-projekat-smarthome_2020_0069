@@ -5,8 +5,10 @@ defmodule SmartHomeApi.Thermostats do
 
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
-  alias SmartHomeApi.Devices.Device
   alias SmartHomeApi.Thermostats.Thermostat
+  alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
   @doc """
   Returns the list of thermostats.
 
@@ -37,19 +39,21 @@ defmodule SmartHomeApi.Thermostats do
   def get_thermostat!(id), do: Repo.get!(Thermostat, id)
 
 
-  def get_full_thermostat(id) do
+  def get_full_thermostat(user_id, device_id) do
     query = from t in Thermostat,
       join: d in Device, on: t.device_id == d.id,
-      where: t.device_id == ^id,
+      join: l in Location, on: d.location_id == l.id,
+      join: ur in UserRole, on: ur.location_id == l.id,
+      where: d.id == ^device_id and ur.user_id == ^user_id,
       select: %{
         humidity: t.humidity,
         temperature: t.temperature,
         timer: t.timer,
         device_id: t.device_id,
-        user_id: d.user_id,
-        geolocation: d.geolocation,
+        user_id: ur.user_id,
         place: d.place,
-        state: d.state
+        state: d.state,
+        location_id: l.id
       }
     Repo.one(query)
   end

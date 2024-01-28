@@ -9,6 +9,7 @@ defmodule SmartHomeApiWeb.ThermostatController do
   alias SmartHomeApiWeb.Auth.ErrorResponse
   alias SmartHomeApi.Repo
   alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.UserRoles
 
   action_fallback SmartHomeApiWeb.FallbackController
 
@@ -19,23 +20,34 @@ defmodule SmartHomeApiWeb.ThermostatController do
 
   def create(conn, %{"thermostat" => thermostat_params}) do
 
-    result = Repo.transaction(fn->
-      {:ok, %Device{} = device} = Devices.create_device(Map.put(thermostat_params, "user_id", conn.assigns.user.id))
-      Thermostats.create_thermostat(Map.put(thermostat_params, "device_id", device.id))
-    end)
+    if(Map.has_key?(thermostat_params, "location_id")) do
+      user_role = UserRoles.get_user_role!(conn.assigns.user.id, Map.get(thermostat_params, "location_id"))
 
-    case result do
-      {:ok, _} ->
-        render(conn, "create.json", %{thermostat: Utils.string_keys_to_atoms(thermostat_params)})
-      _->
-        raise ErrorResponse.DatabaseError, message: "Error while creating thermostat."
+      if user_role != nil and user_role.role == "ADMIN" do
+        result = Repo.transaction(fn->
+          {:ok, %Device{} = device} = Devices.create_device(thermostat_params)
+          Thermostats.create_thermostat(Map.put(thermostat_params, "device_id", device.id))
+        end)
+
+        case result do
+          {:ok, _} ->
+           render(conn, "create.json", %{thermostat: Utils.string_keys_to_atoms(thermostat_params)})
+          _->
+           raise ErrorResponse.DatabaseError, message: "Error while creating thermostat."
+        end
+      else
+        raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+      end
+
+    else
+      raise ErrorResponse.BadRequest, message: "Must provide location id for this action"
     end
+
   end
 
 
   def show(conn, %{"id" => id}) do
-
-    case thermostat = Thermostats.get_full_thermostat(id) do
+    case thermostat = Thermostats.get_full_thermostat(conn.assigns.user.id, id) do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid thermostat id"
       _ ->
@@ -48,11 +60,13 @@ defmodule SmartHomeApiWeb.ThermostatController do
   end
 
   def update(conn, %{"id" => id, "thermostat" => thermostat_params}) do
-    case thermostat = Thermostats.get_full_thermostat(id) do
+
+    case thermostat = Thermostats.get_full_thermostat(conn.assigns.user.id, id) do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid thermostat id."
       _ ->
-      if thermostat.user_id == conn.assigns.user.id do
+        user_role = UserRoles.get_user_role!(conn.assigns.user.id, thermostat.location_id)
+      if thermostat.user_id == conn.assigns.user.id and (user_role.role == "ADMIN" or user_role.role == "USER") do
         thermostat_object = %Thermostat{
           device_id: thermostat.device_id,
           humidity: thermostat.humidity,
