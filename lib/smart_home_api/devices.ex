@@ -7,6 +7,8 @@ defmodule SmartHomeApi.Devices do
   alias SmartHomeApi.Repo
 
   alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
 
   @doc """
   Returns the list of devices.
@@ -17,11 +19,37 @@ defmodule SmartHomeApi.Devices do
       [%Device{}, ...]
 
   """
-  def list_devices(user_id) do
-    query = from d in Device,
-      where: d.user_id == ^user_id,
-      select: d
-    Repo.all(query)
+  def list_devices(user_id, page_number, page_size) do
+    query =
+      from d in Device,
+        join: l in Location,
+        on: d.location_id == l.id,
+        join: ur in UserRole,
+        on: ur.location_id == l.id,
+        where: ur.user_id == ^user_id,
+        select: %{
+          device_id: d.id,
+          place: d.place,
+          state: d.state,
+          name: l.name,
+          city: l.city,
+          country: l.country,
+          address: l.address,
+          location_id: l.id
+        }
+
+    query
+    |> paginate(page_number, page_size)
+    |> Repo.all()
+  end
+
+  defp paginate(query, page_number, page_size) do
+    page_number_integer = String.to_integer(page_number)
+    page_size_integer = String.to_integer(page_size)
+
+    query
+    |> limit(^page_size_integer)
+    |> offset(^((page_number_integer-1)*page_size_integer))
   end
 
   @doc """

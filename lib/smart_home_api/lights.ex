@@ -6,6 +6,8 @@ defmodule SmartHomeApi.Lights do
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
   alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
 
   alias SmartHomeApi.Lights.Light
 
@@ -38,18 +40,20 @@ defmodule SmartHomeApi.Lights do
   """
   def get_light!(id), do: Repo.get!(Light, id)
 
-  def get_full_light(id) do
-    query = from l in Light,
-      join: d in Device, on: l.device_id == d.id,
-      where: l.device_id == ^id,
+  def get_full_light(user_id, device_id) do
+    query = from la in Light,
+      join: d in Device, on: la.device_id == d.id,
+      join: l in Location, on: d.location_id == l.id,
+      join: ur in UserRole, on: ur.location_id == l.id,
+      where: d.id == ^device_id and ur.user_id == ^user_id,
       select: %{
-        light_level: l.light_level,
-        rgb_color: l.rgb_color,
-        device_id: l.device_id,
-        user_id: d.user_id,
-        geolocation: d.geolocation,
+        light_level: la.light_level,
+        rgb_color: la.rgb_color,
+        device_id: la.device_id,
+        user_id: ur.user_id,
         place: d.place,
-        state: d.state
+        state: d.state,
+        light_state: la.light_state
       }
     Repo.one(query)
   end

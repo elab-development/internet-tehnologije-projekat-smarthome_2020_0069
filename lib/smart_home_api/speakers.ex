@@ -5,7 +5,9 @@ defmodule SmartHomeApi.Speakers do
 
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
-
+  alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
   alias SmartHomeApi.Speakers.Speaker
 
   @doc """
@@ -36,6 +38,24 @@ defmodule SmartHomeApi.Speakers do
 
   """
   def get_speaker!(id), do: Repo.get!(Speaker, id)
+
+  def get_full_speaker(user_id, device_id) do
+    query = from s in Speaker,
+      join: d in Device, on: s.device_id == d.id,
+      join: l in Location, on: d.location_id == l.id,
+      join: ur in UserRole, on: ur.location_id == l.id,
+      where: d.id == ^device_id and ur.user_id == ^user_id,
+      select: %{
+        bass: s.bass,
+        battery: s.battery,
+        device_id: s.device_id,
+        user_id: ur.user_id,
+        place: d.place,
+        state: d.state,
+        volume: s.volume
+      }
+    Repo.one(query)
+  end
 
   @doc """
   Creates a speaker.

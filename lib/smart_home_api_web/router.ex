@@ -36,12 +36,14 @@ defmodule SmartHomeApiWeb.Router do
     plug SmartHomeApiWeb.Auth.SetUser
   end
 
+  #auth done
   scope "/auth", SmartHomeApiWeb do
     pipe_through :auth
     post "/register", UserController, :create
     post "/sign_in", UserController, :sign_in
   end
 
+  #user done
   scope "/user", SmartHomeApiWeb do
     pipe_through [:auth, :user]
     get "/sign_out", UserController, :sign_out
@@ -49,12 +51,14 @@ defmodule SmartHomeApiWeb.Router do
     post "/update_password", UserController, :update_password
   end
 
+  #device done
   scope "/device", SmartHomeApiWeb do
     pipe_through [:auth, :device]
     get "/get_devices", DeviceController, :index
     delete "/:id", DeviceController, :delete
   end
 
+  #thermostat done
   scope "/device/thermostat", SmartHomeApiWeb do
     pipe_through [:auth, :device]
     get "/:id", ThermostatController, :show
@@ -62,6 +66,7 @@ defmodule SmartHomeApiWeb.Router do
     patch "/:id", ThermostatController, :update
   end
 
+  #light done
   scope "/device/light", SmartHomeApiWeb do
     pipe_through [:auth, :device]
     get "/:id", LightController, :show
@@ -79,4 +84,26 @@ defmodule SmartHomeApiWeb.Router do
     post "/capture/:id", CameraController, :upload
     patch "/:id", CameraController, :update
   end
+  #speaker done
+  scope "/device/speaker", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/:id", SpeakerController, :show
+    post "/", SpeakerController, :create
+    patch "/:id", SpeakerController, :update
+  end
+
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :smart_home_api, swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "My App"
+      }
+    }
+  end
+
+
 end

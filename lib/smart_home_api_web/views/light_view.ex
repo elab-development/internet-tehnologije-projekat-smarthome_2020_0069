@@ -6,10 +6,10 @@ defmodule SmartHomeApiWeb.LightView do
       id: light.device_id,
       light_level: light.light_level,
       rgb_color: light.rgb_color,
-      geolocation: light.geolocation,
       state: light.state,
       user_id: light.user_id,
-      place: light.place
+      place: light.place,
+      light_state: light.light_state
     }
   end
 
@@ -17,13 +17,13 @@ defmodule SmartHomeApiWeb.LightView do
     %{
       id: light.device_id,
       light_level: light.light_level,
-      rgb_color: light.rgb_color
+      rgb_color: light.rgb_color,
+      light_state: light.light_state
     }
   end
 
   def render("create.json", %{light: light}) do
     %{
-      geolocation: light.geolocation,
       place: light.place,
       state: light.state,
       light_level: light.light_level,
