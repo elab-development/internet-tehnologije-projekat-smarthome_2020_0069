@@ -1,9 +1,14 @@
 import React from "react";
 import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
+import Devices from "./Pages/Devices";
 
 function App() {
-    return <div className="App"></div>;
+    return (
+        <div className="App">
+            <Devices />
+        </div>
+    );
 }
 
 export default App;

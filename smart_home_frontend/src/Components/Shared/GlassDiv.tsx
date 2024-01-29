@@ -1,5 +1,6 @@
 import React from "react";
 import { PropsWithChildren } from "react";
+import "./GlassDiv.scss";
 
 type Props = {
     className?: string;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Sidebar from "../Components/Devices/Sidebar";
 
 export enum Pages {
     Thermostat,
@@ -15,7 +16,10 @@ const Devices = (props: Props) => {
 
     return (
         <div>
-            <div />
+            <Sidebar
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+            />
         </div>
     );
 };
