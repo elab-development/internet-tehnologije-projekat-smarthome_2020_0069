@@ -4,6 +4,7 @@ defmodule SmartHomeApi.Cameras do
   """
 
   import Ecto.Query, warn: false
+  alias SmartHomeApi.Devices.Device
   alias SmartHomeApi.Repo
 
   alias SmartHomeApi.Cameras.Camera
@@ -37,6 +38,25 @@ defmodule SmartHomeApi.Cameras do
   """
   def get_camera!(id), do: Repo.get!(Camera, id)
 
+  def get_joined_camera!(id) do 
+    query = from c in Camera,
+      join: d in Device, on: c.device_id == d.id,
+      where: c.device_id == ^id,
+      select: %{
+        autofocus: c.autofocus,
+        flashlight: c.flashlight,
+        iso: c.iso,
+        resolution: c.resolution,
+        timer: c.timer,
+        zoom: c.zoom,
+        device_id: c.device_id,
+        user_id: d.user_id,
+        geolocation: d.geolocation,
+        place: d.place,
+        state: d.state
+      }
+    Repo.one(query)
+  end
   @doc """
   Creates a camera.
 
