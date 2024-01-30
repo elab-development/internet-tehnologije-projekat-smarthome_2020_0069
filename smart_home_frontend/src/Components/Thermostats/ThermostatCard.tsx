@@ -28,7 +28,7 @@ const ThermostatCard = (props: Props) => {
                     unit="°C"
                     indicatorColor="#5AC858"
                     indicatorWidth={14}
-                    size={170}
+                    size={160}
                     trackColor="rgba(122,122,122,0.45)"
                     trackWidth={14}
                 >
@@ -41,7 +41,7 @@ const ThermostatCard = (props: Props) => {
                     unit="%"
                     indicatorColor="#C85858"
                     indicatorWidth={14}
-                    size={170}
+                    size={160}
                     trackColor="rgba(122,122,122,0.45)"
                     trackWidth={14}
                 >

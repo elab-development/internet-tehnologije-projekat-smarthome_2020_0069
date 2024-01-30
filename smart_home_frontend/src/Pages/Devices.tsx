@@ -3,6 +3,7 @@ import Pagination from "../Components/Devices/Pagination";
 import ProfileButtons from "../Components/Devices/ProfileButtons";
 import Sidebar from "../Components/Devices/Sidebar";
 import Purifiers from "../Components/Purifiers/Purifiers";
+import Speakers from "../Components/Speakers/Speakers";
 import Thermostats from "../Components/Thermostats/Thermostats";
 import "./Devices.scss";
 
@@ -25,6 +26,8 @@ const Devices = (props: Props) => {
                 return <Thermostats />;
             case Pages.Purifier:
                 return <Purifiers />;
+            case Pages.Speaker:
+                return <Speakers />;
         }
     };
 
