@@ -12,7 +12,7 @@ const Speakers = (props: Props) => {
     return (
         <GlassDiv className="wrapper">
             <DeviceHeader
-                title="Thermostats"
+                title="Speakers"
                 searchText={searchText}
                 setSearchText={setSearchText}
             />
