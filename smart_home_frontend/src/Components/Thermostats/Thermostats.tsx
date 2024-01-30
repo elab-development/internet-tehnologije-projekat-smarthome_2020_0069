@@ -17,11 +17,30 @@ const Thermostats = (props: Props) => {
                 setSearchText={setSearchText}
             />
             <div className="cards">
-                <ThermostatCard />
-                <ThermostatCard />
-                <ThermostatCard />
-                <ThermostatCard />
-                <ThermostatCard />
+                <ThermostatCard
+                    roomName="Living room"
+                    onSettingsClick={() => {}}
+                    temperature={20}
+                    humidity={50}
+                />
+                <ThermostatCard
+                    roomName="Bedroom"
+                    onSettingsClick={() => {}}
+                    temperature={25}
+                    humidity={40}
+                />
+                <ThermostatCard
+                    roomName="Bathroom"
+                    onSettingsClick={() => {}}
+                    temperature={16}
+                    humidity={70}
+                />
+                <ThermostatCard
+                    roomName="Living room"
+                    onSettingsClick={() => {}}
+                    temperature={20}
+                    humidity={50}
+                />
             </div>
         </GlassDiv>
     );

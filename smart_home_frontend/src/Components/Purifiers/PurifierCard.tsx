@@ -4,52 +4,52 @@ import CircularProgressBar from "../Shared/CircularProgressBar";
 import GlassDiv from "../Shared/GlassDiv";
 import { MdDeviceThermostat } from "react-icons/md";
 import { WiHumidity } from "react-icons/wi";
-import "./ThermostatCard.scss";
+import "./PurifierCard.scss";
 
 type Props = {
     roomName: string;
-    temperature: number;
-    humidity: number;
+    pm10: number;
+    pm25: number;
     onSettingsClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const ThermostatCard = (props: Props) => {
+const PurifierCard = (props: Props) => {
     return (
-        <GlassDiv className="thermostat-card">
+        <GlassDiv className="purifier-card">
             <CardHeader
                 roomName={props.roomName}
                 onClick={props.onSettingsClick}
             />
             <div className="indicators">
                 <CircularProgressBar
-                    maxValue={50}
-                    minValue={-50}
-                    value={props.temperature}
-                    unit="°C"
+                    maxValue={100}
+                    minValue={0}
+                    value={props.pm10}
+                    unit="μg/m³"
                     indicatorColor="#5AC858"
                     indicatorWidth={14}
                     size={170}
                     trackColor="rgba(122,122,122,0.45)"
                     trackWidth={14}
                 >
-                    <MdDeviceThermostat className="thermostat-icon" />
+                    <div className="title">PM10</div>
                 </CircularProgressBar>
                 <CircularProgressBar
-                    maxValue={100}
+                    maxValue={60}
                     minValue={0}
-                    value={props.humidity}
-                    unit="%"
+                    value={props.pm25}
+                    unit="μg/m³"
                     indicatorColor="#C85858"
                     indicatorWidth={14}
                     size={170}
                     trackColor="rgba(122,122,122,0.45)"
                     trackWidth={14}
                 >
-                    <WiHumidity className="thermostat-icon" />
+                    <div className="title">PM2.5</div>
                 </CircularProgressBar>
             </div>
         </GlassDiv>
     );
 };
 
-export default ThermostatCard;
+export default PurifierCard;
