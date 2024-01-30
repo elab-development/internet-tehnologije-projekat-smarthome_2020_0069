@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Pagination from "../Components/Devices/Pagination";
 import ProfileButtons from "../Components/Devices/ProfileButtons";
 import Sidebar from "../Components/Devices/Sidebar";
-import Thermostats from "../Components/Devices/Thermostats";
+import Thermostats from "../Components/Thermostats/Thermostats";
 import "./Devices.scss";
 
 export enum Pages {
