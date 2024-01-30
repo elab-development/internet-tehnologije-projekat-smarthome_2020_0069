@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Cameras from "../Components/Cameras/Cameras";
 import Pagination from "../Components/Devices/Pagination";
 import ProfileButtons from "../Components/Devices/ProfileButtons";
 import Sidebar from "../Components/Devices/Sidebar";
@@ -28,6 +29,8 @@ const Devices = (props: Props) => {
                 return <Purifiers />;
             case Pages.Speaker:
                 return <Speakers />;
+            case Pages.Camera:
+                return <Cameras />;
         }
     };
 
