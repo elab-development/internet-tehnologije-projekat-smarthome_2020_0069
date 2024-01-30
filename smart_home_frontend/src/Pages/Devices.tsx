@@ -3,6 +3,7 @@ import Cameras from "../Components/Cameras/Cameras";
 import Pagination from "../Components/Devices/Pagination";
 import ProfileButtons from "../Components/Devices/ProfileButtons";
 import Sidebar from "../Components/Devices/Sidebar";
+import Lights from "../Components/Lights/Lights";
 import Purifiers from "../Components/Purifiers/Purifiers";
 import Speakers from "../Components/Speakers/Speakers";
 import Thermostats from "../Components/Thermostats/Thermostats";
@@ -31,6 +32,8 @@ const Devices = (props: Props) => {
                 return <Speakers />;
             case Pages.Camera:
                 return <Cameras />;
+            case Pages.Light:
+                return <Lights />;
         }
     };
 
