@@ -9,6 +9,12 @@ defmodule SmartHomeApiWeb.Router do
     |> halt()
   end
 
+  defp handle_errors(conn, %{reason: %FunctionClauseError{}}) do
+    conn
+    |> json(%{errors: "Invalid function call"})
+    |> halt()
+  end
+
   defp handle_errors(conn, %{reason: %{message: message}}) do
     conn
     |> json(%{errors: message})
@@ -70,6 +76,14 @@ defmodule SmartHomeApiWeb.Router do
     get "/:id/turn_off", LightController, :turn_off
   end
 
+  scope "/device/camera", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/:id", CameraController, :show
+    get "/pictures/:id", CameraController, :pictures
+    post "/", CameraController, :create
+    post "/capture/:id", CameraController, :upload
+    patch "/:id", CameraController, :update
+  end
   #speaker done
   scope "/device/speaker", SmartHomeApiWeb do
     pipe_through [:auth, :device]

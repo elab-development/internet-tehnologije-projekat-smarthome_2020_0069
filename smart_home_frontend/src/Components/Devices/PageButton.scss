@@ -1,0 +1,21 @@
+@import "../../globals.scss";
+
+.page-button {
+    width: 90px;
+    height: 90px;
+    border: none;
+    border-radius: 30px;
+    &.active-button {
+        background-color: $orange_main;
+    }
+    &.inactive-button {
+        background-color: transparent;
+    }
+    svg {
+        color: white;
+        width: 40px;
+        height: 40px;
+    }
+    transition: background-color 0.2s;
+    cursor: pointer;
+}

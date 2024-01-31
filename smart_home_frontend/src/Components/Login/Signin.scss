@@ -1,0 +1,101 @@
+.login-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.wrapper {
+    height: 700px;
+    width: 550px;
+    position: relative;
+
+    .signin-title {
+        color: white;
+        font-size: 50px;
+        font-weight: bold;
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .si-username-txb {
+        position: absolute;
+        top: 250px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .si-password-txb {
+        position: absolute;
+        top: 350px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .si-primary-button {
+        position: absolute;
+        top: 500px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .footer-text {
+        position: absolute;
+        top: 560px;
+        color: white;
+        font-size: 25px;
+        justify-self: center;
+        width: fit-content;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .text {
+            padding-left: 70px;
+            padding-right: 20px;
+        }
+    }
+
+
+    .login-icon {
+        height: 100px;
+        width: 100px;
+        position: absolute;
+
+        svg {
+            color: white;
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            left: 50%;
+            transform: translate(10%, 10%);
+        }
+    }
+
+    .light {
+        top: -50px;
+        left: 30px;
+    }
+
+    .thermostat {
+        top: 400px;
+        left: -40px;
+    }
+
+    .speaker {
+        top: 200px;
+        left: 510px;
+    }
+
+    .camera {
+        top: 650px;
+        left: 50px;
+    }
+
+    .purifier {
+        top: 630px;
+        left: 410px;
+    }
+}

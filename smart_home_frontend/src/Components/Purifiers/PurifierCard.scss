@@ -1,0 +1,10 @@
+.purifier-card {
+    width: 460px;
+    height: 280px;
+
+    .indicators {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+}

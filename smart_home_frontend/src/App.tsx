@@ -1,14 +1,14 @@
-import React from 'react';
-import './App.css';
-import Login from './pages/Login';
-import './index.scss'
+
+import "./App.scss";
+import Devices from "./Pages/Devices";
+import Login from "./Pages/Login";
 
 function App() {
-  return (
-    <div className="App">
-      <Login/>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Login />
+        </div>
+    );
 }
 
 export default App;

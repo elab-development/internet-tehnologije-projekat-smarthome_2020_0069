@@ -1,0 +1,55 @@
+.thermostat-card {
+    width: 460px;
+    height: 280px;
+
+    .card-body {
+        display: grid;
+        grid-template-columns: 150px auto 150px;
+
+        .light-switch {
+            grid-column-start: 2;
+            width: 140px;
+            height: 140px;
+            border-radius: 30px;
+            border: none;
+            align-self: center;
+            justify-self: center;
+            box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+            svg {
+                width: 80px;
+                height: 80px;
+                color: white;
+            }
+        }
+
+        .color-picker {
+            justify-self: end;
+            display: flex;
+            height: fit-content;
+            align-items: center;
+            svg {
+                width: 20px;
+                height: 20px;
+                color: white;
+            }
+
+            input {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                border: none;
+                border-radius: 10px;
+                margin-left: 0.5rem;
+                margin-right: 1.8rem;
+            }
+
+            input::-webkit-color-swatch {
+                border-radius: 10px;
+                border: none;
+            }
+            input::-moz-color-swatch {
+                border-radius: 10px;
+                border: none;
+            }
+        }
+    }
+}
