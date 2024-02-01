@@ -7,6 +7,7 @@ import Lights from "../Components/Lights/Lights";
 import Purifiers from "../Components/Purifiers/Purifiers";
 import Speakers from "../Components/Speakers/Speakers";
 import Thermostats from "../Components/Thermostats/Thermostats";
+import Settings from "../Components/Settings/Settings";
 import "./Devices.scss";
 
 export enum Pages {
@@ -34,6 +35,8 @@ const Devices = (props: Props) => {
                 return <Cameras />;
             case Pages.Light:
                 return <Lights />;
+            case Pages.Profile:
+                return <Settings />;
         }
     };
 

@@ -1,0 +1,20 @@
+@import "../../globals.scss";
+
+.stat-button{
+    height: 60px;
+    margin: 4px;
+    border-radius: 20px;
+    flex-grow: 1;
+    border: none;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    &.active-button {
+        background-color: $orange_main;
+    }
+    &.inactive-button {
+        background-color: transparent;
+    }
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}

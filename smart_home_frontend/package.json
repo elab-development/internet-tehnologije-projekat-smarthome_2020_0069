@@ -6,14 +6,18 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/google.visualization": "^0.0.74",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.76",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
+    "react-google-charts": "^4.0.1",
     "react-icons": "^5.0.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
     "sass": "^1.70.0",
@@ -43,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-modal": "^3.16.3"
   }
 }

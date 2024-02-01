@@ -1,0 +1,23 @@
+.profile-wrapper{
+    width: 500px;
+    height: auto;
+    padding-left: 70px;
+    padding-right: 50px;
+    padding-top: 50px;
+    padding-bottom: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    .profile-name{
+        color: white;
+        font-weight: bold;
+        font-size: 50px;
+    }
+
+    .footer-text{
+        color: white;
+        font-size: 25px;
+        display: flex;
+        justify-content: space-between;
+    }
+}

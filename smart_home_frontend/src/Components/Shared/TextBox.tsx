@@ -2,7 +2,9 @@ import React from 'react'
 import "./TextBox.scss"
 
 type Props = {
-    placeholder: string;
+    placeholder?: string;
+    value?: string;
+    readonly?: boolean;
 };
 
 const TextBox = (props: Props) => {
@@ -12,6 +14,8 @@ const TextBox = (props: Props) => {
             <input 
                 type="text"
                 placeholder={props.placeholder}
+                value={props.value}
+                readOnly={props.readonly}
              />
         </div>
     );
