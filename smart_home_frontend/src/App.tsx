@@ -1,12 +1,15 @@
 import "./App.scss";
 import Devices from "./Pages/Devices";
 import Login from "./Pages/Login";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
     return (
-        <div className="App">
+        <QueryClientProvider client={queryClient}>
             <Devices />
-        </div>
+        </QueryClientProvider>
     );
 }
 
