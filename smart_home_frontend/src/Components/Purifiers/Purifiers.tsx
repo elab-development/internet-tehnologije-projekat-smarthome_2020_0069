@@ -7,22 +7,15 @@ import "./Purifiers.scss";
 type Props = {};
 
 const Purifiers = (props: Props) => {
-    const [searchText, setSearchText] = useState<string>("");
-
     return (
         <GlassDiv className="wrapper">
             <DeviceHeader
                 title="Purifiers"
-                searchText={searchText}
-                setSearchText={setSearchText}
+                addButtonText="Add purifiers"
+                onAddClick={() => {}}
             />
             <div className="cards">
-                <PurifierCard
-                    roomName="Living room"
-                    onSettingsClick={() => {}}
-                    pm10={36}
-                    pm25={20}
-                />
+                <PurifierCard roomName="Living room" pm10={36} pm25={20} />
             </div>
         </GlassDiv>
     );

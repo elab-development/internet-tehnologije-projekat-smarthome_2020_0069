@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import CircularProgressBar from "../Shared/CircularProgressBar";
 import GlassDiv from "../Shared/GlassDiv";
 import { MdDeviceThermostat } from "react-icons/md";
 import { WiHumidity } from "react-icons/wi";
 import "./PurifierCard.scss";
+import PopupModal from "../Shared/Modals/PopupModal";
+import TextBox from "../Shared/TextBox";
+import PrimaryButton from "../Shared/PrimaryButton";
 
 type Props = {
     roomName: string;
     pm10: number;
     pm25: number;
-    onSettingsClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 const PurifierCard = (props: Props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <GlassDiv className="purifier-card">
             <CardHeader
                 roomName={props.roomName}
-                onClick={props.onSettingsClick}
+                onClick={() => setIsModalOpen(true)}
             />
             <div className="indicators">
                 <CircularProgressBar
@@ -48,6 +52,17 @@ const PurifierCard = (props: Props) => {
                     <div className="title">PM2.5</div>
                 </CircularProgressBar>
             </div>
+            <PopupModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                title="Purifier settings"
+            >
+                <div className="purifier-modal-content">
+                    <TextBox placeholder="Room name" />
+                    <TextBox placeholder="Timer" />
+                    <PrimaryButton button_value="Save" />
+                </div>
+            </PopupModal>
         </GlassDiv>
     );
 };

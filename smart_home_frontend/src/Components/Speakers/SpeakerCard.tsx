@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import { FaBatteryFull } from "react-icons/fa6";
@@ -10,6 +10,10 @@ import { IoIosSkipBackward } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
 import { IoIosSkipForward } from "react-icons/io";
 import { PiPlaylistFill } from "react-icons/pi";
+import PopupModal from "../Shared/Modals/PopupModal";
+import TextBox from "../Shared/TextBox";
+import PrimaryButton from "../Shared/PrimaryButton";
+import Slider from "../Shared/Slider";
 
 type Props = {
     roomName: string;
@@ -18,15 +22,15 @@ type Props = {
     author: string;
     batteryPercent: number;
     volumePercent: number;
-    onSettingsClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 const SpeakerCard = (props: Props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <GlassDiv className="speaker-card">
             <CardHeader
                 roomName={props.roomName}
-                onClick={props.onSettingsClick}
+                onClick={() => setIsModalOpen(!isModalOpen)}
             />
             <div className="card-body">
                 <div className="playing-info">
@@ -80,6 +84,32 @@ const SpeakerCard = (props: Props) => {
                     />
                 </div>
             </div>
+            <PopupModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                title="Speaker settings"
+            >
+                <div className="speaker-modal-content">
+                    <TextBox placeholder="Room name" />
+                    <Slider
+                        label="Volume"
+                        max={100}
+                        min={0}
+                        onChanged={() => {}}
+                        value={10}
+                        unit="%"
+                    />
+                    <Slider
+                        label="Bass"
+                        max={100}
+                        min={0}
+                        onChanged={() => {}}
+                        value={10}
+                        unit="%"
+                    />
+                    <PrimaryButton button_value="Save" />
+                </div>
+            </PopupModal>
         </GlassDiv>
     );
 };

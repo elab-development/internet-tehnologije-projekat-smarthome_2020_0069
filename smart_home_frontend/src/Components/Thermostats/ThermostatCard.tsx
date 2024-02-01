@@ -56,11 +56,11 @@ const ThermostatCard = (props: Props) => {
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 title="Thermostat settings"
-                width="20vw"
-                height="35vh"
             >
                 <div className="thermostat-modal-content">
                     <TextBox placeholder="Room name" />
+                    <TextBox placeholder="Timer" />
+                    <PrimaryButton button_value="Save" />
                 </div>
             </PopupModal>
         </GlassDiv>

@@ -30,3 +30,23 @@
         margin-top: 6.5rem;
     }
 }
+
+.camera-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .zoom-checkbox,
+    .flash-checkbox {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        font-size: 20px;
+        color: white;
+        input {
+            width: 22px;
+            height: 22px;
+        }
+    }
+}

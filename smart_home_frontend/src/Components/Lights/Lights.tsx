@@ -7,17 +7,15 @@ import "./Lights.scss";
 type Props = {};
 
 const Lights = (props: Props) => {
-    const [searchText, setSearchText] = useState<string>("");
-
     return (
         <GlassDiv className="wrapper">
             <DeviceHeader
                 title="Lights"
-                searchText={searchText}
-                setSearchText={setSearchText}
+                addButtonText="Add lights"
+                onAddClick={() => {}}
             />
             <div className="cards">
-                <LightsCard roomName="Living room" onSettingsClick={() => {}} />
+                <LightsCard roomName="Living room" />
             </div>
         </GlassDiv>
     );

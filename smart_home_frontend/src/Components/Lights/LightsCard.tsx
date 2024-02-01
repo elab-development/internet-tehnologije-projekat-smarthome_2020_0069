@@ -5,20 +5,25 @@ import "./LightsCard.scss";
 import { FaLightbulb } from "react-icons/fa6";
 import { FaRegLightbulb } from "react-icons/fa6";
 import { FaEyeDropper } from "react-icons/fa6";
+import TextBox from "../Shared/TextBox";
+import Slider from "../Shared/Slider";
+import PrimaryButton from "../Shared/PrimaryButton";
+import PopupModal from "../Shared/Modals/PopupModal";
 
 type Props = {
     roomName: string;
-    onSettingsClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 const LightsCard = (props: Props) => {
     const [turnedOn, setTurnedOn] = useState(true);
     const [lightColor, setLightColor] = useState("#E7E03A");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <GlassDiv className="thermostat-card">
             <CardHeader
                 roomName={props.roomName}
-                onClick={props.onSettingsClick}
+                onClick={() => setIsModalOpen(true)}
             />
             <div className="card-body">
                 <button
@@ -42,6 +47,24 @@ const LightsCard = (props: Props) => {
                     />
                 </div>
             </div>
+            <PopupModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                title="Light settings"
+            >
+                <div className="light-modal-content">
+                    <TextBox placeholder="Room name" />
+                    <Slider
+                        label="Light level"
+                        max={5}
+                        min={1}
+                        onChanged={() => {}}
+                        value={3}
+                        unit=""
+                    />
+                    <PrimaryButton button_value="Save" />
+                </div>
+            </PopupModal>
         </GlassDiv>
     );
 };

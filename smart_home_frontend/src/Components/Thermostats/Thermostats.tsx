@@ -7,14 +7,12 @@ import "./Thermostats.scss";
 type Props = {};
 
 const Thermostats = (props: Props) => {
-    const [searchText, setSearchText] = useState<string>("");
-
     return (
         <GlassDiv className="wrapper">
             <DeviceHeader
                 title="Thermostats"
-                searchText={searchText}
-                setSearchText={setSearchText}
+                addButtonText="Add thermostats"
+                onAddClick={() => {}}
             />
             <div className="cards">
                 <ThermostatCard
