@@ -1,6 +1,6 @@
-import React from 'react'
-import GlassDiv from '../Shared/GlassDiv';
-import "./LoginIcon.scss"
+import React from "react";
+import GlassDiv from "../Shared/GlassDiv";
+import "./LoginIcon.scss";
 
 type Props = {
     icon: React.ReactNode;
@@ -8,12 +8,11 @@ type Props = {
 
 const LoginIcon = (props: Props) => {
     return (
-        <GlassDiv roundTop={20} roundBottom={20} className='login-icon'>
-            <div className='icon-border'>
-                {props.icon}
-            </div>
+        <GlassDiv roundTop={20} roundBottom={20} className="login-icon">
+            {/* <div className='icon-border'> */}
+            {props.icon}
+            {/* </div> */}
         </GlassDiv>
-
     );
 };
 

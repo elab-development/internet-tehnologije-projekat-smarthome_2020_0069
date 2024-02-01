@@ -1,4 +1,3 @@
-
 import "./App.scss";
 import Devices from "./Pages/Devices";
 import Login from "./Pages/Login";

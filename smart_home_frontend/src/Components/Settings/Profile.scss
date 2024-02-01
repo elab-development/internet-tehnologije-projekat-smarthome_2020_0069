@@ -1,23 +1,25 @@
-.profile-wrapper{
+.profile-wrapper {
     width: 500px;
     height: auto;
     padding-left: 70px;
     padding-right: 50px;
-    padding-top: 50px;
-    padding-bottom: 250px;
+    padding-top: 35px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    .profile-name{
+    // justify-content: space-around;
+    gap: 20px;
+    .profile-name {
         color: white;
         font-weight: bold;
-        font-size: 50px;
+        font-size: 35px;
+        padding-bottom: 20px;
     }
 
-    .footer-text{
+    .footer-text {
         color: white;
-        font-size: 25px;
+        font-size: 22px;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 10px;
     }
 }

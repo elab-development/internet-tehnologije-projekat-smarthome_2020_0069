@@ -19,25 +19,21 @@ const Thermostats = (props: Props) => {
             <div className="cards">
                 <ThermostatCard
                     roomName="Living room"
-                    onSettingsClick={() => {}}
                     temperature={20}
                     humidity={50}
                 />
                 <ThermostatCard
                     roomName="Bedroom"
-                    onSettingsClick={() => {}}
                     temperature={25}
                     humidity={40}
                 />
                 <ThermostatCard
                     roomName="Bathroom"
-                    onSettingsClick={() => {}}
                     temperature={16}
                     humidity={70}
                 />
                 <ThermostatCard
                     roomName="Living room"
-                    onSettingsClick={() => {}}
                     temperature={20}
                     humidity={50}
                 />

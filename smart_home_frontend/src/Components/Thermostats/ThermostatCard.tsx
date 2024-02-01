@@ -1,24 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import CircularProgressBar from "../Shared/CircularProgressBar";
 import GlassDiv from "../Shared/GlassDiv";
 import { MdDeviceThermostat } from "react-icons/md";
 import { WiHumidity } from "react-icons/wi";
 import "./ThermostatCard.scss";
+import PopupModal from "../Shared/Modals/PopupModal";
+import PrimaryButton from "../Shared/PrimaryButton";
+import TextBox from "../Shared/TextBox";
 
 type Props = {
     roomName: string;
     temperature: number;
     humidity: number;
-    onSettingsClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 const ThermostatCard = (props: Props) => {
+    let [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <GlassDiv className="thermostat-card">
             <CardHeader
                 roomName={props.roomName}
-                onClick={props.onSettingsClick}
+                onClick={() => setIsModalOpen(true)}
             />
             <div className="indicators">
                 <CircularProgressBar
@@ -48,6 +52,17 @@ const ThermostatCard = (props: Props) => {
                     <WiHumidity className="thermostat-icon" />
                 </CircularProgressBar>
             </div>
+            <PopupModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                title="Thermostat settings"
+                width="20vw"
+                height="35vh"
+            >
+                <div className="thermostat-modal-content">
+                    <TextBox placeholder="Room name" />
+                </div>
+            </PopupModal>
         </GlassDiv>
     );
 };
