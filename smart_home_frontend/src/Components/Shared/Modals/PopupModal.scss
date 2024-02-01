@@ -1,0 +1,53 @@
+@import "../../../globals.scss";
+
+
+.modal-header{
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    span{
+        margin-top: 15px;
+    }
+    div{
+        width: 50px;
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-button{
+    background-color: transparent;
+    border: none;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    svg {
+        color: white;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.modal-content {
+    background: $grey_background;
+    border-radius: 20px;
+    position: absolute;
+    width: 30vw;
+    height: 50vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
