@@ -4,7 +4,10 @@ defmodule SmartHomeApi.Cameras do
   """
 
   import Ecto.Query, warn: false
+  alias Hex.API.User
   alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
   alias SmartHomeApi.Repo
 
   alias SmartHomeApi.Cameras.Camera
@@ -18,8 +21,41 @@ defmodule SmartHomeApi.Cameras do
       [%Camera{}, ...]
 
   """
-  def list_cameras do
-    Repo.all(Camera)
+  def list_cameras(user_id, page_number, page_size) do
+    query =
+      from c in Camera,
+        join: d in Device,
+        on: c.device_id == d.id,
+        join: l in Location,
+        on: l.id == d.location_id,
+        join: ur in UserRole,
+        on: l.id == ur.location_id,
+        where: ur.user_id == ^user_id,
+        select: %{
+          flashlight: c.flashlight,
+          resolution: c.resolution,
+          timer: c.timer,
+          iso: c.iso,
+          autofocus: c.autofocus,
+          zoom: c.zoom,
+          device_id: c.device_id,
+          state: d.state,
+          place: d.place
+        }
+
+
+    query
+    |> paginate(page_number, page_size)
+    |> Repo.all()
+  end
+
+  defp paginate(query, page_number, page_size) do
+    page_number_integer = String.to_integer(page_number)
+    page_size_integer = String.to_integer(page_size)
+
+    query
+    |> limit(^page_size_integer)
+    |> offset(^((page_number_integer - 1) * page_size_integer))
   end
 
   @doc """
@@ -38,25 +74,33 @@ defmodule SmartHomeApi.Cameras do
   """
   def get_camera!(id), do: Repo.get!(Camera, id)
 
-  def get_joined_camera!(id) do 
-    query = from c in Camera,
-      join: d in Device, on: c.device_id == d.id,
-      where: c.device_id == ^id,
-      select: %{
-        autofocus: c.autofocus,
-        flashlight: c.flashlight,
-        iso: c.iso,
-        resolution: c.resolution,
-        timer: c.timer,
-        zoom: c.zoom,
-        device_id: c.device_id,
-        user_id: d.user_id,
-        geolocation: d.geolocation,
-        place: d.place,
-        state: d.state
-      }
+  def get_joined_camera!(user_id, device_id) do
+    query =
+      from c in Camera,
+        join: d in Device,
+        on: c.device_id == d.id,
+        join: l in Location,
+        on: d.location_id == l.id,
+        join: ur in UserRole,
+        on: ur.location_id == l.id,
+        where: d.id == ^device_id and ur.user_id == ^user_id,
+        select: %{
+          autofocus: c.autofocus,
+          flashlight: c.flashlight,
+          iso: c.iso,
+          resolution: c.resolution,
+          timer: c.timer,
+          zoom: c.zoom,
+          user_id: ur.user_id,
+          device_id: c.device_id,
+          place: d.place,
+          state: d.state,
+          location_id: l.id
+        }
+
     Repo.one(query)
   end
+
   @doc """
   Creates a camera.
 

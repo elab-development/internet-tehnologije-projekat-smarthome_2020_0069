@@ -13,15 +13,32 @@ defmodule SmartHomeApiWeb.ThermostatController do
 
   action_fallback SmartHomeApiWeb.FallbackController
 
-  def index(conn, _params) do
-    thermostats = Thermostats.list_thermostats()
-    render(conn, :index, thermostats: thermostats)
+  def index(conn, %{"page_number" => page_number, "page_size" => page_size}) do
+    user_id = conn.assigns.user.id
+
+    case {Integer.parse(page_number), Integer.parse(page_size)} do
+      {{parsed_page_num, _}, {parsed_page_size, _}}
+      when parsed_page_num > 0 and parsed_page_size > 0 ->
+        conn
+        |> put_status(:ok)
+        |> render("index.json", %{
+          thermostats: Thermostats.list_thermostats(user_id, page_number, page_size)
+        })
+
+      _ ->
+        raise ErrorResponse.BadRequest, message: "Page number or/and page size is/are invalid."
+
+    end
+  end
+
+  def index(_conn, _params) do
+    raise ErrorResponse.BadRequest, message: "Page number and page size are required."
   end
 
   def create(conn, %{"thermostat" => thermostat_params}) do
 
     if(Map.has_key?(thermostat_params, "location_id")) do
-      user_role = UserRoles.get_user_role!(conn.assigns.user.id, Map.get(thermostat_params, "location_id"))
+      user_role = UserRoles.get_user_role(conn.assigns.user.id, Map.get(thermostat_params, "location_id"))
 
       if user_role != nil and user_role.role == "ADMIN" do
         result = Repo.transaction(fn->
@@ -65,7 +82,7 @@ defmodule SmartHomeApiWeb.ThermostatController do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid thermostat id."
       _ ->
-        user_role = UserRoles.get_user_role!(conn.assigns.user.id, thermostat.location_id)
+        user_role = UserRoles.get_user_role(conn.assigns.user.id, thermostat.location_id)
       if thermostat.user_id == conn.assigns.user.id and (user_role.role == "ADMIN" or user_role.role == "USER") do
         thermostat_object = %Thermostat{
           device_id: thermostat.device_id,
@@ -82,14 +99,6 @@ defmodule SmartHomeApiWeb.ThermostatController do
       else
         raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
       end
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    thermostat = Thermostats.get_thermostat!(id)
-
-    with {:ok, %Thermostat{}} <- Thermostats.delete_thermostat(thermostat) do
-      send_resp(conn, :no_content, "")
     end
   end
 end

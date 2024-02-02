@@ -5,6 +5,7 @@ defmodule SmartHomeApiWeb.Utils.Utils do
       new_key = String.to_existing_atom(key)
       Map.put(acc, new_key, value)
     end)
+
   end
 
 end

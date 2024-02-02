@@ -13,6 +13,10 @@ defmodule SmartHomeApiWeb.LightView do
     }
   end
 
+  def render("index.json", %{lights: lights}) do
+    %{lights: lights}
+  end
+
   def render("patch.json", %{light: light}) do
     %{
       id: light.device_id,
