@@ -17,8 +17,8 @@ import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
 import { useQuery } from "@tanstack/react-query";
 import { useGetTracksFromSearch } from "../../Api/SpotifyApi";
-import {SpotifySong} from "../../Api/SpotifyApi.types"
-import SongCard from "./SongCard"; 
+import { SpotifySong } from "../../Api/SpotifyApi.types"
+import SongCard from "./SongCard";
 
 type Props = {
     roomName: string;
@@ -34,26 +34,33 @@ const SpeakerCard = (props: Props) => {
     const [isSearchSongModalOpen, setisSearchSongModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [tracksList, setTrackList] = useState<SpotifySong[]>([]);
-    // let tracksList:SpotifySong[] = [];
 
-    const { data: tracks, error: tracksError, isLoading: tracksLoading } = useGetTracksFromSearch("yellow");
+    const { data: tracks, error: tracksError, isLoading: tracksLoading, isFetching, refetch } = useGetTracksFromSearch(searchText);
+
+    const handleClick = async () => {
+        try {
+            await refetch();
+            console.log(tracksList)
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     useEffect(() => {
-        if(!tracksLoading && !tracksError){
+        if (!tracksLoading && !tracksError) {
+            const newSongs: SpotifySong[] = [];
             for (let index = 0; index < tracks?.tracks.items.length!; index++) {
                 const newSong: SpotifySong = {
-                    name: tracks?.tracks.items[index].name??"",
-                    author: tracks?.tracks.items[index].album.artists[0].name??"",
-                    duration: tracks?.tracks.items[index].duration_ms??0,
-                    image: tracks?.tracks.items[index].album.images[0].url??""
-                } 
-                setTrackList([...tracksList, newSong])
-                tracksList.push(
-                    
-                )
-                
+                    name: tracks?.tracks.items[index].name ?? "",
+                    author: tracks?.tracks.items[index].album.artists[0].name ?? "",
+                    duration: tracks?.tracks.items[index].duration_ms ?? 0,
+                    image: tracks?.tracks.items[index].album.images[0].url ?? ""
+                }
+                newSongs.push(newSong)
             }
+            setTrackList([...tracksList, ...newSongs])
         }
-    },[tracksLoading])
+    }, [tracksLoading, isFetching, refetch])
 
 
     return (
@@ -90,27 +97,27 @@ const SpeakerCard = (props: Props) => {
                     <IconButton
                         background={false}
                         icon={<FaStop />}
-                        onClick={() => {}}
+                        onClick={() => { }}
                     />
                     <IconButton
                         background={false}
                         icon={<IoIosSkipBackward />}
-                        onClick={() => {}}
+                        onClick={() => { }}
                     />
                     <IconButton
                         background={true}
                         icon={<FaPlay />}
-                        onClick={() => {}}
+                        onClick={() => { }}
                     />
                     <IconButton
                         background={false}
                         icon={<IoIosSkipForward />}
-                        onClick={() => {}}
+                        onClick={() => { }}
                     />
                     <IconButton
                         background={false}
                         icon={<PiPlaylistFill />}
-                        onClick={() => { setisSearchSongModalOpen(true)}}
+                        onClick={() => { setisSearchSongModalOpen(true) }}
                     />
                 </div>
             </div>
@@ -122,29 +129,39 @@ const SpeakerCard = (props: Props) => {
                 height="70vh"
             >
                 <div className="search-song-modal-content">
-                <input
-                    type="text"
-                    placeholder={`Search music`}
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
-                <IoMdSearch />
-                {tracksList.length == 0 ? (
-                    <div className="empty-tracks">
-                        {tracksList.toString()}
-                        Search for songs, list is empty
-                    </div>
-                ) :
-                (
-                    <div>
-                        <SongCard
-                            author={tracksList[0].author}
-                            duration={tracksList[0].duration}
-                            image={tracksList[0].image}
-                            name={tracksList[0].name}
-                        />
-                    </div>
-                )}
+                    <input
+                        type="text"
+                        placeholder={`Search music`}
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                    />
+                    <button onClick={handleClick} disabled={tracksLoading}>
+                        <IoMdSearch />
+                    </button>
+
+                    {tracksList.length == 0 ? (
+                        <div className="empty-tracks">
+                            {tracksList.toString()}
+                            Search for songs, list is empty
+                        </div>
+                    ) :
+                        (
+                            <div className="list-view-wrapper">
+                                <div className="list-view">
+                                    {tracksList.map((track, index) => (
+                                        <SongCard
+                                            key={index}
+                                            author={track.author}
+                                            duration={track.duration}
+                                            image={track.image}
+                                            name={track.name}
+                                        />
+                                    )
+                                    )}
+                                </div>
+
+                            </div>
+                        )}
                 </div>
 
             </PopupModal>
@@ -159,7 +176,7 @@ const SpeakerCard = (props: Props) => {
                         label="Volume"
                         max={100}
                         min={0}
-                        onChanged={() => {}}
+                        onChanged={() => { }}
                         value={10}
                         unit="%"
                     />
@@ -167,7 +184,7 @@ const SpeakerCard = (props: Props) => {
                         label="Bass"
                         max={100}
                         min={0}
-                        onChanged={() => {}}
+                        onChanged={() => { }}
                         value={10}
                         unit="%"
                     />

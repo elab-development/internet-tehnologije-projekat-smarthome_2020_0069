@@ -41,7 +41,7 @@ const getTracksFromSearch = async (search: string): Promise<SpotifySearchResult>
             params: {
                 q: search,
                 type: "track",
-                limit: 10 
+                limit: 20 
             },
             headers: {
                 'Authorization': `Bearer ${at}`,
@@ -55,8 +55,10 @@ const getTracksFromSearch = async (search: string): Promise<SpotifySearchResult>
 export function useGetTracksFromSearch(search: string){
     const query = useQuery<SpotifySearchResult, Error>({
         queryKey: ["get-tracks", search],
-        queryFn: () => getTracksFromSearch(search)
-    });
+        queryFn: () => getTracksFromSearch(search),
+        enabled: false
+    },    
+    );
 
 
     return query;

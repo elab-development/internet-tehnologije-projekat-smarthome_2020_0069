@@ -5,6 +5,7 @@
     .card-body {
         padding: 0 1.5rem 0 1.5rem;
     }
+
     .playing-info {
         display: flex;
         flex-direction: row;
@@ -15,6 +16,7 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+
             img {
                 width: 90px;
                 height: 90px;
@@ -26,6 +28,7 @@
                 font-size: 22px;
                 color: white;
                 max-width: 220px;
+
                 .title {
                     font-weight: bold;
                     margin-bottom: 0.5rem;
@@ -41,6 +44,7 @@
         }
 
         .speaker-info {
+
             .battery,
             .volume {
                 display: flex;
@@ -49,6 +53,7 @@
                 align-items: center;
                 margin-right: 0.5rem;
                 font-weight: 500;
+
                 svg {
                     width: 25px;
                     height: 25px;
@@ -68,6 +73,7 @@
 
 .speaker-modal-content {
     padding: 1rem;
+
     input {
         margin-bottom: 1rem;
     }
@@ -76,6 +82,7 @@
 .search-song-modal-content {
     position: relative;
     margin-inline: 50px;
+
     input {
         margin-bottom: 20px;
         background-color: rgba(217, 217, 217, 0.17);
@@ -89,6 +96,7 @@
         font-size: 20px;
         font-weight: bold;
     }
+
     svg {
         position: absolute;
         cursor: pointer;
@@ -100,9 +108,14 @@
     }
 }
 
-.empty-tracks{
+.empty-tracks {
     color: white;
     padding-top: 50%;
     text-align: center;
     font-size: 25px;
+}
+
+.list-view-wrapper {
+    height: 45vh;
+    overflow-y: auto;
 }
