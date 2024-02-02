@@ -3,18 +3,13 @@ import DeviceHeader from "../Devices/DeviceHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import SpeakerCard from "./SpeakerCard";
 import "./Speakers.scss";
-import {useGetAccessToken} from "../../Api/SpotifyApi";
+import {useGetAccessToken, useGetTracksFromSearch} from "../../Api/SpotifyApi";
 
 type Props = {};
 
 const Speakers = (props: Props) => {
 
-    const { data: access_token, error: topTracksError, isLoading: topTracksLoading } = useGetAccessToken();
-    useEffect(() => {
-        if(!topTracksLoading){
-            console.log(access_token)
-        }
-    },[topTracksLoading])
+    
 
     return (
         <GlassDiv className="wrapper">

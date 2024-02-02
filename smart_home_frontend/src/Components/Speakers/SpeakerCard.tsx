@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import { FaBatteryFull } from "react-icons/fa6";
@@ -16,6 +16,9 @@ import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
 import { useQuery } from "@tanstack/react-query";
+import { useGetTracksFromSearch } from "../../Api/SpotifyApi";
+import {SpotifySong} from "../../Api/SpotifyApi.types"
+import SongCard from "./SongCard"; 
 
 type Props = {
     roomName: string;
@@ -29,7 +32,30 @@ type Props = {
 const SpeakerCard = (props: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSearchSongModalOpen, setisSearchSongModalOpen] = useState(false);
-    const [searchText, setSearchText] = useState("")
+    const [searchText, setSearchText] = useState("");
+    const [tracksList, setTrackList] = useState<SpotifySong[]>([]);
+    // let tracksList:SpotifySong[] = [];
+
+    const { data: tracks, error: tracksError, isLoading: tracksLoading } = useGetTracksFromSearch("yellow");
+    useEffect(() => {
+        if(!tracksLoading && !tracksError){
+            for (let index = 0; index < tracks?.tracks.items.length!; index++) {
+                const newSong: SpotifySong = {
+                    name: tracks?.tracks.items[index].name??"",
+                    author: tracks?.tracks.items[index].album.artists[0].name??"",
+                    duration: tracks?.tracks.items[index].duration_ms??0,
+                    image: tracks?.tracks.items[index].album.images[0].url??""
+                } 
+                setTrackList([...tracksList, newSong])
+                tracksList.push(
+                    
+                )
+                
+            }
+        }
+    },[tracksLoading])
+
+
     return (
         <GlassDiv className="speaker-card">
             <CardHeader
@@ -103,6 +129,22 @@ const SpeakerCard = (props: Props) => {
                     onChange={(e) => setSearchText(e.target.value)}
                 />
                 <IoMdSearch />
+                {tracksList.length == 0 ? (
+                    <div className="empty-tracks">
+                        {tracksList.toString()}
+                        Search for songs, list is empty
+                    </div>
+                ) :
+                (
+                    <div>
+                        <SongCard
+                            author={tracksList[0].author}
+                            duration={tracksList[0].duration}
+                            image={tracksList[0].image}
+                            name={tracksList[0].name}
+                        />
+                    </div>
+                )}
                 </div>
 
             </PopupModal>
