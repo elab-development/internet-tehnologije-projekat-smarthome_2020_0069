@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cameras from "../Components/Cameras/Cameras";
 import Pagination from "../Components/Devices/Pagination";
 import ProfileButtons from "../Components/Devices/ProfileButtons";
@@ -9,6 +9,7 @@ import Speakers from "../Components/Speakers/Speakers";
 import Thermostats from "../Components/Thermostats/Thermostats";
 import Settings from "../Components/Settings/Settings";
 import "./Devices.scss";
+import { useNavigate } from "react-router-dom";
 
 export enum Pages {
     Thermostat,
@@ -22,6 +23,13 @@ type Props = {};
 
 const Devices = (props: Props) => {
     let [selectedPage, setSelectedPage] = useState<Pages>(Pages.Thermostat);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("access_token") == null) {
+            navigate("/auth");
+        }
+    }, []);
 
     let renderPage = () => {
         switch (selectedPage) {
