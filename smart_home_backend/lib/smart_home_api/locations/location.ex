@@ -8,6 +8,7 @@ defmodule SmartHomeApi.Locations.Location do
     field :city, :string
     field :address, :string
     field :country, :string
+    field :invitation_code, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -17,5 +18,7 @@ defmodule SmartHomeApi.Locations.Location do
     light
     |> cast(attrs, [:id, :name, :city, :address, :country])
     |> validate_required([:name, :city])
+    |> unique_constraint(:invitation_code, name: :invitation_code_key)
+
   end
 end

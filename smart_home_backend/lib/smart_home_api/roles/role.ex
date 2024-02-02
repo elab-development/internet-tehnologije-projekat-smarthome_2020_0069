@@ -15,5 +15,6 @@ defmodule SmartHomeApi.Roles.Role do
     role
     |> cast(attrs, [:id, :role_name])
     |> validate_required([:role])
+    |> unique_constraint(:role_name, name: :role_name_key)
   end
 end

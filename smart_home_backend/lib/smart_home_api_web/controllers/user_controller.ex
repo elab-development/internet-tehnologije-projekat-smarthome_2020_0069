@@ -1,12 +1,15 @@
 defmodule SmartHomeApiWeb.UserController do
   use SmartHomeApiWeb, :controller
 
-  alias SmartHomeApi.{Users, Users.User}
+  alias Ecto.Repo
+  alias SmartHomeApi.Repo
+
+  alias SmartHomeApi.{Users, Users.User, Roles, Locations, UserRoles}
   alias SmartHomeApiWeb.{Auth.Guardian, Auth.ErrorResponse}
 
-  plug :is_authorized_user when action in [:update, :delete]
+  plug(:is_authorized_user when action in [:update, :delete])
 
-  action_fallback SmartHomeApiWeb.FallbackController
+  action_fallback(SmartHomeApiWeb.FallbackController)
 
   defp is_authorized_user(conn, _opts) do
     user_id = get_session(conn, :user_id)
@@ -25,10 +28,25 @@ defmodule SmartHomeApiWeb.UserController do
   end
 
   def create(conn, %{
-        "user" => %{"username" => _, "name" => _, "surname" => _, "password" => _} = user_params
+        "user" =>
+          %{"username" => _, "name" => _, "surname" => _, "password" => _, "invitation_code" => invitation_code }=
+            user_params
       }) do
-    case Users.create_user(user_params) do
-      {:ok, %User{} = user} ->
+    role = Roles.get_role!("GUEST")
+    location = Locations.get_location_from_code!(invitation_code)
+
+    result =
+      Repo.transaction(fn ->
+        {:ok, %User{} = user} = Users.create_user(user_params)
+        UserRoles.create_user_role(%{
+          "user_id" => user.id,
+          "location_id" => location.id,
+          "role" => role.id
+        })
+      end)
+    case result do
+      {:ok, {:ok, ur}} ->
+        user = Users.get_user!(ur.user_id)
         case Guardian.encode_and_sign(user) do
           {:ok, token, _claims} ->
             conn
@@ -40,22 +58,29 @@ defmodule SmartHomeApiWeb.UserController do
               message: "Server error"
         end
 
-      {:error,
-       %Ecto.Changeset{
-         changes: %{
-           name: _,
-           password: _,
-           surname: _,
-           username: _
-         }
-       }} ->
-        raise ErrorResponse.ConflictUsername,
-          message: "The requested username is already in use. Please choose a different username."
-
-      {:error, :databaseError} ->
-        raise ErrorResponse.DatabaseError,
-          message: "There was an issue with the database. Please try again later."
+      _ ->
+        raise ErrorResponse.EncodingError, message: "Server error"
     end
+
+    # case Users.create_user(user_params) do
+    #   {:ok, %User{} = user} ->
+
+    #   {:error,
+    #    %Ecto.Changeset{
+    #      changes: %{
+    #        name: _,
+    #        password: _,
+    #        surname: _,
+    #        username: _
+    #      }
+    #    }} ->
+    #     raise ErrorResponse.ConflictUsername,
+    #       message: "The requested username is already in use. Please choose a different username."
+
+    #   {:error, :databaseError} ->
+    #     raise ErrorResponse.DatabaseError,
+    #       message: "There was an issue with the database. Please try again later."
+    # end
   end
 
   def create(_conn, _bad_data) do
@@ -108,8 +133,10 @@ defmodule SmartHomeApiWeb.UserController do
     |> render("users.json", %{user: user})
   end
 
-  def update_password(conn, %{"current_password" => current_password, "user" => %{"password" => _password} = user_params}) do
-
+  def update_password(conn, %{
+        "current_password" => current_password,
+        "user" => %{"password" => _password} = user_params
+      }) do
     undefined_keys = Map.keys(user_params) -- ["password"]
     new_params = Map.drop(user_params, undefined_keys)
 

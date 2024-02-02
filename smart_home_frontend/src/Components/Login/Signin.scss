@@ -1,3 +1,5 @@
+@import "../../globals.scss";
+
 .login-container {
     position: absolute;
     left: 50%;
@@ -31,6 +33,12 @@
 
     .si-primary-button {
         margin-top: 3rem;
+    }
+
+    .error-message {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
     }
 
     .footer-text {

@@ -9,6 +9,9 @@ defmodule SmartHomeApi.Speakers.Speaker do
     field :bass, :integer
     field :battery, :integer
     field :volume, :integer
+    field :song, :string
+    field :author, :string
+    field :image_url, :string
 
     timestamps(type: :utc_datetime)
   end

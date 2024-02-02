@@ -8,6 +8,7 @@ type Props = {
     height?: string;
     color?: string;
     background?: string;
+    onClick?: React.MouseEventHandler<HTMLInputElement> | undefined;
 };
 
 const PrimaryButton = (props: Props) => {
@@ -22,6 +23,7 @@ const PrimaryButton = (props: Props) => {
                 }}
                 type="button"
                 value={props.button_value}
+                onClick={props.onClick}
             />
         </div>
     );
