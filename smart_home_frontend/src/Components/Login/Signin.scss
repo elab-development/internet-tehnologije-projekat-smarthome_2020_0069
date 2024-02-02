@@ -9,68 +9,56 @@
     height: 700px;
     width: 550px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
 
     .signin-title {
         color: white;
         font-size: 50px;
         font-weight: bold;
-        position: absolute;
-        top: 100px;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin-top: 5rem;
     }
 
     .si-username-txb {
-        position: absolute;
-        top: 250px;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin-top: 6rem;
     }
 
     .si-password-txb {
-        position: absolute;
-        top: 350px;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin-top: 1rem;
     }
 
     .si-primary-button {
-        position: absolute;
-        top: 500px;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin-top: 3rem;
     }
 
     .footer-text {
-        position: absolute;
-        top: 560px;
         color: white;
-        font-size: 25px;
+        font-size: 22px;
         justify-self: center;
         width: fit-content;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-top: 1rem;
 
         .text {
-            padding-left: 70px;
             padding-right: 20px;
         }
     }
-
 
     .login-icon {
         height: 100px;
         width: 100px;
         position: absolute;
-
+        display: flex;
+        justify-content: center;
+        align-items: center;
         svg {
             color: white;
-            width: 80px;
-            height: 80px;
-            top: 50%;
-            left: 50%;
-            transform: translate(10%, 10%);
+            width: 60px;
+            height: 60px;
         }
     }
 

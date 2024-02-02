@@ -1,0 +1,13 @@
+.slider {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    .slider-value {
+        color: white;
+    }
+
+    .slider-input {
+        flex-grow: 1;
+    }
+}

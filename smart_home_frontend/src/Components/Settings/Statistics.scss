@@ -1,21 +1,21 @@
-.stat-wrapper{
+.stat-wrapper {
     width: 1000px;
     padding-left: 30px;
     padding-right: 50px;
-    padding-top: 70px;
-    padding-bottom: 50px;
+    padding-top: 35px;
     display: flex;
     flex-direction: column;
-    .stat-name{
+    .stat-name {
         color: white;
         font-weight: bold;
-        font-size: 50px;
+        font-size: 35px;
+        flex-grow: 1;
+        padding-bottom: 25px;
+    }
+    .stat-bar {
         flex-grow: 1;
     }
-    .stat-bar{
-        flex-grow: 1;
-    }
-    .stat-graph{
+    .stat-graph {
         flex-grow: 10;
     }
 }

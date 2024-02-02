@@ -1,5 +1,5 @@
-import React from 'react'
-import "./PrimaryButton.scss"
+import React from "react";
+import "./PrimaryButton.scss";
 
 type Props = {
     button_value: string;
@@ -7,21 +7,22 @@ type Props = {
     width?: string;
     height?: string;
     color?: string;
-    background?: string
+    background?: string;
 };
 
 const PrimaryButton = (props: Props) => {
-    return(
-        <div 
-            className={`primary-button ` + props.className}>
-            <input style={
-                {
+    return (
+        <div className={`primary-button ` + props.className}>
+            <input
+                style={{
                     width: props.width != null ? props.width : "380px",
-                    height: props.height != null ? props.height : "60px",
+                    height: props.height != null ? props.height : "70px",
                     color: props.color != null ? props.color : "white",
-                    background: props.background
-                }
-            } type="button" value={props.button_value}/>
+                    background: props.background,
+                }}
+                type="button"
+                value={props.button_value}
+            />
         </div>
     );
 };

@@ -16,6 +16,7 @@ const IconButton = (props: Props) => {
                     ? "rgba(15,15,15,0.19)"
                     : "transparent",
             }}
+            onClick={props.onClick}
         >
             {props.icon}
         </button>

@@ -1,16 +1,15 @@
 @import "../../../globals.scss";
 
-
-.modal-header{
+.modal-header {
     color: white;
     font-size: 25px;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
-    span{
+    span {
         margin-top: 15px;
     }
-    div{
+    div {
         width: 50px;
     }
 }
@@ -28,7 +27,7 @@
     align-items: center;
 }
 
-.header-button{
+.header-button {
     background-color: transparent;
     border: none;
     width: 60px;
@@ -42,12 +41,16 @@
 }
 
 .modal-content {
-    background: $grey_background;
-    border-radius: 20px;
     position: absolute;
-    width: 30vw;
-    height: 50vh;
+    // width: 30vw;
+    // height: 50vh;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    background: rgba(86, 86, 86, 0.4);
+    border-radius: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(48px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(86, 86, 86, 0.27);
 }
