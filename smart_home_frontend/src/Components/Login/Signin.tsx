@@ -23,15 +23,17 @@ const Signin = (props: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [refetched, setRefetched] = useState(false);
     const navigate = useNavigate();
 
     const { data, refetch, isLoading, isError } = useLogin(username, password);
 
     useEffect(() => {
         if (!isLoading && !isError) {
-            if (data != undefined) {
+            if (data != undefined && refetched) {
                 localStorage.setItem("access_token", data?.token);
                 setErrorMessage("");
+                setRefetched(false);
                 navigate("/");
             }
         } else if (isError) {
@@ -65,6 +67,7 @@ const Signin = (props: Props) => {
                     className="si-primary-button"
                     onClick={() => {
                         refetch();
+                        setRefetched(true);
                     }}
                 ></Button>
                 <div className="error-message">{errorMessage}</div>
