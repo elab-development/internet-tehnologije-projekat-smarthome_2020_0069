@@ -21,10 +21,10 @@ const PopupModal = (props: Props) => {
                 className="modal-content"
                 style={
                     {
-                        // content:{
-                        //     width: props.width != null ? props.width : "30vw",
-                        //     height: props.height != null ? props.height : "50vh"
-                        // }
+                        content:{
+                            width: props.width != null ? props.width : "",
+                            height: props.height != null ? props.height : ""
+                        }
                     }
                 }
             >

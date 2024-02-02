@@ -3,10 +3,15 @@ import DeviceHeader from "../Devices/DeviceHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import SpeakerCard from "./SpeakerCard";
 import "./Speakers.scss";
+import {useGetSearchResultQuery} from "../../Api/SpotifyApi";
 
 type Props = {};
 
 const Speakers = (props: Props) => {
+
+    // const { data: topTracks, error: topTracksError, isLoading: topTracksLoading } = useGetSearchResultQuery();
+    // console.log(topTracks);
+
     return (
         <GlassDiv className="wrapper">
             <DeviceHeader

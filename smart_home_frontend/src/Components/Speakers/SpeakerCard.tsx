@@ -10,10 +10,12 @@ import { IoIosSkipBackward } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
 import { IoIosSkipForward } from "react-icons/io";
 import { PiPlaylistFill } from "react-icons/pi";
+import { IoMdSearch } from "react-icons/io"
 import PopupModal from "../Shared/Modals/PopupModal";
 import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
     roomName: string;
@@ -26,6 +28,8 @@ type Props = {
 
 const SpeakerCard = (props: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSearchSongModalOpen, setisSearchSongModalOpen] = useState(false);
+    const [searchText, setSearchText] = useState("")
     return (
         <GlassDiv className="speaker-card">
             <CardHeader
@@ -80,10 +84,28 @@ const SpeakerCard = (props: Props) => {
                     <IconButton
                         background={false}
                         icon={<PiPlaylistFill />}
-                        onClick={() => {}}
+                        onClick={() => { setisSearchSongModalOpen(true)}}
                     />
                 </div>
             </div>
+            <PopupModal
+                isOpen={isSearchSongModalOpen}
+                onRequestClose={() => setisSearchSongModalOpen(false)}
+                title="Search for songs"
+                width="25vw"
+                height="70vh"
+            >
+                <div className="search-song-modal-content">
+                <input
+                    type="text"
+                    placeholder={`Search music`}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <IoMdSearch />
+                </div>
+
+            </PopupModal>
             <PopupModal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
