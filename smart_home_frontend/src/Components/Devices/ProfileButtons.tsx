@@ -7,6 +7,7 @@ import "./ProfileButtons.scss";
 import GlassDiv from "../Shared/GlassDiv";
 import PopupModal from "../Shared/Modals/PopupModal";
 import PrimaryButton from "../Shared/PrimaryButton";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     selectedPage: Pages;
@@ -15,6 +16,7 @@ type Props = {
 
 const ProfileButtons = (props: Props) => {
     let [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <GlassDiv className="profile-buttons">
@@ -44,6 +46,10 @@ const ProfileButtons = (props: Props) => {
                             button_value="Yes"
                             height="60px"
                             width="100px"
+                            onClick={() => {
+                                localStorage.removeItem("access_token");
+                                navigate("/auth");
+                            }}
                         />
                         <PrimaryButton
                             button_value="No"
@@ -51,6 +57,9 @@ const ProfileButtons = (props: Props) => {
                             width="100px"
                             color="rgb(233, 145, 96)"
                             background="white"
+                            onClick={() => {
+                                setIsModalOpen(false);
+                            }}
                         />
                     </div>
                 </div>

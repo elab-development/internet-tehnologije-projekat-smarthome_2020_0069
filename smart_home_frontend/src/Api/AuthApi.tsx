@@ -15,7 +15,7 @@ const login = async (
         },
         {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
             },
         }
     );
@@ -27,6 +27,51 @@ export const useLogin = (username: string, password: string) => {
     const query = useQuery<LoginResponse, Error>({
         queryKey: ["login-key"],
         queryFn: async () => await login(username, password),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};
+
+const register = async (
+    name: string,
+    surname: string,
+    username: string,
+    password: string,
+    locationCode: string
+): Promise<LoginResponse> => {
+    const response = await axios.post<LoginResponse>(
+        `${SMART_HOME_API_BASE_URL}auth/register`,
+        {
+            user: {
+                name,
+                surname,
+                username,
+                password,
+                invitation_code: locationCode,
+            },
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
+
+    return response.data;
+};
+
+export const useRegister = (
+    name: string,
+    surname: string,
+    username: string,
+    password: string,
+    locationCode: string
+) => {
+    const query = useQuery<LoginResponse, Error>({
+        queryKey: ["register-key"],
+        queryFn: async () =>
+            await register(name, surname, username, password, locationCode),
         enabled: false,
         retry: 0,
     });
