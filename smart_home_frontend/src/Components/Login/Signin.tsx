@@ -12,6 +12,7 @@ import { BiSolidCctv } from "react-icons/bi";
 import "./Signin.scss";
 import { LoginPages } from "../../Pages/Login";
 import { useLogin } from "../../Api/AuthApi";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     selectedPage: LoginPages;
@@ -22,6 +23,7 @@ const Signin = (props: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     const { data, refetch, isLoading, isError } = useLogin(username, password);
 
@@ -30,6 +32,7 @@ const Signin = (props: Props) => {
             if (data != undefined) {
                 localStorage.setItem("access_token", data?.token);
                 setErrorMessage("");
+                navigate("/");
             }
         } else if (isError) {
             setErrorMessage("Wrong username or password!");
@@ -38,7 +41,7 @@ const Signin = (props: Props) => {
 
     return (
         <div className="login-container">
-            <GlassDiv className="wrapper">
+            <GlassDiv className="login-wrapper">
                 <div className="signin-title">{"Sign in"}</div>
 
                 <div className="si-username-txb">
