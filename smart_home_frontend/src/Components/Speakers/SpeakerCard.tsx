@@ -10,14 +10,14 @@ import { IoIosSkipBackward } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
 import { IoIosSkipForward } from "react-icons/io";
 import { PiPlaylistFill } from "react-icons/pi";
-import { IoMdSearch } from "react-icons/io"
+import { IoMdSearch } from "react-icons/io";
 import PopupModal from "../Shared/Modals/PopupModal";
 import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
 import { useQuery } from "@tanstack/react-query";
 import { useGetTracksFromSearch } from "../../Api/SpotifyApi";
-import { SpotifySong } from "../../Api/SpotifyApi.types"
+import { SpotifySong } from "../../Api/SpotifyApi.types";
 import SongCard from "./SongCard";
 
 type Props = {
@@ -35,14 +35,20 @@ const SpeakerCard = (props: Props) => {
     const [searchText, setSearchText] = useState("");
     const [tracksList, setTrackList] = useState<SpotifySong[]>([]);
 
-    const { data: tracks, error: tracksError, isLoading: tracksLoading, isFetching, refetch } = useGetTracksFromSearch(searchText);
+    const {
+        data: tracks,
+        error: tracksError,
+        isLoading: tracksLoading,
+        isFetching,
+        refetch,
+    } = useGetTracksFromSearch(searchText);
 
     const handleClick = async () => {
         try {
             await refetch();
-            console.log(tracksList)
+            console.log(tracksList);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
         }
     };
 
@@ -52,16 +58,17 @@ const SpeakerCard = (props: Props) => {
             for (let index = 0; index < tracks?.tracks.items.length!; index++) {
                 const newSong: SpotifySong = {
                     name: tracks?.tracks.items[index].name ?? "",
-                    author: tracks?.tracks.items[index].album.artists[0].name ?? "",
+                    author:
+                        tracks?.tracks.items[index].album.artists[0].name ?? "",
                     duration: tracks?.tracks.items[index].duration_ms ?? 0,
-                    image: tracks?.tracks.items[index].album.images[0].url ?? ""
-                }
-                newSongs.push(newSong)
+                    image:
+                        tracks?.tracks.items[index].album.images[0].url ?? "",
+                };
+                newSongs.push(newSong);
             }
-            setTrackList([...tracksList, ...newSongs])
+            setTrackList([...tracksList, ...newSongs]);
         }
-    }, [tracksLoading, isFetching, refetch])
-
+    }, [tracksLoading, isFetching, refetch]);
 
     return (
         <GlassDiv className="speaker-card">
@@ -97,27 +104,29 @@ const SpeakerCard = (props: Props) => {
                     <IconButton
                         background={false}
                         icon={<FaStop />}
-                        onClick={() => { }}
+                        onClick={() => {}}
                     />
                     <IconButton
                         background={false}
                         icon={<IoIosSkipBackward />}
-                        onClick={() => { }}
+                        onClick={() => {}}
                     />
                     <IconButton
                         background={true}
                         icon={<FaPlay />}
-                        onClick={() => { }}
+                        onClick={() => {}}
                     />
                     <IconButton
                         background={false}
                         icon={<IoIosSkipForward />}
-                        onClick={() => { }}
+                        onClick={() => {}}
                     />
                     <IconButton
                         background={false}
                         icon={<PiPlaylistFill />}
-                        onClick={() => { setisSearchSongModalOpen(true) }}
+                        onClick={() => {
+                            setisSearchSongModalOpen(true);
+                        }}
                     />
                 </div>
             </div>
@@ -135,7 +144,11 @@ const SpeakerCard = (props: Props) => {
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                     />
-                    <button onClick={handleClick} disabled={tracksLoading}>
+                    <button
+                        onClick={handleClick}
+                        disabled={tracksLoading}
+                        style={{ border: "none" }}
+                    >
                         <IoMdSearch />
                     </button>
 
@@ -144,26 +157,22 @@ const SpeakerCard = (props: Props) => {
                             {tracksList.toString()}
                             Search for songs, list is empty
                         </div>
-                    ) :
-                        (
-                            <div className="list-view-wrapper">
-                                <div className="list-view">
-                                    {tracksList.map((track, index) => (
-                                        <SongCard
-                                            key={index}
-                                            author={track.author}
-                                            duration={track.duration}
-                                            image={track.image}
-                                            name={track.name}
-                                        />
-                                    )
-                                    )}
-                                </div>
-
+                    ) : (
+                        <div className="list-view-wrapper">
+                            <div className="list-view">
+                                {tracksList.map((track, index) => (
+                                    <SongCard
+                                        key={index}
+                                        author={track.author}
+                                        duration={track.duration}
+                                        image={track.image}
+                                        name={track.name}
+                                    />
+                                ))}
                             </div>
-                        )}
+                        </div>
+                    )}
                 </div>
-
             </PopupModal>
             <PopupModal
                 isOpen={isModalOpen}
@@ -176,7 +185,7 @@ const SpeakerCard = (props: Props) => {
                         label="Volume"
                         max={100}
                         min={0}
-                        onChanged={() => { }}
+                        onChanged={() => {}}
                         value={10}
                         unit="%"
                     />
@@ -184,7 +193,7 @@ const SpeakerCard = (props: Props) => {
                         label="Bass"
                         max={100}
                         min={0}
-                        onChanged={() => { }}
+                        onChanged={() => {}}
                         value={10}
                         unit="%"
                     />

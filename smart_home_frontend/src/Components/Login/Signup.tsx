@@ -40,7 +40,9 @@ const Signup = (props: Props) => {
     useEffect(() => {
         if (!isLoading && !isError) {
             if (data != undefined && refetched) {
-                localStorage.setItem("access_token", data?.token);
+                localStorage.setItem("access_token", data.token);
+                localStorage.setItem("location_id", data.location_id);
+                localStorage.setItem("user_id", data.id);
                 setErrorMessage("");
                 setRefetched(false);
                 navigate("/");
