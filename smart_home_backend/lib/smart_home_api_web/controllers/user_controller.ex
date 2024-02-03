@@ -109,8 +109,9 @@ defmodule SmartHomeApiWeb.UserController do
       case Guardian.authenticate(username, password) do
         {:ok, user, token} ->
           user_role = UserRoles.get_location_from_user_id!(user.id)
+          Plug.Conn.put_session(conn, :user_id, user.id)
+          IO.inspect(Plug.Conn.get_session(conn))
           conn
-          |> Plug.Conn.put_session(:user_id, user.id)
           |> put_status(:ok)
           |> render("user_token.json", %{user: user, token: token, location_id: user_role.location_id})
 

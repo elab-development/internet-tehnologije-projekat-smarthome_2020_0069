@@ -5,7 +5,8 @@ import ThermostatCard from "./ThermostatCard";
 import "./Thermostats.scss";
 import { ThermostatsModel } from "../../Api/ThermostatApi.types";
 import { useGetThermostats } from "../../Api/ThermostatApi";
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 
 type Props = {
@@ -35,7 +36,7 @@ const Thermostats = (props: Props) => {
                 isLoading?
                 (
                     <div className="circular-progress">
-                        <CircularProgress aria-label="Loading..."></CircularProgress>
+                         { <CircularProgressbar value={100} aria-label="Loading..."></CircularProgressbar> }
                     </div>
                 )
                 :
