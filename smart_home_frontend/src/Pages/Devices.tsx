@@ -24,7 +24,8 @@ type Props = {};
 const Devices = (props: Props) => {
     let [selectedPage, setSelectedPage] = useState<Pages>(Pages.Thermostat);
     let [pageNumber, setPageNumber] = useState<number>(1);
-    
+    let [haveMore, setHaveMore] = useState<boolean>(true);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,15 +37,27 @@ const Devices = (props: Props) => {
     let renderPage = () => {
         switch (selectedPage) {
             case Pages.Thermostat:
-                return <Thermostats pageNumber={pageNumber} setPageNumber={setPageNumber}/>;
+                return <Thermostats
+                    setHaveMore={setHaveMore}
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber} />;
             case Pages.Purifier:
-                return <Purifiers />;
+                return <Purifiers
+                    setHaveMore={setHaveMore}
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber} />;
             case Pages.Speaker:
-                return <Speakers />;
+                return <Speakers
+                    setHaveMore={setHaveMore}
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber} />;
             case Pages.Camera:
                 return <Cameras />;
             case Pages.Light:
-                return <Lights />;
+                return <Lights
+                    setHaveMore={setHaveMore}
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber} />;
             case Pages.Profile:
                 return <Settings />;
         }
@@ -52,10 +65,19 @@ const Devices = (props: Props) => {
 
     return (
         <div className="devices-container">
-            <Pagination
-                pageNumber={pageNumber}
-                setPageNumber={setPageNumber}
-            />
+
+            {selectedPage !== Pages.Profile ?
+                (<Pagination
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber}
+                    haveMore={haveMore}
+                    setHaveMore={setHaveMore}
+                />) : (
+                    <div>
+                    </div>
+
+                )
+            }
             <ProfileButtons
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}
@@ -63,6 +85,8 @@ const Devices = (props: Props) => {
             <Sidebar
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}
+                setHaveMore={setHaveMore}
+                setPageNumber={setPageNumber}
             />
             {renderPage()}
         </div>

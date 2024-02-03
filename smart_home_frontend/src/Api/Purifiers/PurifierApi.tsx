@@ -1,7 +1,34 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { SMART_HOME_API_BASE_URL } from "./ApiConfig";
-import { PurifierResponse } from "./PurifierApi.types";
+import { SMART_HOME_API_BASE_URL } from "../ApiConfig";
+import { PurifierResponse, PurifiersModel } from "./PurifierApi.types";
+
+const getPurifiers = async (page_number: number, page_size: number): Promise<PurifiersModel> => {
+    const response = await axios.get<PurifiersModel>(
+        `${SMART_HOME_API_BASE_URL}device/air_purifier/get_air_purifiers`,
+        {
+            params: {
+                page_number: page_number,
+                page_size: page_size
+            },
+            headers:{
+                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            withCredentials: true,
+        }
+    )
+    return response.data;
+}
+
+export const useGetPurifiers = (page_number: number, page_size: number) => {
+    const query = useQuery<PurifiersModel, Error>({
+        queryKey: ["get-purifiers-key"],
+        queryFn: async () => await getPurifiers(page_number, page_size),
+    });
+    return query;
+};
+
+
 
 const createPurifier = async (
     location_id: string,

@@ -11,7 +11,7 @@ import { FaLightbulb } from "react-icons/fa6";
 import { BiSolidCctv } from "react-icons/bi";
 import "./Signin.scss";
 import { LoginPages } from "../../Pages/Login";
-import { useLogin } from "../../Api/AuthApi";
+import { useLogin } from "../../Api/Auth/AuthApi";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

@@ -16,8 +16,8 @@ import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
 import { useQuery } from "@tanstack/react-query";
-import { useGetTracksFromSearch } from "../../Api/SpotifyApi";
-import { SpotifySong } from "../../Api/SpotifyApi.types";
+import { useGetTracksFromSearch } from "../../Api/Spotify/SpotifyApi";
+import { SpotifySong } from "../../Api/Spotify/SpotifyApi.types";
 import SongCard from "./SongCard";
 
 type Props = {

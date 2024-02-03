@@ -10,3 +10,16 @@ export interface PurifierResponse {
         location_id: string;
     };
 }
+
+export interface Purifier {
+    device_id: string,
+    filter: number,
+    pm10: number,
+    pm1_0: number,
+    pm2_5: number,
+    place: string,
+}
+
+export interface PurifiersModel{
+    air_purifiers: Purifier[]
+}

@@ -1,4 +1,4 @@
-import { SPOTIFY_API_BASE_URL, CLIENT_ID, CLIENT_SECRET } from './ApiConfig';
+import { SPOTIFY_API_BASE_URL, CLIENT_ID, CLIENT_SECRET } from '../ApiConfig';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { SpotifyAccessTokenResponse, SpotifySearchResult } from './SpotifyApi.types';

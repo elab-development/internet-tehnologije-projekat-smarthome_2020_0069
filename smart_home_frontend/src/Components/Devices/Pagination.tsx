@@ -7,12 +7,16 @@ import "./Pagination.scss";
 type Props = {
     pageNumber: number,
     setPageNumber: React.Dispatch<React.SetStateAction<number>>
+    haveMore: boolean;
+    setHaveMore: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const Pagination = (props: Props) => {
 
     const increment = () => {
-        props.setPageNumber(props.pageNumber + 1);
+        if(props.haveMore){
+            props.setPageNumber(props.pageNumber + 1);
+        }
     };
 
     const decrement = () => {
@@ -23,10 +27,11 @@ const Pagination = (props: Props) => {
 
     return (
         <GlassDiv className="pagination-wrapper">
-            <button className="pagination-button">{<IoIosArrowBack onClick={decrement} />}</button>
+            <button className="pagination-button" onClick={decrement}>{<IoIosArrowBack color={ props.pageNumber !== 1 ? "white": "grey"}/>}</button>
             <div className="page-text">Page {props.pageNumber}</div>
-            <button className="pagination-button" onClick={increment}>
-                {<IoIosArrowForward />}
+            <button className="pagination-button"
+                onClick={increment} disabled={!props.haveMore}>
+                {<IoIosArrowForward color={ props.haveMore ? "white": "grey"}/>}
             </button>
         </GlassDiv>
     );

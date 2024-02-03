@@ -4,7 +4,7 @@ import PrimaryButton from "../Shared/PrimaryButton";
 import Hyperlink from "../Shared/Hyperlink";
 import "./Profile.scss";
 import PopupModal from "../Shared/Modals/PopupModal";
-import { useGetCurrentUser, useResetPassword } from "../../Api/UserApi";
+import { useGetCurrentUser, useResetPassword } from "../../Api/Users/UserApi";
 
 type Props = {};
 

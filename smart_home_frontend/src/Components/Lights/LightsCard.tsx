@@ -12,11 +12,25 @@ import PopupModal from "../Shared/Modals/PopupModal";
 
 type Props = {
     roomName: string;
+    color: string;
+    state: boolean; 
 };
 
 const LightsCard = (props: Props) => {
-    const [turnedOn, setTurnedOn] = useState(true);
-    const [lightColor, setLightColor] = useState("#E7E03A");
+
+    function convertToHexColor(colorString: string) {
+        const r = parseInt(colorString.substring(0, 3), 10);
+        const g = parseInt(colorString.substring(3, 6), 10);
+        const b = parseInt(colorString.substring(6, 9), 10);
+    
+        const hexColor = `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
+    
+        return hexColor;
+    }
+    
+
+    const [turnedOn, setTurnedOn] = useState(props.state);
+    const [lightColor, setLightColor] = useState(convertToHexColor(props.color));
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (

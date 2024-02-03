@@ -30,6 +30,9 @@ defmodule SmartHomeApi.Speakers do
         on: l.id == ur.location_id,
         where: ur.user_id == ^user_id,
         select: %{
+          song: s.song,
+          author: s.author,
+          image_url: s.image_url,
           volume: s.volume,
           bass: s.bass,
           battery: s.battery,

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { SMART_HOME_API_BASE_URL } from "./ApiConfig";
+import { SMART_HOME_API_BASE_URL } from "../ApiConfig";
 import { ThermostatsModel } from "./ThermostatApi.types";
 
 const getThermostats = async (page_number: number, page_size: number): Promise<ThermostatsModel> => {

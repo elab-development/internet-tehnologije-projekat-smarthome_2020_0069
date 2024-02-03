@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { SMART_HOME_API_BASE_URL } from "./ApiConfig";
+import { SMART_HOME_API_BASE_URL } from "../ApiConfig";
 import { User } from "./UserApi.types";
 
 const getCurrentUser = async (): Promise<User> => {

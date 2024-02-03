@@ -13,7 +13,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import "./Signup.scss";
 import { LoginPages } from "../../Pages/Login";
 import { useNavigate } from "react-router-dom";
-import { useRegister } from "../../Api/AuthApi";
+import { useRegister } from "../../Api/Auth/AuthApi";
 
 type Props = {
     selectedPage: LoginPages;

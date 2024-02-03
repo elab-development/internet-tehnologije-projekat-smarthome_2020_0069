@@ -12,10 +12,11 @@ defmodule SmartHomeApiWeb.AirPurifierView do
       device_id: air_purifier.device_id,
       place: air_purifier.place
     }
+
   end
 
-  def render("index.json", %{air_purifier: air_purifier}) do
-    %{air_purifier: air_purifier}
+  def render("index.json", %{air_purifiers: air_purifiers}) do
+    %{air_purifiers: air_purifiers}
   end
 
   def render("patch.json", %{air_purifier: air_purifier}) do
