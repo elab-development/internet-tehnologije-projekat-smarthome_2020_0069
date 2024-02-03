@@ -23,6 +23,8 @@ type Props = {};
 
 const Devices = (props: Props) => {
     let [selectedPage, setSelectedPage] = useState<Pages>(Pages.Thermostat);
+    let [pageNumber, setPageNumber] = useState<number>(1);
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -34,7 +36,7 @@ const Devices = (props: Props) => {
     let renderPage = () => {
         switch (selectedPage) {
             case Pages.Thermostat:
-                return <Thermostats />;
+                return <Thermostats pageNumber={pageNumber} setPageNumber={setPageNumber}/>;
             case Pages.Purifier:
                 return <Purifiers />;
             case Pages.Speaker:
@@ -50,7 +52,10 @@ const Devices = (props: Props) => {
 
     return (
         <div className="devices-container">
-            <Pagination />
+            <Pagination
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
+            />
             <ProfileButtons
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}
