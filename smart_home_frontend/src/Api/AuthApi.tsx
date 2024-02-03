@@ -79,3 +79,34 @@ export const useRegister = (
     });
     return query;
 };
+
+const signOut = async (): Promise<LoginResponse> => {
+    const response = await axios.get<LoginResponse>(
+        `${SMART_HOME_API_BASE_URL}auth/sign_out`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        }
+    );
+
+    return response.data;
+};
+
+// export const useSignOut = (
+//     name: string,
+//     surname: string,
+//     username: string,
+//     password: string,
+//     locationCode: string
+// ) => {
+//     const query = useQuery<LoginResponse, Error>({
+//         queryKey: ["signOut-key"],
+//         queryFn: async () =>
+//             await signOut,
+//         enabled: false,
+//         retry: 0,
+//     });
+//     return query;
+// };
