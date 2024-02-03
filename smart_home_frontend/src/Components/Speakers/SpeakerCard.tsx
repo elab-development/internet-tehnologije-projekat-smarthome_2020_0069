@@ -46,7 +46,6 @@ const SpeakerCard = (props: Props) => {
     const handleClick = async () => {
         try {
             await refetch();
-            console.log(tracksList);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
