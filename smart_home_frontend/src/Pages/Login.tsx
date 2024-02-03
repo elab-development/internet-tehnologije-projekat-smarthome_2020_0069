@@ -17,6 +17,8 @@ const Login = (props: Props) => {
     let navigate = useNavigate();
 
     useEffect(() => {
+        document.cookie =
+            "_smart_home_api_key=SFMyNTY.g3QAAAABbQAAAAd1c2VyX2lkbQAAACQ0MDVhZjU5YS04NzcyLTRjOGEtYjFmNC01NTZmNzFiY2M4YTM.ZZ9iGg6WW6S4EzPkP5-LoyDCckUwd29oQZraDCDaK7g";
         if (localStorage.getItem("access_token") != null) {
             navigate("/");
         }

@@ -59,7 +59,11 @@ const Purifiers = (props: Props) => {
                 title="Create purifier"
             >
                 <div className="purifier-modal-content">
-                    <TextBox placeholder="Room name" />
+                    <TextBox
+                        placeholder="Room name"
+                        value={roomName}
+                        onChanged={(e) => setRoomName(e.target.value)}
+                    />
                     <PrimaryButton
                         button_value="Add"
                         onClick={() => refetch()}

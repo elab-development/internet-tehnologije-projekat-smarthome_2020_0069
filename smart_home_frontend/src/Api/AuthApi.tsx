@@ -15,8 +15,9 @@ const login = async (
         },
         {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
             },
+            withCredentials: true,
         }
     );
 
@@ -53,8 +54,9 @@ const register = async (
         },
         {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
             },
+            withCredentials: true,
         }
     );
 
