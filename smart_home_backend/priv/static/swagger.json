@@ -1,10 +1,10 @@
 {
-  "info": {
-    "version": "1.0",
-    "title": "My App"
-  },
-  "host": "localhost:4000",
   "definitions": {},
+  "host": "localhost:4000",
+  "info": {
+    "title": "My App",
+    "version": "1.0"
+  },
   "paths": {},
   "swagger": "2.0"
 }

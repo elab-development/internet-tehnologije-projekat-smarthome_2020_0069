@@ -37,12 +37,27 @@ defmodule SmartHomeApiWeb.UserController do
 
     result =
       Repo.transaction(fn ->
-        {:ok, %User{} = user} = Users.create_user(user_params)
-        UserRoles.create_user_role(%{
-          "user_id" => user.id,
-          "location_id" => location.id,
-          "role" => role.id
-        })
+
+        case Users.create_user(user_params) do
+           {:ok, %User{} = user}->
+            UserRoles.create_user_role(%{
+              "user_id" => user.id,
+              "location_id" => location.id,
+              "role" => role.id
+            })
+            {:error,
+            %Ecto.Changeset{
+              changes: %{
+                name: _,
+                password: _,
+                surname: _,
+                username: _
+              }
+            }} ->
+             raise ErrorResponse.ConflictUsername,
+               message: "The requested username is already in use. Please choose a different username."
+
+        end
       end)
     case result do
       {:ok, {:ok, ur}} ->
@@ -51,7 +66,7 @@ defmodule SmartHomeApiWeb.UserController do
           {:ok, token, _claims} ->
             conn
             |> put_status(:created)
-            |> render("user_token.json", %{user: user, token: token})
+            |> render("user_token.json", %{user: user, token: token, location_id: ur.location_id})
 
           {:error, _} ->
             raise ErrorResponse.EncodingError,
@@ -93,10 +108,11 @@ defmodule SmartHomeApiWeb.UserController do
     if undefined_params == [] do
       case Guardian.authenticate(username, password) do
         {:ok, user, token} ->
+          user_role = UserRoles.get_location_from_user_id!(user.id)
           conn
           |> Plug.Conn.put_session(:user_id, user.id)
           |> put_status(:ok)
-          |> render("user_token.json", %{user: user, token: token})
+          |> render("user_token.json", %{user: user, token: token, location_id: user_role.location_id})
 
         {:error, :unauthorized} ->
           raise ErrorResponse.Unauthorized, message: "Password is incorrect."
