@@ -15,19 +15,22 @@ const createPurifier = async (
     const response = await axios.post<PurifierResponse>(
         `${SMART_HOME_API_BASE_URL}device/air_purifier`,
         {
-            location_id,
-            place,
-            state,
-            filter,
-            pm10,
-            pm2_5,
-            pm1_0,
+            air_purifier: {
+                location_id,
+                place,
+                state,
+                filter,
+                pm10,
+                pm2_5,
+                pm1_0,
+            },
         },
         {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
+            withCredentials: true,
         }
     );
 
