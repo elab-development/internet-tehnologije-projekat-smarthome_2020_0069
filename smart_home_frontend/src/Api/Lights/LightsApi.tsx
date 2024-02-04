@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { SMART_HOME_API_BASE_URL } from "../ApiConfig";
-import { Light, LightsModel } from "./LightsApi.types";
+import { CreateLightResponse, Light, LightsModel } from "./LightsApi.types";
 
 
 const getLights = async (page_number: number, page_size: number): Promise<LightsModel> => {
@@ -78,3 +78,55 @@ export const usePatchLightColor = (lightId: string, rgb_color: string) => {
     return query;
 };
 
+const createLight = async (
+    location_id: string,
+    place: string,
+    state: string,
+    light_level: number,
+    rgb_color: string
+): Promise<CreateLightResponse> => {
+    const response = await axios.post<CreateLightResponse>(
+        `${SMART_HOME_API_BASE_URL}device/light`,
+        {
+            light: {
+                location_id,
+                place,
+                state,
+                light_level,
+                rgb_color,
+            },
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            withCredentials: true,
+        }
+    );
+
+    return response.data;
+};
+
+export const useCreateLight = (
+    location_id: string,
+    place: string,
+    state: string,
+    light_level: number,
+    rgb_color: string
+) => {
+    const query = useQuery<CreateLightResponse, Error>({
+        queryKey: ["light-key"],
+        queryFn: async () =>
+            await createLight(
+                location_id,
+                place,
+                state,
+                light_level,
+                rgb_color
+            ),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};

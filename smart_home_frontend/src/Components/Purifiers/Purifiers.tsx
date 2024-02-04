@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useCreatePurifier, useGetPurifiers } from "../../Api/Purifiers/PurifierApi";
+import {
+    useCreatePurifier,
+    useGetPurifiers,
+} from "../../Api/Purifiers/PurifierApi";
 import DeviceHeader from "../Devices/DeviceHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import PopupModal from "../Shared/Modals/PopupModal";
@@ -11,44 +14,50 @@ import { Purifier } from "../../Api/Purifiers/PurifierApi.types";
 
 type Props = {
     pageNumber: number;
-    setPageNumber: React.Dispatch<React.SetStateAction<number>>
-    setHaveMore: React.Dispatch<React.SetStateAction<boolean>>
-
+    setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+    setHaveMore: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Purifiers = (props: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [roomName, setRoomName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [ purifier, setPurifier ] = useState<Purifier[]>([]);
+    const [purifier, setPurifier] = useState<Purifier[]>([]);
 
-    const { data, refetch, isLoading, isError } = useGetPurifiers(props.pageNumber, 6)
+    const { data, refetch, isLoading, isError } = useGetPurifiers(
+        props.pageNumber,
+        6
+    );
     useEffect(() => {
         refetch();
-        if(!isLoading && !isError){
-            props.setHaveMore(true)
+        if (!isLoading && !isError) {
+            props.setHaveMore(true);
             const newPurifiers: Purifier[] = [];
-            console.log(data)
+            console.log(data);
             for (let index = 0; index < data?.air_purifiers.length!; index++) {
                 const newPurifier: Purifier = {
-                    device_id: data?.air_purifiers[index].device_id??"",
-                    filter: data?.air_purifiers[index].filter??0,
-                    pm10: data?.air_purifiers[index].pm10??0,
-                    pm1_0: data?.air_purifiers[index].pm1_0??0,
-                    pm2_5: data?.air_purifiers[index].pm2_5??0,
-                    place: data?.air_purifiers[index].place??""
-                }
+                    device_id: data?.air_purifiers[index].device_id ?? "",
+                    filter: data?.air_purifiers[index].filter ?? 0,
+                    pm10: data?.air_purifiers[index].pm10 ?? 0,
+                    pm1_0: data?.air_purifiers[index].pm1_0 ?? 0,
+                    pm2_5: data?.air_purifiers[index].pm2_5 ?? 0,
+                    place: data?.air_purifiers[index].place ?? "",
+                };
                 newPurifiers.push(newPurifier);
             }
             setPurifier(newPurifiers);
         }
-        if(data?.air_purifiers.length === 0){
+        if (data != undefined && data.air_purifiers.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber])
+    }, [data, isError, isLoading, props.pageNumber]);
 
-
-    const { data: crateData, refetch: createRefetch, isLoading: createIsLoading, isError: createIsError } = useCreatePurifier(
+    const {
+        data: createData,
+        refetch: createRefetch,
+        isLoading: createIsLoading,
+        isError: createIsError,
+    } = useCreatePurifier(
         localStorage.getItem("location_id")!,
         roomName,
         "Running",
@@ -66,14 +75,14 @@ const Purifiers = (props: Props) => {
 
     useEffect(() => {
         if (!createIsLoading && !createIsError) {
-            if (crateData != undefined) {
+            if (createData != undefined) {
                 refetch();
                 setErrorMessage("");
             }
         } else if (createIsError) {
-            setErrorMessage("Invalid credentials!");
+            setErrorMessage("Error creating purifier!");
         }
-    }, [crateData, createIsError]);
+    }, [createData, createIsError]);
 
     return (
         <GlassDiv className="wrapper">
@@ -84,30 +93,20 @@ const Purifiers = (props: Props) => {
                     setIsModalOpen(true);
                 }}
             />
-            {
-                isLoading ?
-                    (
-                        <div className="circular-progress">
-
-                        </div>
-                    )
-                    :
-                    (
-                        <div className="cards">
-
-                            {
-                                purifier.map((t, i) => (
-                                    <PurifierCard
-                                        key={i}
-                                        pm10={t.pm10}
-                                        pm25={t.pm2_5}
-                                        roomName={t.place}
-                                    />
-                                ))
-                            }
-                        </div>
-                    )
-            }
+            {isLoading ? (
+                <div className="circular-progress"></div>
+            ) : (
+                <div className="cards">
+                    {purifier.map((t, i) => (
+                        <PurifierCard
+                            key={i}
+                            pm10={t.pm10}
+                            pm25={t.pm2_5}
+                            roomName={t.place}
+                        />
+                    ))}
+                </div>
+            )}
             <PopupModal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
@@ -123,6 +122,7 @@ const Purifiers = (props: Props) => {
                         button_value="Add"
                         onClick={() => createRefetch()}
                     />
+                    <div className="error-message-purifier">{errorMessage}</div>
                 </div>
             </PopupModal>
         </GlassDiv>

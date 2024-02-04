@@ -15,9 +15,22 @@
         justify-items: center;
     }
 }
-.circular-progress{
+.circular-progress {
     height: 60px;
     width: 60px;
     left: 50%;
     top: 50%;
+}
+
+.thermostat-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .error-message-thermostat {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
+    }
 }

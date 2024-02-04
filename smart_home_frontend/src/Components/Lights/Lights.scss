@@ -3,7 +3,6 @@
     grid-column-end: 5;
     grid-row-start: 4;
     overflow-y: auto;
-    
 
     .cards {
         padding: 40px;
@@ -14,5 +13,18 @@
         grid-row: auto auto;
         grid-gap: 20px;
         justify-items: center;
+    }
+}
+
+.light-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .error-message-light {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
     }
 }
