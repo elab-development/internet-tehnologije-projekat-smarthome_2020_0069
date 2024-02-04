@@ -132,6 +132,7 @@ const Lights = (props: Props) => {
                             createRefetch();
                         }}
                     />
+                    <div className="error-message-purifier">{errorMessage}</div>
                 </div>
             </PopupModal>
         </GlassDiv>

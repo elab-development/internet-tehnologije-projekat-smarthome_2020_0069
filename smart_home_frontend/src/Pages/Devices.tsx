@@ -37,27 +37,45 @@ const Devices = (props: Props) => {
     let renderPage = () => {
         switch (selectedPage) {
             case Pages.Thermostat:
-                return <Thermostats
-                    setHaveMore={setHaveMore}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber} />;
+                return (
+                    <Thermostats
+                        setHaveMore={setHaveMore}
+                        pageNumber={pageNumber}
+                        setPageNumber={setPageNumber}
+                    />
+                );
             case Pages.Purifier:
-                return <Purifiers
-                    setHaveMore={setHaveMore}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber} />;
+                return (
+                    <Purifiers
+                        setHaveMore={setHaveMore}
+                        pageNumber={pageNumber}
+                        setPageNumber={setPageNumber}
+                    />
+                );
             case Pages.Speaker:
-                return <Speakers
-                    setHaveMore={setHaveMore}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber} />;
+                return (
+                    <Speakers
+                        setHaveMore={setHaveMore}
+                        pageNumber={pageNumber}
+                        setPageNumber={setPageNumber}
+                    />
+                );
             case Pages.Camera:
-                return <Cameras />;
+                return (
+                    <Cameras
+                        setHaveMore={setHaveMore}
+                        pageNumber={pageNumber}
+                        setPageNumber={setPageNumber}
+                    />
+                );
             case Pages.Light:
-                return <Lights
-                    setHaveMore={setHaveMore}
-                    pageNumber={pageNumber}
-                    setPageNumber={setPageNumber} />;
+                return (
+                    <Lights
+                        setHaveMore={setHaveMore}
+                        pageNumber={pageNumber}
+                        setPageNumber={setPageNumber}
+                    />
+                );
             case Pages.Profile:
                 return <Settings />;
         }
@@ -65,19 +83,16 @@ const Devices = (props: Props) => {
 
     return (
         <div className="devices-container">
-
-            {selectedPage !== Pages.Profile ?
-                (<Pagination
+            {selectedPage !== Pages.Profile ? (
+                <Pagination
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
                     haveMore={haveMore}
                     setHaveMore={setHaveMore}
-                />) : (
-                    <div>
-                    </div>
-
-                )
-            }
+                />
+            ) : (
+                <div></div>
+            )}
             <ProfileButtons
                 selectedPage={selectedPage}
                 setSelectedPage={setSelectedPage}

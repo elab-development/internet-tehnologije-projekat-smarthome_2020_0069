@@ -87,6 +87,10 @@ defmodule SmartHomeApiWeb.Router do
     post "/capture/:id", CameraController, :upload
     patch "/:id", CameraController, :update
   end
+
+  scope "/media", SmartHomeApiWeb do
+    get "/:id/:name", CameraController, :media
+  end
   #speaker done
   scope "/device/speaker", SmartHomeApiWeb do
     pipe_through [:auth, :device]

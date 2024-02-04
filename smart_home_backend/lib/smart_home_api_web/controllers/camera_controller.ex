@@ -98,7 +98,7 @@ defmodule SmartHomeApiWeb.CameraController do
   end
 
   def upload(conn, %{"id" => id, "image" => image_base64}) do
-    case _camera = Cameras.get_joined_camera!(id) do
+    case _camera = Cameras.get_joined_camera!(conn.assigns.user.id, id) do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid camera id"
 
@@ -122,7 +122,7 @@ defmodule SmartHomeApiWeb.CameraController do
   end
 
   def pictures(conn, %{"id" => id}) do
-    case camera = Cameras.get_joined_camera!(id) do
+    case camera = Cameras.get_joined_camera!(conn.assigns.user.id, id) do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid camera id"
 
@@ -133,13 +133,24 @@ defmodule SmartHomeApiWeb.CameraController do
 
           paths =
             for file <- files do
-              "#{File.cwd!()}/media/#{id}/#{file}"
+              "/media/#{id}/#{file}"
             end
 
           render(conn, "pictures.json", %{files: paths})
         else
           raise ErrorResponse.BadRequest, message: "No images taken by this camera"
         end
+    end
+  end
+
+  def media(conn, %{"id" => id, "name" => name}) do
+    if File.exists?("media/#{id}/#{name}") do
+      filename = "media/#{id}/#{name}"
+      conn
+      |> put_resp_header("content-disposition", ~s(attachment; filename="#{filename}"))
+      |> send_file(200, filename)
+    else
+      raise ErrorResponse.BadRequest, message: "File not present"
     end
   end
 end
