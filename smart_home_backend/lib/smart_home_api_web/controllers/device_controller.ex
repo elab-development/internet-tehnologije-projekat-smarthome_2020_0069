@@ -54,7 +54,7 @@ defmodule SmartHomeApiWeb.DeviceController do
             raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
 
           _ ->
-            if user_role.role == "ADMIN" do
+            if user_role.role == "ADMIN" or user_role.role == "USER"do
               case Devices.update_device(device, device_params) do
                 {:ok, %Device{} = patchedDevice} ->
                   render(conn, "device.json", %{device: patchedDevice})
