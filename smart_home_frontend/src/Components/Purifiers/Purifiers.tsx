@@ -103,6 +103,8 @@ const Purifiers = (props: Props) => {
                             pm10={t.pm10}
                             pm25={t.pm2_5}
                             roomName={t.place}
+                            purifier_id={t.device_id}
+                            refetch={refetch}
                         />
                     ))}
                 </div>

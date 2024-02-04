@@ -119,6 +119,9 @@ const Speakers = (props: Props) => {
                             author={t.author}
                             batteryPercent={t.battery}
                             volumePercent={t.volume}
+                            bass={t.bass}
+                            refetch={refetch}
+                            speakerId={t.device_id}
                         />
                     ))}
                 </div>

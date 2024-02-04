@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import CircularProgressBar from "../Shared/CircularProgressBar";
 import GlassDiv from "../Shared/GlassDiv";
@@ -8,15 +8,62 @@ import "./PurifierCard.scss";
 import PopupModal from "../Shared/Modals/PopupModal";
 import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
+import { useDeleteDevice, useEditDevice } from "../../Api/Device/DeviceApi";
+import { useEditPurifier } from "../../Api/Purifiers/PurifierApi";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { SpeakersModel } from "../../Api/Speakers/SpeakersApi.types";
+import { PurifiersModel } from "../../Api/Purifiers/PurifierApi.types";
 
 type Props = {
+    purifier_id: string;
     roomName: string;
     pm10: number;
     pm25: number;
+    refetch: (
+        options?: RefetchOptions | undefined
+    ) => Promise<QueryObserverResult<PurifiersModel, Error>>;
 };
 
 const PurifierCard = (props: Props) => {
+    const [roomName, setRoomName] = useState(props.roomName);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const {
+        data: editDeviceData,
+        refetch: editDeviceRefetch,
+        isLoading: editDeviceLoading,
+        isError: editDeviceError,
+        isRefetching,
+    } = useEditDevice(props.purifier_id, roomName);
+
+    const {
+        data: deleteDeviceData,
+        refetch: deleteDeviceRefetch,
+        isLoading: deleteDeviceLoading,
+        isError: deleteDeviceError,
+        isRefetching: deleteDeviceRefetching,
+    } = useDeleteDevice(props.purifier_id);
+
+    useEffect(() => {
+        if (!editDeviceLoading && !editDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (editDeviceError) {
+            setErrorMessage("Error editing purifier!");
+        }
+    }, [editDeviceData, editDeviceError]);
+
+    useEffect(() => {
+        if (!deleteDeviceLoading && !deleteDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (deleteDeviceError) {
+            setErrorMessage("Error deleting purifier!");
+        }
+    }, [deleteDeviceData, deleteDeviceError, deleteDeviceRefetching]);
 
     return (
         <GlassDiv className="purifier-card">
@@ -56,11 +103,23 @@ const PurifierCard = (props: Props) => {
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 title="Purifier settings"
+                deleteButton={true}
+                onDelete={() => {
+                    deleteDeviceRefetch();
+                }}
             >
                 <div className="purifier-modal-content">
-                    <TextBox placeholder="Room name" />
-                    <TextBox placeholder="Timer" />
-                    <PrimaryButton button_value="Save" />
+                    <TextBox
+                        placeholder="Room name"
+                        value={roomName}
+                        onChanged={(e) => setRoomName(e.target.value)}
+                    />
+                    <PrimaryButton
+                        button_value="Save"
+                        onClick={() => {
+                            editDeviceRefetch();
+                        }}
+                    />
                 </div>
             </PopupModal>
         </GlassDiv>

@@ -95,13 +95,13 @@ export const useCreateThermostat = (
 
 const editThermostat = async (
     thermostat_id: string,
-    place: string
+    timer: number
 ): Promise<CreateThermostatResponse> => {
     const response = await axios.patch<CreateThermostatResponse>(
         `${SMART_HOME_API_BASE_URL}device/thermostat/${thermostat_id}`,
         {
             thermostat: {
-                place,
+                timer,
             },
         },
         {
@@ -116,10 +116,10 @@ const editThermostat = async (
     return response.data;
 };
 
-export const useEditThermostat = (thermostat_id: string, place: string) => {
+export const useEditThermostat = (thermostat_id: string, timer: number) => {
     const query = useQuery<CreateThermostatResponse, Error>({
         queryKey: ["thermostat-edit-key"],
-        queryFn: async () => await editThermostat(thermostat_id, place),
+        queryFn: async () => await editThermostat(thermostat_id, timer),
         enabled: false,
         retry: 0,
     });

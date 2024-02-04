@@ -167,3 +167,59 @@ const getRandomBase64Photo = async (): Promise<string> => {
             return image;
         });
 };
+
+const editCamera = async (
+    camera_id: string,
+    resolution: string,
+    iso: number,
+    zoom: number,
+    flash: boolean,
+    autofocus: boolean
+): Promise<any> => {
+    const response = await axios.patch<any>(
+        `${SMART_HOME_API_BASE_URL}device/camera/${camera_id}`,
+        {
+            purifier: {
+                resolution,
+                iso,
+                zoom,
+                flash,
+                autofocus,
+            },
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            withCredentials: true,
+        }
+    );
+
+    return response.data;
+};
+
+export const useEditCamera = (
+    camera_id: string,
+    resolution: string,
+    iso: number,
+    zoom: number,
+    flash: boolean,
+    autofocus: boolean
+) => {
+    const query = useQuery<any, Error>({
+        queryKey: ["camera-edit-key"],
+        queryFn: async () =>
+            await editCamera(
+                camera_id,
+                resolution,
+                iso,
+                zoom,
+                flash,
+                autofocus
+            ),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};

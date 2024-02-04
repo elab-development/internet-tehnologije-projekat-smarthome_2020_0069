@@ -82,10 +82,11 @@ export const useRegister = (
 
 const signOut = async (): Promise<LoginResponse> => {
     const response = await axios.get<LoginResponse>(
-        `${SMART_HOME_API_BASE_URL}auth/sign_out`,
+        `${SMART_HOME_API_BASE_URL}user/sign_out`,
         {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
             withCredentials: true,
         }
@@ -94,19 +95,12 @@ const signOut = async (): Promise<LoginResponse> => {
     return response.data;
 };
 
-// export const useSignOut = (
-//     name: string,
-//     surname: string,
-//     username: string,
-//     password: string,
-//     locationCode: string
-// ) => {
-//     const query = useQuery<LoginResponse, Error>({
-//         queryKey: ["signOut-key"],
-//         queryFn: async () =>
-//             await signOut,
-//         enabled: false,
-//         retry: 0,
-//     });
-//     return query;
-// };
+export const useSignOut = () => {
+    const query = useQuery<any, Error>({
+        queryKey: ["signOut-key"],
+        queryFn: async () => await signOut(),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};

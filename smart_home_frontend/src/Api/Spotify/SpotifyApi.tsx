@@ -55,7 +55,7 @@ const getTracksFromSearch = async (
 
 export function useGetTracksFromSearch(search: string) {
     const query = useQuery<SpotifySearchResult, Error>({
-        queryKey: ["get-tracks", search],
+        queryKey: [`${search}-get-tracks`, search],
         queryFn: () => getTracksFromSearch(search),
         enabled: false,
     });

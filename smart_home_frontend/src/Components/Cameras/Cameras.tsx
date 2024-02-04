@@ -104,6 +104,12 @@ const Cameras = (props: Props) => {
                             key={i}
                             roomName={t.place}
                             cameraId={t.device_id}
+                            autofocus={t.autofocus}
+                            flash={t.flash}
+                            iso={t.iso}
+                            refetch={refetch}
+                            resolution={t.resolution.toString()}
+                            zoom={t.zoom}
                         />
                     ))}
                 </div>

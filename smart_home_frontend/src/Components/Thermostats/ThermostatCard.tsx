@@ -11,6 +11,7 @@ import TextBox from "../Shared/TextBox";
 import { useEditThermostat } from "../../Api/Thermostats/ThermostatApi";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { ThermostatsModel } from "../../Api/Thermostats/ThermostatApi.types";
+import { useDeleteDevice, useEditDevice } from "../../Api/Device/DeviceApi";
 
 type Props = {
     thermostatId: string;
@@ -25,7 +26,9 @@ type Props = {
 
 const ThermostatCard = (props: Props) => {
     let [roomName, setRoomName] = useState(props.roomName);
-    let [timer, setTimer] = useState(props.timer?.toString());
+    let [timer, setTimer] = useState(
+        props.timer != undefined ? props.timer.toString() : ""
+    );
     let [isModalOpen, setIsModalOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -34,19 +37,53 @@ const ThermostatCard = (props: Props) => {
         refetch: editRefetch,
         isLoading,
         isError,
-    } = useEditThermostat(props.thermostatId, roomName);
+        isRefetching,
+    } = useEditThermostat(props.thermostatId, parseInt(timer));
+
+    const {
+        data: editDeviceData,
+        refetch: editDeviceRefetch,
+        isLoading: editDeviceLoading,
+        isError: editDeviceError,
+    } = useEditDevice(props.thermostatId, roomName);
+
+    const {
+        data: deleteDeviceData,
+        refetch: deleteDeviceRefetch,
+        isLoading: deleteDeviceLoading,
+        isError: deleteDeviceError,
+        isRefetching: deleteDeviceRefetching,
+    } = useDeleteDevice(props.thermostatId);
 
     useEffect(() => {
         if (!isLoading && !isError) {
-            if (data != undefined) {
-                props.refetch();
-                setErrorMessage("");
-                setIsModalOpen(false);
-            }
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
         } else if (isError) {
-            setErrorMessage("Error creating thermostat!");
+            setErrorMessage("Error editing thermostat!");
         }
-    }, [data, isError]);
+    }, [data, isError, isLoading, isRefetching]);
+
+    useEffect(() => {
+        if (!editDeviceLoading && !editDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (editDeviceError) {
+            setErrorMessage("Error editing thermostat!");
+        }
+    }, [editDeviceData, editDeviceError]);
+
+    useEffect(() => {
+        if (!deleteDeviceLoading && !deleteDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (deleteDeviceError) {
+            setErrorMessage("Error deleting thermostat!");
+        }
+    }, [deleteDeviceData, deleteDeviceError, deleteDeviceRefetching]);
 
     return (
         <GlassDiv className="thermostat-card">
@@ -86,6 +123,10 @@ const ThermostatCard = (props: Props) => {
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 title="Thermostat settings"
+                deleteButton={true}
+                onDelete={() => {
+                    deleteDeviceRefetch();
+                }}
             >
                 <div className="thermostat-modal-content">
                     <TextBox
@@ -104,7 +145,10 @@ const ThermostatCard = (props: Props) => {
                     />
                     <PrimaryButton
                         button_value="Save"
-                        onClick={() => editRefetch()}
+                        onClick={() => {
+                            editRefetch();
+                            editDeviceRefetch();
+                        }}
                     />
                     <div className="error-message-thermostat">
                         {errorMessage}

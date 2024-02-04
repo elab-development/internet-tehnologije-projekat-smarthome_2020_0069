@@ -12,14 +12,14 @@ export interface PurifierResponse {
 }
 
 export interface Purifier {
-    device_id: string,
-    filter: number,
-    pm10: number,
-    pm1_0: number,
-    pm2_5: number,
-    place: string,
+    device_id: string;
+    filter: number;
+    pm10: number;
+    pm1_0: number;
+    pm2_5: number;
+    place: string;
 }
 
-export interface PurifiersModel{
-    air_purifiers: Purifier[]
+export interface PurifiersModel {
+    air_purifiers: Purifier[];
 }

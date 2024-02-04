@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import Modal from "react-modal";
 import "./PopupModal.scss";
 import { IoIosClose } from "react-icons/io";
+import { IoTrash, IoTrashBin } from "react-icons/io5";
 
 type Props = {
     isOpen: boolean;
@@ -10,6 +11,8 @@ type Props = {
     title?: string;
     width?: string;
     height?: string;
+    deleteButton?: boolean;
+    onDelete?: () => void;
 };
 
 const PopupModal = (props: Props) => {
@@ -19,14 +22,12 @@ const PopupModal = (props: Props) => {
                 isOpen={props.isOpen}
                 overlayClassName="modal-overlay"
                 className="modal-content"
-                style={
-                    {
-                        content:{
-                            width: props.width != null ? props.width : "",
-                            height: props.height != null ? props.height : ""
-                        }
-                    }
-                }
+                style={{
+                    content: {
+                        width: props.width != null ? props.width : "",
+                        height: props.height != null ? props.height : "",
+                    },
+                }}
             >
                 <div className="modal-header">
                     <button
@@ -36,7 +37,16 @@ const PopupModal = (props: Props) => {
                         <IoIosClose />
                     </button>
                     <span>{props.title}</span>
-                    <div></div>
+                    {props.deleteButton ? (
+                        <button
+                            className="header-button"
+                            onClick={props.onDelete}
+                        >
+                            <IoTrash />
+                        </button>
+                    ) : (
+                        <div></div>
+                    )}
                 </div>
                 {props.children}
             </Modal>

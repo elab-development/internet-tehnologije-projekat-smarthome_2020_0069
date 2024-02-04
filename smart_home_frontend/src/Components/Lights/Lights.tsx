@@ -103,7 +103,9 @@ const Lights = (props: Props) => {
                             color={t.rgb_color}
                             state={t.light_state}
                             roomName={t.place}
-                            deviceId={""}
+                            deviceId={t.device_id}
+                            lightLevel={t.light_level}
+                            refetch={refetch}
                         />
                     ))}
                 </div>

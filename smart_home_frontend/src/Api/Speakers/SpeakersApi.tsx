@@ -1,7 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { SMART_HOME_API_BASE_URL } from "../ApiConfig";
-import { CreateSpeakerResponse, DeviceModel, Speaker, SpeakersModel } from "./SpeakersApi.types";
+import {
+    CreateSpeakerResponse,
+    DeviceModel,
+    Speaker,
+    SpeakersModel,
+} from "./SpeakersApi.types";
 
 const getSpeakers = async (
     page_number: number,
@@ -15,7 +20,6 @@ const getSpeakers = async (
                 page_size: page_size,
             },
             headers: {
-
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
             withCredentials: true,
@@ -32,59 +36,72 @@ export const useGetSpeakers = (page_number: number, page_size: number) => {
     return query;
 };
 
-const patchSpeakerSong = async (speakerId: string, song: string, author: string, image_url: string): Promise<Speaker> => {
+const patchSpeakerSong = async (
+    speakerId: string,
+    song: string,
+    author: string,
+    image_url: string
+): Promise<Speaker> => {
     const response = await axios.patch<Speaker>(
         `${SMART_HOME_API_BASE_URL}device/speaker/${speakerId}`,
         {
-            speaker:{
+            speaker: {
                 song,
                 author,
                 image_url,
-            }            
+            },
         },
         {
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
             withCredentials: true,
         }
-    )
+    );
     return response.data;
-}
+};
 
-export const usePatchSpeakerSong = (speakerId: string, song: string, author: string, image_url: string) => {
+export const usePatchSpeakerSong = (
+    speakerId: string,
+    song: string,
+    author: string,
+    image_url: string
+) => {
     const query = useQuery<Speaker, Error>({
         queryKey: ["patch-speaker-song-key"],
-        queryFn: async () => await patchSpeakerSong(speakerId, song, author, image_url),
-        enabled: false
+        queryFn: async () =>
+            await patchSpeakerSong(speakerId, song, author, image_url),
+        enabled: false,
     });
     return query;
 };
 
-
-const patchSpeakerState = async (speakerId: string, state: string): Promise<DeviceModel> => {
+const patchSpeakerState = async (
+    speakerId: string,
+    state: string
+): Promise<DeviceModel> => {
     const response = await axios.patch<DeviceModel>(
         `${SMART_HOME_API_BASE_URL}device/${speakerId}`,
         {
-            device:{
-                state
-            }            
+            device: {
+                state,
+            },
         },
         {
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
             withCredentials: true,
         }
-    )
+    );
     return response.data;
-}
+};
 
 export const usePatchSpeakerState = (speakerId: string, state: string) => {
     const query = useQuery<DeviceModel, Error>({
         queryKey: ["patch-speaker-state-key"],
         queryFn: async () => await patchSpeakerState(speakerId, state),
-        enabled: false
+        enabled: false,
     });
     return query;
 };
@@ -140,6 +157,45 @@ export const useCreateSpeaker = (
                 bass,
                 battery
             ),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};
+
+const editSpeaker = async (
+    speaker_id: string,
+    volume: number,
+    bass: number
+): Promise<any> => {
+    const response = await axios.patch<any>(
+        `${SMART_HOME_API_BASE_URL}device/speaker/${speaker_id}`,
+        {
+            speaker: {
+                volume,
+                bass,
+            },
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            withCredentials: true,
+        }
+    );
+
+    return response.data;
+};
+
+export const useEditSpeaker = (
+    thermostat_id: string,
+    volume: number,
+    bass: number
+) => {
+    const query = useQuery<any, Error>({
+        queryKey: ["thermostat-edit-key"],
+        queryFn: async () => await editSpeaker(thermostat_id, volume, bass),
         enabled: false,
         retry: 0,
     });

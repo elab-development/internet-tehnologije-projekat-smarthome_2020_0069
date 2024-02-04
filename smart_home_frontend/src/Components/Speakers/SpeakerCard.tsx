@@ -14,23 +14,37 @@ import PopupModal from "../Shared/Modals/PopupModal";
 import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
-import { QueryObserverResult, useQuery } from "@tanstack/react-query";
+import {
+    QueryObserverResult,
+    RefetchOptions,
+    useQuery,
+} from "@tanstack/react-query";
 import { useGetTracksFromSearch } from "../../Api/Spotify/SpotifyApi";
 import { SpotifySong } from "../../Api/Spotify/SpotifyApi.types";
 import SongCard from "./SongCard";
 import { Speaker, SpeakersModel } from "../../Api/Speakers/SpeakersApi.types";
-import { usePatchSpeakerSong, usePatchSpeakerState } from "../../Api/Speakers/SpeakersApi";
+import {
+    useEditSpeaker,
+    usePatchSpeakerSong,
+    usePatchSpeakerState,
+} from "../../Api/Speakers/SpeakersApi";
+import { useDeleteDevice, useEditDevice } from "../../Api/Device/DeviceApi";
 
 type Props = {
+    speakerId: string;
     roomName: string;
     albumCover: string;
     songTitle: string;
     author: string;
     batteryPercent: number;
     volumePercent: number;
+    bass: number;
     isPlaying: boolean;
     deviceId: string;
     refechSongs: () => Promise<QueryObserverResult<SpeakersModel, Error>>;
+    refetch: (
+        options?: RefetchOptions | undefined
+    ) => Promise<QueryObserverResult<SpeakersModel, Error>>;
 };
 
 const SpeakerCard = (props: Props) => {
@@ -42,6 +56,10 @@ const SpeakerCard = (props: Props) => {
     const [song, setSong] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [imageUrl, setImageUrl] = useState<string>("");
+    const [volume, setVolume] = useState(props.volumePercent);
+    const [bass, setBass] = useState(props.bass);
+    const [roomName, setRoomName] = useState(props.roomName);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const {
         data: tracks,
@@ -49,6 +67,7 @@ const SpeakerCard = (props: Props) => {
         isLoading: tracksLoading,
         isFetching,
         refetch,
+        isRefetching: tracksRefetching,
     } = useGetTracksFromSearch(searchText);
 
     const {
@@ -86,14 +105,67 @@ const SpeakerCard = (props: Props) => {
         if (song && author && imageUrl) {
             fetchData();
         }
-    }, [song, author, imageUrl, patchedTrackIsRefetch])
+    }, [song, author, imageUrl, patchedTrackIsRefetch]);
 
     useEffect(() => {
         const fetchData = async () => {
             await patchedStateRefetch();
         };
         fetchData();
-    }, [isPlaying])
+    }, [isPlaying]);
+
+    const {
+        data,
+        refetch: editRefetch,
+        isLoading,
+        isError,
+    } = useEditSpeaker(props.speakerId, volume, bass);
+
+    const {
+        data: editDeviceData,
+        refetch: editDeviceRefetch,
+        isLoading: editDeviceLoading,
+        isError: editDeviceError,
+        isRefetching,
+    } = useEditDevice(props.speakerId, roomName);
+
+    const {
+        data: deleteDeviceData,
+        refetch: deleteDeviceRefetch,
+        isLoading: deleteDeviceLoading,
+        isError: deleteDeviceError,
+        isRefetching: deleteDeviceRefetching,
+    } = useDeleteDevice(props.speakerId);
+
+    useEffect(() => {
+        if (!isLoading && !isError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (isError) {
+            setErrorMessage("Error editing speaker!");
+        }
+    }, [data, isError, isLoading, isRefetching]);
+
+    useEffect(() => {
+        if (!editDeviceLoading && !editDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (editDeviceError) {
+            setErrorMessage("Error editing speaker!");
+        }
+    }, [editDeviceData, editDeviceError]);
+
+    useEffect(() => {
+        if (!deleteDeviceLoading && !deleteDeviceError) {
+            props.refetch();
+            setErrorMessage("");
+            setIsModalOpen(false);
+        } else if (deleteDeviceError) {
+            setErrorMessage("Error deleting speaker!");
+        }
+    }, [deleteDeviceData, deleteDeviceError, deleteDeviceRefetching]);
 
     useEffect(() => {
         if (!tracksLoading && !tracksError) {
@@ -109,9 +181,9 @@ const SpeakerCard = (props: Props) => {
                 };
                 newSongs.push(newSong);
             }
-            setTrackList([...tracksList, ...newSongs]);
+            setTrackList(newSongs);
         }
-    }, [tracksLoading, isFetching, refetch]);
+    }, [tracksRefetching, tracksLoading, isFetching, refetch]);
 
     return (
         <GlassDiv className="speaker-card">
@@ -130,15 +202,15 @@ const SpeakerCard = (props: Props) => {
                     </div>
                     <div className="speaker-info">
                         <div className="battery">
-                            {
-                                props.batteryPercent <= 100 && props.batteryPercent > 75 ?
-                                    (<FaBatteryFull />
-                                    )
-                                    : props.batteryPercent <= 75 && props.batteryPercent > 30 ?
-                                        (<FaBatteryHalf />
-                                        ) : (<FaBatteryEmpty />
-                                        )
-                            }
+                            {props.batteryPercent <= 100 &&
+                            props.batteryPercent > 75 ? (
+                                <FaBatteryFull />
+                            ) : props.batteryPercent <= 75 &&
+                              props.batteryPercent > 30 ? (
+                                <FaBatteryHalf />
+                            ) : (
+                                <FaBatteryEmpty />
+                            )}
                             <div className="percent">
                                 {props.batteryPercent}%
                             </div>
@@ -157,33 +229,26 @@ const SpeakerCard = (props: Props) => {
                         icon={<FaStop />}
                         onClick={() => { }}
                     /> */}
-                    <div style={{ width: '40px' }}>
-
-                    </div>
+                    <div style={{ width: "40px" }}></div>
 
                     <div className="play-pause-button">
-                        {
-                            isPlaying ?
-                                (
-                                    <IconButton
-                                        background={true}
-                                        icon={<FaPause />}
-                                        onClick={() => {
-                                            setIsPlaying(false)
-                                        }}
-                                    />
-                                ) :
-                                (
-                                    <IconButton
-                                        background={true}
-                                        icon={<FaPlay />}
-                                        onClick={() => {
-                                            setIsPlaying(true)
-                                        }}
-                                    />
-                                )
-                        }
-
+                        {isPlaying ? (
+                            <IconButton
+                                background={true}
+                                icon={<FaPause />}
+                                onClick={() => {
+                                    setIsPlaying(false);
+                                }}
+                            />
+                        ) : (
+                            <IconButton
+                                background={true}
+                                icon={<FaPlay />}
+                                onClick={() => {
+                                    setIsPlaying(true);
+                                }}
+                            />
+                        )}
                     </div>
                     <IconButton
                         background={false}
@@ -245,26 +310,46 @@ const SpeakerCard = (props: Props) => {
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 title="Speaker settings"
+                deleteButton={true}
+                onDelete={() => {
+                    deleteDeviceRefetch();
+                }}
             >
                 <div className="speaker-modal-content">
-                    <TextBox placeholder="Room name" />
+                    <TextBox
+                        placeholder="Room name"
+                        value={roomName}
+                        onChanged={(e) => {
+                            setRoomName(e.target.value);
+                        }}
+                    />
                     <Slider
                         label="Volume"
                         max={100}
                         min={0}
-                        onChanged={() => { }}
-                        value={10}
+                        onChanged={(e) => {
+                            setVolume(e.target.valueAsNumber);
+                        }}
+                        value={volume}
                         unit="%"
                     />
                     <Slider
                         label="Bass"
                         max={100}
                         min={0}
-                        onChanged={() => { }}
-                        value={10}
+                        onChanged={(e) => {
+                            setBass(e.target.valueAsNumber);
+                        }}
+                        value={bass}
                         unit="%"
                     />
-                    <PrimaryButton button_value="Save" />
+                    <PrimaryButton
+                        button_value="Save"
+                        onClick={() => {
+                            editRefetch();
+                            editDeviceRefetch();
+                        }}
+                    />
                 </div>
             </PopupModal>
         </GlassDiv>

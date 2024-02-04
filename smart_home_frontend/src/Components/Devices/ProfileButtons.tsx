@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pages } from "../../Pages/Devices";
 import PageButton from "./PageButton";
 import { IoPerson } from "react-icons/io5";
@@ -8,6 +8,7 @@ import GlassDiv from "../Shared/GlassDiv";
 import PopupModal from "../Shared/Modals/PopupModal";
 import PrimaryButton from "../Shared/PrimaryButton";
 import { useNavigate } from "react-router-dom";
+import { useSignOut } from "../../Api/Auth/AuthApi";
 
 type Props = {
     selectedPage: Pages;
@@ -17,6 +18,17 @@ type Props = {
 const ProfileButtons = (props: Props) => {
     let [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const [refetched, setRefetched] = useState(false);
+    const { data, error, isLoading, refetch, isRefetching } = useSignOut();
+
+    useEffect(() => {
+        if (!isLoading && !isRefetching && refetched) {
+            if (data != undefined) {
+                localStorage.removeItem("access_token");
+                navigate("/auth");
+            }
+        }
+    }, [isLoading, isRefetching]);
 
     return (
         <GlassDiv className="profile-buttons">
@@ -47,8 +59,8 @@ const ProfileButtons = (props: Props) => {
                             height="60px"
                             width="100px"
                             onClick={() => {
-                                localStorage.removeItem("access_token");
-                                navigate("/auth");
+                                refetch();
+                                setRefetched(true);
                             }}
                         />
                         <PrimaryButton
