@@ -10,7 +10,7 @@ defmodule SmartHomeApi.UserRoles do
 
   alias SmartHomeApi.UserRoles.UserRole
 
-  def get_user_role!(user_id, location_id) do
+  def get_user_role(user_id, location_id) do
     query = from ur in UserRole,
       join: r in Role, on: ur.role == r.id,
       where: ur.user_id == ^user_id and ur.location_id == ^location_id,
@@ -21,6 +21,13 @@ defmodule SmartHomeApi.UserRoles do
       }
     Repo.one(query)
   end
+
+  def get_location_from_user_id!(user_id) do
+    UserRole
+    |> where(user_id: ^user_id)
+    |> Repo.one()
+  end
+
 
   def create_user_role(attrs \\ %{}) do
     %UserRole{}

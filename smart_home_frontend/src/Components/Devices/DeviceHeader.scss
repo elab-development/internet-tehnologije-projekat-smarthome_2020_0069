@@ -1,0 +1,60 @@
+.device-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 45px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .device-title {
+        color: white;
+        font-weight: bold;
+        font-size: 35px;
+    }
+
+    .add-button {
+        background-color: rgba(217, 217, 217, 0.17);
+        width: 300px;
+        height: 60px;
+        border: none;
+        border-radius: 20px;
+        outline: none;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-bottom: 0;
+    }
+
+    .search-bar {
+        position: relative;
+        input {
+            background-color: rgba(217, 217, 217, 0.17);
+            width: 380px;
+            height: 60px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+            padding: 20px;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            right: -10px;
+            top: -30px;
+        }
+        svg {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            top: -17px;
+            right: 5px;
+            color: #b8b9c0;
+        }
+    }
+}

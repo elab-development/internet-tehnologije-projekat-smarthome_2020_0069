@@ -1,0 +1,11 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 90px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 4;
+    height: fit-content;
+    align-self: center;
+    justify-self: center;
+}

@@ -13,6 +13,10 @@ defmodule SmartHomeApiWeb.ThermostatView do
     }
   end
 
+  def render("index.json", %{thermostats: thermostats}) do
+    %{thermostats: thermostats}
+  end
+
   def render("patch.json", %{thermostat: thermostat}) do
     %{
       id: thermostat.device_id,

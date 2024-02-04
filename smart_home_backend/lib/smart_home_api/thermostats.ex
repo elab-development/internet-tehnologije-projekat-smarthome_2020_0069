@@ -9,6 +9,7 @@ defmodule SmartHomeApi.Thermostats do
   alias SmartHomeApi.Devices.Device
   alias SmartHomeApi.Locations.Location
   alias SmartHomeApi.UserRoles.UserRole
+
   @doc """
   Returns the list of thermostats.
 
@@ -18,8 +19,40 @@ defmodule SmartHomeApi.Thermostats do
       [%Thermostat{}, ...]
 
   """
-  def list_thermostats do
-    Repo.all(Thermostat)
+  def list_thermostats(user_id, page_number, page_size) do
+    query =
+      from(t in Thermostat,
+        join: d in Device,
+        on: t.device_id == d.id,
+        join: l in Location,
+        on: l.id == d.location_id,
+        join: ur in UserRole,
+        on: l.id == ur.location_id,
+        where: ur.user_id == ^user_id,
+        select: %{
+          temperature: t.temperature,
+          humidity: t.humidity,
+          timer: t.timer,
+          device_id: t.device_id,
+          state: d.state,
+          place: d.place
+        },
+        order_by: [asc: t.device_id]
+
+      )
+
+    query
+    |> paginate(page_number, page_size)
+    |> Repo.all()
+  end
+
+  defp paginate(query, page_number, page_size) do
+    page_number_integer = String.to_integer(page_number)
+    page_size_integer = String.to_integer(page_size)
+
+    query
+    |> limit(^page_size_integer)
+    |> offset(^((page_number_integer - 1) * page_size_integer))
   end
 
   @doc """
@@ -38,23 +71,28 @@ defmodule SmartHomeApi.Thermostats do
   """
   def get_thermostat!(id), do: Repo.get!(Thermostat, id)
 
-
   def get_full_thermostat(user_id, device_id) do
-    query = from t in Thermostat,
-      join: d in Device, on: t.device_id == d.id,
-      join: l in Location, on: d.location_id == l.id,
-      join: ur in UserRole, on: ur.location_id == l.id,
-      where: d.id == ^device_id and ur.user_id == ^user_id,
-      select: %{
-        humidity: t.humidity,
-        temperature: t.temperature,
-        timer: t.timer,
-        device_id: t.device_id,
-        user_id: ur.user_id,
-        place: d.place,
-        state: d.state,
-        location_id: l.id
-      }
+    query =
+      from(t in Thermostat,
+        join: d in Device,
+        on: t.device_id == d.id,
+        join: l in Location,
+        on: d.location_id == l.id,
+        join: ur in UserRole,
+        on: ur.location_id == l.id,
+        where: d.id == ^device_id and ur.user_id == ^user_id,
+        select: %{
+          humidity: t.humidity,
+          temperature: t.temperature,
+          timer: t.timer,
+          device_id: t.device_id,
+          user_id: ur.user_id,
+          place: d.place,
+          state: d.state,
+          location_id: l.id
+        }
+      )
+
     Repo.one(query)
   end
 

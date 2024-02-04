@@ -6,6 +6,9 @@ defmodule SmartHomeApi.AirPurifiers do
   import Ecto.Query, warn: false
   alias SmartHomeApi.Repo
 
+  alias SmartHomeApi.Devices.Device
+  alias SmartHomeApi.Locations.Location
+  alias SmartHomeApi.UserRoles.UserRole
   alias SmartHomeApi.AirPurifiers.AirPurifier
 
   @doc """
@@ -17,8 +20,40 @@ defmodule SmartHomeApi.AirPurifiers do
       [%AirPurifier{}, ...]
 
   """
-  def list_air_purifiers do
-    Repo.all(AirPurifier)
+  def list_air_purifiers(user_id, page_number, page_size) do
+    query =
+      from(ap in AirPurifier,
+        join: d in Device,
+        on: ap.device_id == d.id,
+        join: l in Location,
+        on: l.id == d.location_id,
+        join: ur in UserRole,
+        on: l.id == ur.location_id,
+        where: ur.user_id == ^user_id,
+        select: %{
+          device_id: ap.device_id,
+          filter: ap.filter,
+          pm10: ap.pm10,
+          pm1_0: ap.pm1_0,
+          pm2_5: ap.pm2_5,
+          timer: ap.timer,
+          state: d.state,
+          place: d.place
+        }
+      )
+
+    query
+    |> paginate(page_number, page_size)
+    |> Repo.all()
+  end
+
+  defp paginate(query, page_number, page_size) do
+    page_number_integer = String.to_integer(page_number)
+    page_size_integer = String.to_integer(page_size)
+
+    query
+    |> limit(^page_size_integer)
+    |> offset(^((page_number_integer - 1) * page_size_integer))
   end
 
   @doc """
@@ -36,6 +71,33 @@ defmodule SmartHomeApi.AirPurifiers do
 
   """
   def get_air_purifier!(id), do: Repo.get!(AirPurifier, id)
+
+  def get_full_air_purifier(user_id, device_id) do
+    query =
+      from(ap in AirPurifier,
+        join: d in Device,
+        on: ap.device_id == d.id,
+        join: l in Location,
+        on: l.id == d.location_id,
+        join: ur in UserRole,
+        on: l.id == ur.location_id,
+        where: d.id == ^device_id and ur.user_id == ^user_id,
+        select: %{
+          filter: ap.filter,
+          pm10: ap.pm10,
+          pm1_0: ap.pm1_0,
+          pm2_5: ap.pm2_5,
+          timer: ap.timer,
+          state: d.state,
+          place: d.place,
+          device_id: ap.device_id,
+          location_id: l.id,
+          user_id: ur.user_id
+        },
+        order_by: [asc: ap.device_id]
+      )
+      Repo.one(query)
+  end
 
   @doc """
   Creates a air_purifier.

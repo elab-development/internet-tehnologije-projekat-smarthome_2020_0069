@@ -19,8 +19,42 @@ defmodule SmartHomeApi.Speakers do
       [%Speaker{}, ...]
 
   """
-  def list_speakers do
-    Repo.all(Speaker)
+  def list_speakers(user_id, page_number, page_size) do
+    query =
+      from s in Speaker,
+        join: d in Device,
+        on: s.device_id == d.id,
+        join: l in Location,
+        on: l.id == d.location_id,
+        join: ur in UserRole,
+        on: l.id == ur.location_id,
+        where: ur.user_id == ^user_id,
+        select: %{
+          song: s.song,
+          author: s.author,
+          image_url: s.image_url,
+          volume: s.volume,
+          bass: s.bass,
+          battery: s.battery,
+          device_id: s.device_id,
+          state: d.state,
+          place: d.place
+        },
+        order_by: [asc: s.device_id]
+
+
+    query
+    |> paginate(page_number, page_size)
+    |> Repo.all()
+  end
+
+  defp paginate(query, page_number, page_size) do
+    page_number_integer = String.to_integer(page_number)
+    page_size_integer = String.to_integer(page_size)
+
+    query
+    |> limit(^page_size_integer)
+    |> offset(^((page_number_integer - 1) * page_size_integer))
   end
 
   @doc """
@@ -37,23 +71,32 @@ defmodule SmartHomeApi.Speakers do
       ** (Ecto.NoResultsError)
 
   """
-  def get_speaker!(id), do: Repo.get!(Speaker, id)
+  def get_speaker(id), do: Repo.get(Speaker, id)
 
   def get_full_speaker(user_id, device_id) do
-    query = from s in Speaker,
-      join: d in Device, on: s.device_id == d.id,
-      join: l in Location, on: d.location_id == l.id,
-      join: ur in UserRole, on: ur.location_id == l.id,
-      where: d.id == ^device_id and ur.user_id == ^user_id,
-      select: %{
-        bass: s.bass,
-        battery: s.battery,
-        device_id: s.device_id,
-        user_id: ur.user_id,
-        place: d.place,
-        state: d.state,
-        volume: s.volume
-      }
+    query =
+      from s in Speaker,
+        join: d in Device,
+        on: s.device_id == d.id,
+        join: l in Location,
+        on: d.location_id == l.id,
+        join: ur in UserRole,
+        on: ur.location_id == l.id,
+        where: d.id == ^device_id and ur.user_id == ^user_id,
+        select: %{
+          song: s.song,
+          author: s.author,
+          image_url: s.image_url,
+          bass: s.bass,
+          battery: s.battery,
+          device_id: s.device_id,
+          user_id: ur.user_id,
+          place: d.place,
+          state: d.state,
+          volume: s.volume,
+          location_id: l.id
+        }
+
     Repo.one(query)
   end
 

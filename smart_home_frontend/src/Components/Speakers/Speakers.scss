@@ -1,0 +1,31 @@
+.wrapper {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    overflow-y: auto;
+
+    .cards {
+        padding: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+        grid-row: auto auto;
+        grid-gap: 20px;
+        justify-items: center;
+    }
+}
+
+.speaker-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .error-message-speaker {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
+        text-align: center;
+    }
+}

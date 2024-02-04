@@ -10,11 +10,14 @@ defmodule SmartHomeApiWeb.CameraView do
       resolution: camera.resolution,
       timer: camera.timer,
       zoom: camera.zoom,
-      geolocation: camera.geolocation,
       state: camera.state,
       user_id: camera.user_id,
       place: camera.place
     }
+  end
+
+  def render("index.json", %{cameras: cameras}) do
+    %{cameras: cameras}
   end
 
   def render("patch.json", %{camera: camera}) do
@@ -31,15 +34,7 @@ defmodule SmartHomeApiWeb.CameraView do
 
   def render("create.json", %{camera: camera}) do
     %{
-      autofocus: camera.autofocus,
-      flashlight: camera.flashlight,
-      iso: camera.iso,
-      resolution: camera.resolution,
-      timer: camera.timer,
-      zoom: camera.zoom,
-      geolocation: camera.geolocation,
-      state: camera.state,
-      place: camera.place
+      camera: camera
     }
   end
 

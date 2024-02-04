@@ -19,7 +19,7 @@ defmodule SmartHomeApi.Cameras.Camera do
   @doc false
   def changeset(camera, attrs) do
     camera
-    |> cast(attrs, [:device_id, :flashlight, :resolution, :timer, :iso, :autofocus, :zoom])
-    |> validate_required([:flashlight, :resolution, :timer, :iso, :autofocus, :zoom])
+    |> cast(attrs, [:device_id, :flashlight, :resolution, :iso, :autofocus, :zoom])
+    |> validate_required([])
   end
 end

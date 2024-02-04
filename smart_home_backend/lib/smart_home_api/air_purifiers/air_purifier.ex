@@ -19,6 +19,6 @@ defmodule SmartHomeApi.AirPurifiers.AirPurifier do
   def changeset(air_purifier, attrs) do
     air_purifier
     |> cast(attrs, [:device_id, :filter, :timer, :pm1_0, :pm2_5, :pm10])
-    |> validate_required([:filter, :timer, :pm1_0, :pm2_5, :pm10])
+    |> validate_required([])
   end
 end

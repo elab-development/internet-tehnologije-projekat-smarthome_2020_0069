@@ -1,3 +1,13 @@
+defmodule SmartHomeApiWeb.CORS do
+  use Corsica.Router,
+    origins: ["http://localhost:3000"],
+    allow_headers: ["content-type", "authorization"],
+    allow_credentials: true
+
+  resource "/public/*", origins: "*"
+  resource "/*"
+end
+
 defmodule SmartHomeApiWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :smart_home_api
 
@@ -41,5 +51,6 @@ defmodule SmartHomeApiWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug SmartHomeApiWeb.CORS
   plug SmartHomeApiWeb.Router
 end

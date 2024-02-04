@@ -7,7 +7,7 @@ defmodule SmartHomeApi.Lights.Light do
   @derive {Phoenix.Param, key: :device_id}
   schema "lights" do
     field :light_level, :integer
-    field :rgb_color, :integer
+    field :rgb_color, :string
     field :light_state, :boolean
 
     timestamps(type: :utc_datetime)

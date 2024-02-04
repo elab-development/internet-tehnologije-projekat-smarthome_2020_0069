@@ -1,0 +1,42 @@
+button{
+    background-color: transparent;
+    border: none;
+}
+.song-card {
+    padding: 5px;
+    cursor: pointer;
+    margin: 5px;
+    display: flex;
+    border-radius: 20px;
+    flex-direction: row;
+    align-items: center;
+    border: 1px;
+    border-style: solid;
+    border-color: white;
+
+    img {
+        width: 90px;
+        height: 90px;
+        border-radius: 20px;
+    }
+
+    .song-info {
+        margin-left: 1rem;
+        font-size: 22px;
+        color: white;
+        max-width: 220px;
+
+        .title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .title,
+        .author {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+}

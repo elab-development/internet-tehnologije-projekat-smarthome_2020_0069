@@ -1,0 +1,29 @@
+.pagination-wrapper {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    justify-self: center;
+    width: fit-content;
+    display: flex;
+    width: 240px;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .pagination-button {
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        svg {
+            width: 30px;
+            height: 30px;
+        }
+    }
+    .page-text {
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+    }
+}

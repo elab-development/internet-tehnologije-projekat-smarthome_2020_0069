@@ -13,12 +13,19 @@ defmodule SmartHomeApiWeb.SpeakerView do
     }
   end
 
+  def render("index.json", %{speakers: speakers}) do
+    %{speakers: speakers}
+  end
+
   def render("patch.json", %{speaker: speaker}) do
     %{
       id: speaker.device_id,
       bass: speaker.bass,
       battery: speaker.battery,
       volume: speaker.volume,
+      song: speaker.song,
+      author: speaker.author,
+      image_url: speaker.image_url
     }
   end
 

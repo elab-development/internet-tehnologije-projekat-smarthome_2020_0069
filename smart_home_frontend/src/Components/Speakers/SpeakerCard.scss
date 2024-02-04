@@ -1,0 +1,121 @@
+.speaker-card {
+    width: 460px;
+    height: 280px;
+
+    .card-body {
+        padding: 0 1.5rem 0 1.5rem;
+    }
+
+    .playing-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .song {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            img {
+                width: 90px;
+                height: 90px;
+                border-radius: 20px;
+            }
+
+            .song-info {
+                margin-left: 1rem;
+                font-size: 22px;
+                color: white;
+                max-width: 220px;
+
+                .title {
+                    font-weight: bold;
+                    margin-bottom: 0.5rem;
+                }
+
+                .title,
+                .author {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .speaker-info {
+
+            .battery,
+            .volume {
+                display: flex;
+                font-size: 15px;
+                color: white;
+                align-items: center;
+                margin-right: 0.5rem;
+                font-weight: 500;
+
+                svg {
+                    width: 25px;
+                    height: 25px;
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+    }
+
+    .playing-controls {
+        margin-top: 0.5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.speaker-modal-content {
+    padding: 1rem;
+
+    input {
+        margin-bottom: 1rem;
+    }
+}
+
+.search-song-modal-content {
+    position: relative;
+    margin-inline: 50px;
+
+    input {
+        margin-bottom: 20px;
+        background-color: rgba(217, 217, 217, 0.17);
+        width: 380px;
+        height: 60px;
+        border: none;
+        border-radius: 20px;
+        outline: none;
+        padding: 20px;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    svg {
+        position: absolute;
+        cursor: pointer;
+        left: 330px;
+        top: 12px;
+        width: 35px;
+        height: 35px;
+        color: #b8b9c0;
+    }
+}
+
+.empty-tracks {
+    color: white;
+    padding-top: 50%;
+    text-align: center;
+    font-size: 25px;
+}
+
+.list-view-wrapper {
+    height: 45vh;
+    overflow-y: auto;
+}

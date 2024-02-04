@@ -55,12 +55,14 @@ defmodule SmartHomeApiWeb.Router do
   scope "/device", SmartHomeApiWeb do
     pipe_through [:auth, :device]
     get "/get_devices", DeviceController, :index
+    patch "/:id", DeviceController, :update
     delete "/:id", DeviceController, :delete
   end
 
   #thermostat done
   scope "/device/thermostat", SmartHomeApiWeb do
     pipe_through [:auth, :device]
+    get "/get_thermostats", ThermostatController, :index
     get "/:id", ThermostatController, :show
     post "/", ThermostatController, :create
     patch "/:id", ThermostatController, :update
@@ -69,6 +71,7 @@ defmodule SmartHomeApiWeb.Router do
   #light done
   scope "/device/light", SmartHomeApiWeb do
     pipe_through [:auth, :device]
+    get "/get_lights", LightController, :index
     get "/:id", LightController, :show
     post "/", LightController, :create
     patch "/:id", LightController, :update
@@ -78,18 +81,32 @@ defmodule SmartHomeApiWeb.Router do
 
   scope "/device/camera", SmartHomeApiWeb do
     pipe_through [:auth, :device]
+    get "/get_cameras", CameraController, :index
     get "/:id", CameraController, :show
     get "/pictures/:id", CameraController, :pictures
     post "/", CameraController, :create
     post "/capture/:id", CameraController, :upload
     patch "/:id", CameraController, :update
   end
+
+  scope "/media", SmartHomeApiWeb do
+    get "/:id/:name", CameraController, :media
+  end
   #speaker done
   scope "/device/speaker", SmartHomeApiWeb do
     pipe_through [:auth, :device]
+    get "/get_speakers", SpeakerController, :index
     get "/:id", SpeakerController, :show
     post "/", SpeakerController, :create
     patch "/:id", SpeakerController, :update
+  end
+
+  scope "/device/air_purifier", SmartHomeApiWeb do
+    pipe_through [:auth, :device]
+    get "/get_air_purifiers", AirPurifierController, :index
+    get "/:id", AirPurifierController, :show
+    post "/", AirPurifierController, :create
+    patch "/:id", AirPurifierController, :update
   end
 
   scope "/api/swagger" do

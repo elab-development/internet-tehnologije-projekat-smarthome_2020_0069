@@ -7,7 +7,6 @@ defmodule SmartHomeApiWeb.Auth.SetUser do
   end
 
   def call(conn, _options) do
-
     if conn.assigns[:user] do
       conn
     else

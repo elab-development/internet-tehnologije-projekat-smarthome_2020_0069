@@ -5,7 +5,7 @@ defmodule SmartHomeApi.UserRoles.UserRole do
   @primary_key false
   @derive {Jason.Encoder, except: [:__meta__]}
   schema "user_roles" do
-    belongs_to :role, SmartHomeApi.Roles.Role, primary_key: false, references: :id, type: :binary_id
+    field :role, :binary_id
     belongs_to :user, SmartHomeApi.Users.User, primary_key: true, references: :id, type: :binary_id
     belongs_to :location, SmartHomeApi.Locations.Location, primary_key: true, references: :id, type: :binary_id
 

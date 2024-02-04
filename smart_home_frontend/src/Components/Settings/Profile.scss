@@ -1,0 +1,38 @@
+.profile-wrapper {
+    width: 500px;
+    height: auto;
+    padding-left: 70px;
+    padding-right: 50px;
+    padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-around;
+    gap: 20px;
+    .profile-name {
+        color: white;
+        font-weight: bold;
+        font-size: 35px;
+        padding-bottom: 20px;
+    }
+
+    .footer-text {
+        color: white;
+        font-size: 22px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+}
+
+.password-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .error-message {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
+    }
+}

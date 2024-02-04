@@ -1,0 +1,28 @@
+.thermostat-card {
+    width: 460px;
+    height: 280px;
+
+    .indicators {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        .thermostat-icon {
+            width: 50px;
+            height: 50px;
+        }
+    }
+}
+
+.thermostat-modal-content {
+    padding: 1rem;
+    input {
+        margin-bottom: 1rem;
+    }
+
+    .error-message-thermostat {
+        margin-top: 1rem;
+        color: #ff9292;
+        font-size: 22px;
+        text-align: center;
+    }
+}
