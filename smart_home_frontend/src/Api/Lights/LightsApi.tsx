@@ -26,7 +26,7 @@ const getLights = async (
 export const useGetLights = (page_number: number, page_size: number) => {
     const query = useQuery<LightsModel, Error>({
         queryKey: ["get-lights-key"],
-        queryFn: async () => await getLights(page_number, page_size),
+        queryFn: async () => await getLights(page_number, page_size)
     });
     return query;
 };

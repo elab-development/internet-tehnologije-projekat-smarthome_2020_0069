@@ -66,7 +66,7 @@ const CameraCard = (props: Props) => {
     } = useDeleteDevice(props.cameraId);
 
     useEffect(() => {
-        if (!editLoading && !editError) {
+        if (!editLoading && !editError && editData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -76,7 +76,7 @@ const CameraCard = (props: Props) => {
     }, [editData, editLoading, editError, editRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError) {
+        if (!editDeviceLoading && !editDeviceError && editDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -86,7 +86,7 @@ const CameraCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError) {
+        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);

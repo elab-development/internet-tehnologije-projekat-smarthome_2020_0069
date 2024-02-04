@@ -31,6 +31,8 @@ type Props = {
 
 const LightsCard = (props: Props) => {
     const [turnedOn, setTurnedOn] = useState(props.state);
+    const [canRefetchTurnedOn, setCanRefetchTurnedOn] = useState(false);
+    const [canRefetchLightColor, setCanRefetchLightColor] = useState(false);
     const [lightColor, setLightColor] = useState(props.color);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [roomName, setRoomName] = useState(props.roomName);
@@ -74,7 +76,7 @@ const LightsCard = (props: Props) => {
     } = useDeleteDevice(props.deviceId);
 
     useEffect(() => {
-        if (!editLoading && !editError) {
+        if (!editLoading && !editError && editData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -84,7 +86,7 @@ const LightsCard = (props: Props) => {
     }, [editData, editLoading, editError, editRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError) {
+        if (!editDeviceLoading && !editDeviceError && editDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -94,7 +96,7 @@ const LightsCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError) {
+        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -110,13 +112,13 @@ const LightsCard = (props: Props) => {
     }, [refetch, isRefetching]);
 
     useEffect(() => {
-        if (turnedOn !== props.state) {
+        if (canRefetchTurnedOn) {
             refetch();
         }
     }, [turnedOn]);
 
     useEffect(() => {
-        if (lightColor !== props.color) {
+        if (canRefetchLightColor) {
             patchColorRefetch();
         }
     }, [lightColor]);
@@ -131,6 +133,7 @@ const LightsCard = (props: Props) => {
                 <button
                     className="light-switch"
                     onClick={() => {
+                        setCanRefetchTurnedOn(true);
                         setTurnedOn(!turnedOn);
                     }}
                     style={{
@@ -146,6 +149,7 @@ const LightsCard = (props: Props) => {
                         className="color-picker-input"
                         value={lightColor}
                         onChange={(e) => {
+                            setCanRefetchLightColor(true);
                             setLightColor(e.target.value);
                         }}
                     />

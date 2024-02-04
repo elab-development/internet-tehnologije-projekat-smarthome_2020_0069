@@ -56,7 +56,7 @@ const ThermostatCard = (props: Props) => {
     } = useDeleteDevice(props.thermostatId);
 
     useEffect(() => {
-        if (!isLoading && !isError) {
+        if (!isLoading && !isError && data != undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -66,7 +66,7 @@ const ThermostatCard = (props: Props) => {
     }, [data, isError, isLoading, isRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError) {
+        if (!editDeviceLoading && !editDeviceError && editDeviceData != undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -76,7 +76,7 @@ const ThermostatCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError) {
+        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData != undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);

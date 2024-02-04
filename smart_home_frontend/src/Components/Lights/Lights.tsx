@@ -29,6 +29,13 @@ const Lights = (props: Props) => {
 
     useEffect(() => {
         refetch();
+    }, [])
+
+    useEffect(() => {
+        refetch();
+    }, [props.pageNumber])
+
+    useEffect(() => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newLights: Light[] = [];
@@ -48,7 +55,7 @@ const Lights = (props: Props) => {
         if (data != undefined && data.lights.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber]);
+    }, [data, isError, isLoading, isRefetching]);
 
     const {
         data: createData,

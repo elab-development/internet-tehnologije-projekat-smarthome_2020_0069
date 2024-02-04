@@ -33,7 +33,11 @@ const Thermostats = (props: Props) => {
         useGetThermostats(props.pageNumber, 6);
 
     useEffect(() => {
-        refetch();
+        refetch()
+    }, [props.pageNumber]);
+
+
+    useEffect(() => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newThermostats: Thermostat[] = [];
@@ -53,7 +57,7 @@ const Thermostats = (props: Props) => {
         if (data != undefined && data.thermostats.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber]);
+    }, [data, isError, isLoading, isRefetching]);
 
     const {
         data: createData,

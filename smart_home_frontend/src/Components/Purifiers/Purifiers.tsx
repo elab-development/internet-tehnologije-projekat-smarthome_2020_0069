@@ -24,12 +24,15 @@ const Purifiers = (props: Props) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [purifier, setPurifier] = useState<Purifier[]>([]);
 
-    const { data, refetch, isLoading, isError } = useGetPurifiers(
+    const { data, refetch, isLoading, isError, isRefetching } = useGetPurifiers(
         props.pageNumber,
         6
     );
     useEffect(() => {
         refetch();
+    }, [props.pageNumber]);
+
+    useEffect(() => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newPurifiers: Purifier[] = [];
@@ -49,7 +52,7 @@ const Purifiers = (props: Props) => {
         if (data != undefined && data.air_purifiers.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber]);
+    }, [data, isError, isLoading, isRefetching]);
 
     const {
         data: createData,

@@ -36,7 +36,11 @@ const Speakers = (props: Props) => {
     );
 
     useEffect(() => {
-        refetch();
+        refetch()
+    }, [props.pageNumber]);
+
+
+    useEffect(() => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newSpeakers: Speaker[] = [];
@@ -59,7 +63,7 @@ const Speakers = (props: Props) => {
         if (data != undefined && data.speakers.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber]);
+    }, [data, isError, isLoading, isRefetching]);
 
     const {
         data: createData,

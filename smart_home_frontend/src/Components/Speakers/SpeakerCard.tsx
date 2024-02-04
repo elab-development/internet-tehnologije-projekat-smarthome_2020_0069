@@ -107,13 +107,6 @@ const SpeakerCard = (props: Props) => {
         }
     }, [song, author, imageUrl, patchedTrackIsRefetch]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await patchedStateRefetch();
-        };
-        fetchData();
-    }, [isPlaying]);
-
     const {
         data,
         refetch: editRefetch,
@@ -138,7 +131,7 @@ const SpeakerCard = (props: Props) => {
     } = useDeleteDevice(props.speakerId);
 
     useEffect(() => {
-        if (!isLoading && !isError) {
+        if (!isLoading && !isError && data!==undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -148,7 +141,7 @@ const SpeakerCard = (props: Props) => {
     }, [data, isError, isLoading, isRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError) {
+        if (!editDeviceLoading && !editDeviceError && editDeviceData!=undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -158,7 +151,7 @@ const SpeakerCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError) {
+        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -238,6 +231,7 @@ const SpeakerCard = (props: Props) => {
                                 icon={<FaPause />}
                                 onClick={() => {
                                     setIsPlaying(false);
+                                    patchedStateRefetch();
                                 }}
                             />
                         ) : (
@@ -246,6 +240,7 @@ const SpeakerCard = (props: Props) => {
                                 icon={<FaPlay />}
                                 onClick={() => {
                                     setIsPlaying(true);
+                                    patchedStateRefetch();
                                 }}
                             />
                         )}

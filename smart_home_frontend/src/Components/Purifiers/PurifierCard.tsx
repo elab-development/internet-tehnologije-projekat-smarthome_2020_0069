@@ -46,7 +46,7 @@ const PurifierCard = (props: Props) => {
     } = useDeleteDevice(props.purifier_id);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError) {
+        if (!editDeviceLoading && !editDeviceError && editDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -56,7 +56,7 @@ const PurifierCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError) {
+        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);

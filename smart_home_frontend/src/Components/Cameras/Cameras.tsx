@@ -34,6 +34,9 @@ const Cameras = (props: Props) => {
 
     useEffect(() => {
         refetch();
+    }, [props.pageNumber])
+
+    useEffect(() => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newCameras: Camera[] = [];
@@ -55,7 +58,7 @@ const Cameras = (props: Props) => {
         if (data != undefined && data.cameras.length < 6) {
             props.setHaveMore(false);
         }
-    }, [data, isError, isLoading, props.pageNumber]);
+    }, [data, isError, isLoading, isRefetching]);
 
     const {
         data: createData,

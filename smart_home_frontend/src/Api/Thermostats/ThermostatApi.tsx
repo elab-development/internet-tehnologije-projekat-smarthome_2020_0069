@@ -32,6 +32,7 @@ export const useGetThermostats = (page_number: number, page_size: number) => {
     const query = useQuery<ThermostatsModel, Error>({
         queryKey: ["get-thermostats-key"],
         queryFn: async () => await getThermostats(page_number, page_size),
+        enabled: false
     });
     return query;
 };
