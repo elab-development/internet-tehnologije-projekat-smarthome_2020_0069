@@ -26,7 +26,6 @@ const Lights = (props: Props) => {
         props.pageNumber,
         6
     );
-    const [rerender, setRerender] = useState(false);
 
     useEffect(() => {
         refetch();
@@ -48,7 +47,6 @@ const Lights = (props: Props) => {
                 newLights.push(newLight);
             }
             setLights(newLights);
-            setRerender(!rerender);
         }
         if (data != undefined && data.lights.length < 6) {
             props.setHaveMore(false);
@@ -99,23 +97,21 @@ const Lights = (props: Props) => {
             {isLoading ? (
                 <div className="circular-progress"></div>
             ) : (
-                rerender ||
-                (!rerender && (
-                    <div className="cards">
-                        {lights.map((t, i) => (
-                            <LightsCard
-                                key={i}
-                                color={t.rgb_color}
-                                state={t.light_state}
-                                roomName={t.place}
-                                deviceId={t.device_id}
-                                lightLevel={t.light_level}
-                                refetch={refetch}
-                            />
-                        ))}
-                    </div>
-                ))
+                <div className="cards">
+                    {lights.map((t, i) => (
+                        <LightsCard
+                            key={t.light_state + "" + t.rgb_color + "" + i}
+                            color={t.rgb_color}
+                            state={t.light_state}
+                            roomName={t.place}
+                            deviceId={t.device_id}
+                            lightLevel={t.light_level}
+                            refetch={refetch}
+                        />
+                    ))}
+                </div>
             )}
+
             <PopupModal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}

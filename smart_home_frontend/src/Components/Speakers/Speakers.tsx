@@ -34,7 +34,6 @@ const Speakers = (props: Props) => {
         props.pageNumber,
         6
     );
-    const [rerender, setRerender] = useState(false);
 
     useEffect(() => {
         refetch();
@@ -59,7 +58,6 @@ const Speakers = (props: Props) => {
                 newSpeakers.push(newSpeaker);
             }
             setSpeakers(newSpeakers);
-            setRerender(!rerender);
         }
         if (data != undefined && data.speakers.length < 6) {
             props.setHaveMore(false);
@@ -111,28 +109,25 @@ const Speakers = (props: Props) => {
             {isLoading ? (
                 <div className="circular-progress"></div>
             ) : (
-                rerender ||
-                (!rerender && (
-                    <div className="cards">
-                        {speakers.map((t, i) => (
-                            <SpeakerCard
-                                key={i}
-                                deviceId={t.device_id}
-                                refechSongs={refetch}
-                                isPlaying={t.state === "stop"}
-                                songTitle={t.song}
-                                roomName={t.place}
-                                albumCover={t.image_url}
-                                author={t.author}
-                                batteryPercent={t.battery}
-                                volumePercent={t.volume}
-                                bass={t.bass}
-                                refetch={refetch}
-                                speakerId={t.device_id}
-                            />
-                        ))}
-                    </div>
-                ))
+                <div className="cards">
+                    {speakers.map((t, i) => (
+                        <SpeakerCard
+                            key={t.state + "" + t.song + "" + i}
+                            deviceId={t.device_id}
+                            refechSongs={refetch}
+                            isPlaying={t.state === "stop"}
+                            songTitle={t.song}
+                            roomName={t.place}
+                            albumCover={t.image_url}
+                            author={t.author}
+                            batteryPercent={t.battery}
+                            volumePercent={t.volume}
+                            bass={t.bass}
+                            refetch={refetch}
+                            speakerId={t.device_id}
+                        />
+                    ))}
+                </div>
             )}
 
             <PopupModal

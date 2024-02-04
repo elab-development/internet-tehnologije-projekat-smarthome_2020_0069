@@ -34,6 +34,10 @@ const Devices = (props: Props) => {
         }
     }, []);
 
+    useEffect(() => {
+        setPageNumber(1);
+    }, [selectedPage]);
+
     let renderPage = () => {
         switch (selectedPage) {
             case Pages.Thermostat:

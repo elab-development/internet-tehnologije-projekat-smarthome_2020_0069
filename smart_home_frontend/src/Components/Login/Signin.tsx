@@ -32,7 +32,11 @@ const Signin = (props: Props) => {
     );
 
     useEffect(() => {
-        if (!isLoading && !isError) {
+        setRefetched(false);
+    }, []);
+
+    useEffect(() => {
+        if (!isLoading && !isError && !isRefetching) {
             if (data != undefined && refetched) {
                 localStorage.setItem("access_token", data.token);
                 localStorage.setItem("location_id", data.location_id);
@@ -65,6 +69,7 @@ const Signin = (props: Props) => {
                         placeholder="Password"
                         value={password}
                         onChanged={(e) => setPassword(e.target.value)}
+                        password={true}
                     />
                 </div>
 

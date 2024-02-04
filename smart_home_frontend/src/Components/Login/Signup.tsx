@@ -43,6 +43,7 @@ const Signup = (props: Props) => {
                 localStorage.setItem("access_token", data.token);
                 localStorage.setItem("location_id", data.location_id);
                 localStorage.setItem("user_id", data.id);
+                localStorage.setItem("role_name", data.role_name);
                 setErrorMessage("");
                 setRefetched(false);
                 navigate("/");
@@ -90,6 +91,7 @@ const Signup = (props: Props) => {
                         onChanged={(e) => {
                             setPassword(e.target.value);
                         }}
+                        password={true}
                     ></TextBox>
                 </div>
                 <div className="su-location-txb">

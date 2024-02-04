@@ -6,13 +6,14 @@ type Props = {
     value?: string;
     readonly?: boolean;
     onChanged?: React.ChangeEventHandler<HTMLInputElement> | undefined;
+    password?: boolean;
 };
 
 const TextBox = (props: Props) => {
     return (
         <div className="textbox-container">
             <input
-                type="text"
+                type={props.password ? "password" : "text"}
                 placeholder={props.placeholder}
                 value={props.value}
                 readOnly={props.readonly}

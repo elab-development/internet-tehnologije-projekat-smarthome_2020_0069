@@ -22,9 +22,8 @@ const Sidebar = (props: Props) => {
             <PageButton
                 active={props.selectedPage == Pages.Thermostat}
                 onClick={() => {
-                    if(props.selectedPage !== Pages.Thermostat){
-                        props.setSelectedPage(Pages.Thermostat)
-                        props.setPageNumber(1);
+                    if (props.selectedPage !== Pages.Thermostat) {
+                        props.setSelectedPage(Pages.Thermostat);
                         props.setHaveMore(true);
                     }
                 }}
@@ -32,10 +31,9 @@ const Sidebar = (props: Props) => {
             />
             <PageButton
                 active={props.selectedPage == Pages.Speaker}
-                onClick={() =>{
-                    if(props.selectedPage !== Pages.Speaker){
-                        props.setSelectedPage(Pages.Speaker)
-                        props.setPageNumber(1);
+                onClick={() => {
+                    if (props.selectedPage !== Pages.Speaker) {
+                        props.setSelectedPage(Pages.Speaker);
                         props.setHaveMore(true);
                     }
                 }}
@@ -44,9 +42,8 @@ const Sidebar = (props: Props) => {
             <PageButton
                 active={props.selectedPage == Pages.Light}
                 onClick={() => {
-                    if(props.selectedPage !== Pages.Light){
-                        props.setSelectedPage(Pages.Light)
-                        props.setPageNumber(1);
+                    if (props.selectedPage !== Pages.Light) {
+                        props.setSelectedPage(Pages.Light);
                         props.setHaveMore(true);
                     }
                 }}
@@ -55,9 +52,8 @@ const Sidebar = (props: Props) => {
             <PageButton
                 active={props.selectedPage == Pages.Camera}
                 onClick={() => {
-                    if(props.selectedPage !== Pages.Camera){
-                        props.setSelectedPage(Pages.Camera)
-                        props.setPageNumber(1);
+                    if (props.selectedPage !== Pages.Camera) {
+                        props.setSelectedPage(Pages.Camera);
                         props.setHaveMore(true);
                     }
                 }}
@@ -66,9 +62,8 @@ const Sidebar = (props: Props) => {
             <PageButton
                 active={props.selectedPage == Pages.Purifier}
                 onClick={() => {
-                    if(props.selectedPage !== Pages.Purifier){
-                        props.setSelectedPage(Pages.Purifier)
-                        props.setPageNumber(1);
+                    if (props.selectedPage !== Pages.Purifier) {
+                        props.setSelectedPage(Pages.Purifier);
                         props.setHaveMore(true);
                     }
                 }}
