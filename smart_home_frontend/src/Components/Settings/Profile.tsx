@@ -48,7 +48,6 @@ const Profile = (props: Props) => {
             <TextBox value={name} readonly={true} />
             <TextBox value={surname} readonly={true} />
             <TextBox value={username} readonly={true} />
-            <PrimaryButton button_value="Update info" />
             <div className="footer-text">
                 <div>{"Update password? "}</div>
                 <Hyperlink
