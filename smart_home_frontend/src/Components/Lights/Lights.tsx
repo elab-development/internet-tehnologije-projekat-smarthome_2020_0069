@@ -76,6 +76,7 @@ const Lights = (props: Props) => {
             if (createData != undefined) {
                 refetch();
                 setErrorMessage("");
+                setIsModalOpen(false);
             }
         } else if (createIsError) {
             setErrorMessage("Error creating purifier!");
@@ -101,7 +102,9 @@ const Lights = (props: Props) => {
                             key={i}
                             color={t.rgb_color}
                             state={t.light_state}
-                            roomName={t.place} deviceId={""}                        />
+                            roomName={t.place}
+                            deviceId={""}
+                        />
                     ))}
                 </div>
             )}

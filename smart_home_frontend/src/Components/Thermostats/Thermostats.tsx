@@ -80,6 +80,7 @@ const Thermostats = (props: Props) => {
             if (createData != undefined) {
                 refetch();
                 setErrorMessage("");
+                setIsModalOpen(false);
             }
         } else if (createIsError) {
             setErrorMessage("Error creating thermostat!");
@@ -102,9 +103,12 @@ const Thermostats = (props: Props) => {
                     {thermostats.map((t, i) => (
                         <ThermostatCard
                             key={i}
+                            thermostatId={t.device_id}
                             roomName={t.place}
                             temperature={t.temperature}
                             humidity={t.humidity}
+                            timer={t.timer}
+                            refetch={refetch}
                         />
                     ))}
                 </div>

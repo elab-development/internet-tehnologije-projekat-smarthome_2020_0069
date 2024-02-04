@@ -24,8 +24,9 @@ const CircularProgressBar = (props: PropsWithChildren<Props>) => {
         dashArray = 2 * Math.PI * radius,
         dashOffset =
             dashArray *
-            ((props.value - props.minValue) /
-                (props.maxValue - props.minValue));
+            (1 -
+                (props.value - props.minValue) /
+                    (props.maxValue - props.minValue));
 
     return (
         <>

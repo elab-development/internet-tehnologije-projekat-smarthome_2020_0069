@@ -79,6 +79,7 @@ const Cameras = (props: Props) => {
             if (createData != undefined) {
                 refetch();
                 setErrorMessage("");
+                setIsModalOpen(false);
             }
         } else if (createIsError) {
             setErrorMessage("Error creating purifier!");

@@ -92,3 +92,36 @@ export const useCreateThermostat = (
     });
     return query;
 };
+
+const editThermostat = async (
+    thermostat_id: string,
+    place: string
+): Promise<CreateThermostatResponse> => {
+    const response = await axios.patch<CreateThermostatResponse>(
+        `${SMART_HOME_API_BASE_URL}device/thermostat/${thermostat_id}`,
+        {
+            thermostat: {
+                place,
+            },
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+            withCredentials: true,
+        }
+    );
+
+    return response.data;
+};
+
+export const useEditThermostat = (thermostat_id: string, place: string) => {
+    const query = useQuery<CreateThermostatResponse, Error>({
+        queryKey: ["thermostat-edit-key"],
+        queryFn: async () => await editThermostat(thermostat_id, place),
+        enabled: false,
+        retry: 0,
+    });
+    return query;
+};
