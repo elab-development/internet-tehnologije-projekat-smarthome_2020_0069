@@ -31,6 +31,7 @@ defmodule SmartHomeApi.AirPurifiers do
         on: l.id == ur.location_id,
         where: ur.user_id == ^user_id,
         select: %{
+          device_id: ap.device_id,
           filter: ap.filter,
           pm10: ap.pm10,
           pm1_0: ap.pm1_0,
