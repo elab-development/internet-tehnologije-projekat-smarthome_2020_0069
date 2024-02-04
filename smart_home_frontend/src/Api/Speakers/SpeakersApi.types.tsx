@@ -11,9 +11,17 @@ export interface Speaker {
 }
 
 export interface SpeakersModel {
-    speakers: Speaker[];
+    speakers: Speaker[]
 }
 
+export interface DeviceModel {
+    device: {
+        id: string,
+        location_id: string,
+        place: string,
+        state: string
+    }   
+}
 export interface CreateSpeakerResponse {
     thermostat: {
         state: string;

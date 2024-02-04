@@ -91,6 +91,7 @@ const Lights = (props: Props) => {
                     setIsModalOpen(true);
                 }}
             />
+
             {isLoading ? (
                 <div className="circular-progress"></div>
             ) : (
@@ -100,8 +101,7 @@ const Lights = (props: Props) => {
                             key={i}
                             color={t.rgb_color}
                             state={t.light_state}
-                            roomName={t.place}
-                        />
+                            roomName={t.place} deviceId={""}                        />
                     ))}
                 </div>
             )}

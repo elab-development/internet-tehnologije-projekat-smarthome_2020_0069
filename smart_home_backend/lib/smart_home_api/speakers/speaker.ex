@@ -19,7 +19,7 @@ defmodule SmartHomeApi.Speakers.Speaker do
   @doc false
   def changeset(speaker, attrs) do
     speaker
-    |> cast(attrs, [:device_id, :volume, :bass, :battery])
+    |> cast(attrs, [:device_id, :volume, :bass, :battery, :song, :author, :image_url])
     |> validate_required([:volume, :bass, :battery])
   end
 end

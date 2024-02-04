@@ -104,21 +104,28 @@ const Speakers = (props: Props) => {
 
             {isLoading ? (
                 <div className="circular-progress"></div>
-            ) : (
-                <div className="cards">
-                    {speakers.map((t, i) => (
-                        <SpeakerCard
-                            key={i}
-                            songTitle={t.song}
-                            roomName={t.place}
-                            albumCover={t.image_url}
-                            author={t.author}
-                            batteryPercent={t.battery}
-                            volumePercent={t.volume}
-                        />
-                    ))}
-                </div>
-            )}
+            ) : 
+                    (
+                        <div className="cards">
+                            {
+                                speakers.map((t, i) => (
+                                    <SpeakerCard
+                                        key={i}
+                                        deviceId={t.device_id}
+                                        refechSongs={refetch}
+                                        isPlaying={t.state === "running"}
+                                        songTitle={t.song}
+                                        roomName={t.place}
+                                        albumCover={t.image_url}
+                                        author={t.author}
+                                        batteryPercent={t.battery}
+                                        volumePercent={t.volume}
+                                    />
+                                ))
+                            }
+                        </div>
+                    )
+            }
 
             <PopupModal
                 isOpen={isModalOpen}

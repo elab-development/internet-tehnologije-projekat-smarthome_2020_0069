@@ -87,7 +87,10 @@ defmodule SmartHomeApiWeb.SpeakerController do
             device_id: speaker.device_id,
             bass: speaker.bass,
             volume: speaker.volume,
-            battery: speaker.battery
+            battery: speaker.battery,
+            song: speaker.song,
+            author: speaker.author,
+            image_url: speaker.image_url
           }
 
           case Speakers.update_speaker(speaker_object, speaker_params) do

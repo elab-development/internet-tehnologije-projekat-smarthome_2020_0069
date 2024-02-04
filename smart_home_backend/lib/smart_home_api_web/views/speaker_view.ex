@@ -23,6 +23,9 @@ defmodule SmartHomeApiWeb.SpeakerView do
       bass: speaker.bass,
       battery: speaker.battery,
       volume: speaker.volume,
+      song: speaker.song,
+      author: speaker.author,
+      image_url: speaker.image_url
     }
   end
 
