@@ -65,8 +65,9 @@ defmodule SmartHomeApiWeb.UserController do
         case Guardian.encode_and_sign(user) do
           {:ok, token, _claims} ->
             conn
+            |> Plug.Conn.put_session(:user_id, user.id)
             |> put_status(:created)
-            |> render("user_token.json", %{user: user, token: token, location_id: ur.location_id})
+            |> render("sign_in.json", %{user: user, token: token, location_id: ur.location_id, role: "GUEST"})
 
           {:error, _} ->
             raise ErrorResponse.EncodingError,
