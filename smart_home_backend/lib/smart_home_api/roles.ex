@@ -9,4 +9,10 @@ defmodule SmartHomeApi.Roles do
     |> Repo.one()
   end
 
+  def get_role_by_id!(role_id) do
+    Role
+    |> where(id: ^role_id)
+    |> Repo.one()
+  end
+
 end

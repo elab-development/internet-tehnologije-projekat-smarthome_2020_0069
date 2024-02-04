@@ -109,10 +109,11 @@ defmodule SmartHomeApiWeb.UserController do
       case Guardian.authenticate(username, password) do
         {:ok, user, token} ->
           user_role = UserRoles.get_location_from_user_id!(user.id)
+          role = Roles.get_role_by_id!(user_role.role)
           conn
           |> Plug.Conn.put_session(:user_id, user.id)
           |> put_status(:ok)
-          |> render("user_token.json", %{user: user, token: token, location_id: user_role.location_id})
+          |> render("sign_in.json", %{user: user, token: token, location_id: user_role.location_id, role: role.role_name})
 
         {:error, :unauthorized} ->
           raise ErrorResponse.Unauthorized, message: "Password is incorrect."

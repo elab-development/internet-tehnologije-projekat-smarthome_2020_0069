@@ -29,6 +29,16 @@ defmodule SmartHomeApiWeb.UserView do
     }
   end
 
+  def render("sign_in.json", %{user: user, token: token, location_id: location_id, role: role}) do
+    %{
+      id: user.id,
+      username: user.username,
+      token: token,
+      location_id: location_id,
+      role_name: role
+    }
+  end
+
   def render("sign_out.json", %{user: user, token: token}) do
     %{
       id: user.id,
