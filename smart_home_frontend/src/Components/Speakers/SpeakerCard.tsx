@@ -60,6 +60,7 @@ const SpeakerCard = (props: Props) => {
     const [bass, setBass] = useState(props.bass);
     const [roomName, setRoomName] = useState(props.roomName);
     const [errorMessage, setErrorMessage] = useState("");
+    const [userRole, setUserRole] = useState(localStorage.getItem("role_name"));
 
     const {
         data: tracks,
@@ -131,7 +132,7 @@ const SpeakerCard = (props: Props) => {
     } = useDeleteDevice(props.speakerId);
 
     useEffect(() => {
-        if (!isLoading && !isError && data!==undefined) {
+        if (!isLoading && !isError && data !== undefined) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -141,7 +142,11 @@ const SpeakerCard = (props: Props) => {
     }, [data, isError, isLoading, isRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError && editDeviceData!=undefined) {
+        if (
+            !editDeviceLoading &&
+            !editDeviceError &&
+            editDeviceData != undefined
+        ) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -151,7 +156,11 @@ const SpeakerCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
+        if (
+            !deleteDeviceLoading &&
+            !deleteDeviceError &&
+            deleteDeviceData !== undefined
+        ) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -216,43 +225,45 @@ const SpeakerCard = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="playing-controls">
-                    {/* <IconButton
+                {(userRole == "ADMIN" || userRole == "USER") && (
+                    <div className="playing-controls">
+                        {/* <IconButton
                         background={false}
                         icon={<FaStop />}
                         onClick={() => { }}
                     /> */}
-                    <div style={{ width: "40px" }}></div>
+                        <div style={{ width: "40px" }}></div>
 
-                    <div className="play-pause-button">
-                        {isPlaying ? (
-                            <IconButton
-                                background={true}
-                                icon={<FaPause />}
-                                onClick={() => {
-                                    setIsPlaying(false);
-                                    patchedStateRefetch();
-                                }}
-                            />
-                        ) : (
-                            <IconButton
-                                background={true}
-                                icon={<FaPlay />}
-                                onClick={() => {
-                                    setIsPlaying(true);
-                                    patchedStateRefetch();
-                                }}
-                            />
-                        )}
+                        <div className="play-pause-button">
+                            {!isPlaying ? (
+                                <IconButton
+                                    background={true}
+                                    icon={<FaPause />}
+                                    onClick={() => {
+                                        setIsPlaying(true);
+                                        patchedStateRefetch();
+                                    }}
+                                />
+                            ) : (
+                                <IconButton
+                                    background={true}
+                                    icon={<FaPlay />}
+                                    onClick={() => {
+                                        setIsPlaying(false);
+                                        patchedStateRefetch();
+                                    }}
+                                />
+                            )}
+                        </div>
+                        <IconButton
+                            background={false}
+                            icon={<PiPlaylistFill />}
+                            onClick={() => {
+                                setisSearchSongModalOpen(true);
+                            }}
+                        />
                     </div>
-                    <IconButton
-                        background={false}
-                        icon={<PiPlaylistFill />}
-                        onClick={() => {
-                            setisSearchSongModalOpen(true);
-                        }}
-                    />
-                </div>
+                )}
             </div>
             <PopupModal
                 isOpen={isSearchSongModalOpen}

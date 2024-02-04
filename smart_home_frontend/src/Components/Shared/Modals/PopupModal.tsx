@@ -37,7 +37,8 @@ const PopupModal = (props: Props) => {
                         <IoIosClose />
                     </button>
                     <span>{props.title}</span>
-                    {props.deleteButton ? (
+                    {props.deleteButton &&
+                    localStorage.getItem("role_name") == "ADMIN" ? (
                         <button
                             className="header-button"
                             onClick={props.onDelete}

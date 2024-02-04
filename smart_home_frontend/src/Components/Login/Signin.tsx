@@ -19,7 +19,6 @@ type Props = {
     setSelectedPage: React.Dispatch<React.SetStateAction<LoginPages>>;
 };
 
-
 const Signin = (props: Props) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -27,7 +26,10 @@ const Signin = (props: Props) => {
     const [refetched, setRefetched] = useState(false);
     const navigate = useNavigate();
 
-    const { data, refetch, isLoading, isError } = useLogin(username, password);
+    const { data, refetch, isLoading, isRefetching, isError } = useLogin(
+        username,
+        password
+    );
 
     useEffect(() => {
         if (!isLoading && !isError) {
@@ -35,6 +37,7 @@ const Signin = (props: Props) => {
                 localStorage.setItem("access_token", data.token);
                 localStorage.setItem("location_id", data.location_id);
                 localStorage.setItem("user_id", data.id);
+                localStorage.setItem("role_name", data.role_name);
                 setErrorMessage("");
                 setRefetched(false);
                 navigate("/");
@@ -42,7 +45,7 @@ const Signin = (props: Props) => {
         } else if (isError) {
             setErrorMessage("Wrong username or password!");
         }
-    }, [data, isError]);
+    }, [data, isError, isRefetching]);
 
     return (
         <div className="login-container">

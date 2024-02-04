@@ -37,6 +37,7 @@ const LightsCard = (props: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [roomName, setRoomName] = useState(props.roomName);
     const [lightLevel, setLightLevel] = useState(props.lightLevel);
+    const [userRole, setUserRole] = useState(localStorage.getItem("role_name"));
 
     const { data, error, isLoading, refetch, isRefetching } = useGetLightState(
         props.deviceId,
@@ -86,7 +87,11 @@ const LightsCard = (props: Props) => {
     }, [editData, editLoading, editError, editRefetching]);
 
     useEffect(() => {
-        if (!editDeviceLoading && !editDeviceError && editDeviceData !== undefined) {
+        if (
+            !editDeviceLoading &&
+            !editDeviceError &&
+            editDeviceData !== undefined
+        ) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -96,7 +101,11 @@ const LightsCard = (props: Props) => {
     }, [editDeviceData, editDeviceError]);
 
     useEffect(() => {
-        if (!deleteDeviceLoading && !deleteDeviceError && deleteDeviceData !== undefined) {
+        if (
+            !deleteDeviceLoading &&
+            !deleteDeviceError &&
+            deleteDeviceData !== undefined
+        ) {
             props.refetch();
             setErrorMessage("");
             setIsModalOpen(false);
@@ -133,8 +142,13 @@ const LightsCard = (props: Props) => {
                 <button
                     className="light-switch"
                     onClick={() => {
-                        setCanRefetchTurnedOn(true);
-                        setTurnedOn(!turnedOn);
+                        if (
+                            localStorage.getItem("role_name") == "ADMIN" ||
+                            localStorage.getItem("role_name") == "USER"
+                        ) {
+                            setCanRefetchTurnedOn(true);
+                            setTurnedOn(!turnedOn);
+                        }
                     }}
                     style={{
                         backgroundColor: turnedOn ? lightColor : "#9e9e9e",
@@ -142,18 +156,21 @@ const LightsCard = (props: Props) => {
                 >
                     {turnedOn ? <FaLightbulb /> : <FaRegLightbulb />}
                 </button>
-                <div className="color-picker">
-                    <FaEyeDropper />
-                    <input
-                        type="color"
-                        className="color-picker-input"
-                        value={lightColor}
-                        onChange={(e) => {
-                            setCanRefetchLightColor(true);
-                            setLightColor(e.target.value);
-                        }}
-                    />
-                </div>
+                {(userRole == "ADMIN" ||
+                    localStorage.getItem("role_name") == "USER") && (
+                    <div className="color-picker">
+                        <FaEyeDropper />
+                        <input
+                            type="color"
+                            className="color-picker-input"
+                            value={lightColor}
+                            onChange={(e) => {
+                                setCanRefetchLightColor(true);
+                                setLightColor(e.target.value);
+                            }}
+                        />
+                    </div>
+                )}
             </div>
             <PopupModal
                 isOpen={isModalOpen}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import GlassDiv from "../Shared/GlassDiv";
 import PrimaryButton from "../Shared/PrimaryButton";
@@ -11,12 +11,15 @@ type Props = {
 };
 
 const DeviceHeader = (props: Props) => {
+    const [userRole, setUserRole] = useState(localStorage.getItem("role_name"));
     return (
         <GlassDiv className="device-header" roundBottom={0}>
             <div className="device-title">{props.title}</div>
-            <button className="add-button" onClick={props.onAddClick}>
-                {props.addButtonText}
-            </button>
+            {userRole == "ADMIN" && (
+                <button className="add-button" onClick={props.onAddClick}>
+                    {props.addButtonText}
+                </button>
+            )}
             {/* <div className="search-bar">
                 <input
                     type="text"

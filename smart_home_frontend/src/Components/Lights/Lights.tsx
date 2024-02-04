@@ -26,14 +26,11 @@ const Lights = (props: Props) => {
         props.pageNumber,
         6
     );
+    const [rerender, setRerender] = useState(false);
 
     useEffect(() => {
         refetch();
-    }, [])
-
-    useEffect(() => {
-        refetch();
-    }, [props.pageNumber])
+    }, [props.pageNumber]);
 
     useEffect(() => {
         if (!isLoading && !isError) {
@@ -51,6 +48,7 @@ const Lights = (props: Props) => {
                 newLights.push(newLight);
             }
             setLights(newLights);
+            setRerender(!rerender);
         }
         if (data != undefined && data.lights.length < 6) {
             props.setHaveMore(false);
@@ -67,9 +65,7 @@ const Lights = (props: Props) => {
         roomName,
         "Running",
         lightLevel,
-        getRandomInt(0, 256).toString().padStart(3, "0") +
-            getRandomInt(0, 256).toString().padStart(3, "0") +
-            getRandomInt(0, 256).toString().padStart(3, "0")
+        "#ff7800"
     );
 
     function getRandomInt(min: number, max: number) {
@@ -103,19 +99,22 @@ const Lights = (props: Props) => {
             {isLoading ? (
                 <div className="circular-progress"></div>
             ) : (
-                <div className="cards">
-                    {lights.map((t, i) => (
-                        <LightsCard
-                            key={i}
-                            color={t.rgb_color}
-                            state={t.light_state}
-                            roomName={t.place}
-                            deviceId={t.device_id}
-                            lightLevel={t.light_level}
-                            refetch={refetch}
-                        />
-                    ))}
-                </div>
+                rerender ||
+                (!rerender && (
+                    <div className="cards">
+                        {lights.map((t, i) => (
+                            <LightsCard
+                                key={i}
+                                color={t.rgb_color}
+                                state={t.light_state}
+                                roomName={t.place}
+                                deviceId={t.device_id}
+                                lightLevel={t.light_level}
+                                refetch={refetch}
+                            />
+                        ))}
+                    </div>
+                ))
             )}
             <PopupModal
                 isOpen={isModalOpen}
