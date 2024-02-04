@@ -36,7 +36,9 @@ defmodule SmartHomeApi.Thermostats do
           device_id: t.device_id,
           state: d.state,
           place: d.place
-        }
+        },
+        order_by: [asc: t.device_id]
+
       )
 
     query

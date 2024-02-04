@@ -37,7 +37,9 @@ defmodule SmartHomeApi.Lights do
           device_id: li.device_id,
           state: d.state,
           place: d.place
-        }
+        },
+        order_by: [asc: li.device_id]
+
 
     query
     |> paginate(page_number, page_size)
@@ -89,6 +91,7 @@ defmodule SmartHomeApi.Lights do
           state: d.state,
           light_state: la.light_state
         }
+
       )
 
     Repo.one(query)

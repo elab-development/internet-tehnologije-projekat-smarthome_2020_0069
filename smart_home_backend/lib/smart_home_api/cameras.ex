@@ -41,7 +41,9 @@ defmodule SmartHomeApi.Cameras do
           device_id: c.device_id,
           state: d.state,
           place: d.place
-        }
+        },
+        order_by: [asc: c.device_id]
+
 
 
     query
