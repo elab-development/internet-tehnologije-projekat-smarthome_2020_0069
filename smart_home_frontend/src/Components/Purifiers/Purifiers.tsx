@@ -33,7 +33,6 @@ const Purifiers = (props: Props) => {
         if (!isLoading && !isError) {
             props.setHaveMore(true);
             const newPurifiers: Purifier[] = [];
-            console.log(data);
             for (let index = 0; index < data?.air_purifiers.length!; index++) {
                 const newPurifier: Purifier = {
                     device_id: data?.air_purifiers[index].device_id ?? "",

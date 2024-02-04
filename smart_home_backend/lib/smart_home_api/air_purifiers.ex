@@ -92,7 +92,8 @@ defmodule SmartHomeApi.AirPurifiers do
           device_id: ap.device_id,
           location_id: l.id,
           user_id: ur.user_id
-        }
+        },
+        order_by: [asc: ap.device_id]
       )
       Repo.one(query)
   end

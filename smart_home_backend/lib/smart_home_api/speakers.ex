@@ -39,7 +39,9 @@ defmodule SmartHomeApi.Speakers do
           device_id: s.device_id,
           state: d.state,
           place: d.place
-        }
+        },
+        order_by: [asc: s.device_id]
+
 
     query
     |> paginate(page_number, page_size)
