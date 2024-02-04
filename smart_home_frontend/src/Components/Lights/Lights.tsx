@@ -58,11 +58,11 @@ const Lights = (props: Props) => {
                     :
                     (
                         <div className="cards">
-
                             {
                                 lights.map((t, i) => (
                                     <LightsCard
                                         key={i}
+                                        deviceId={t.device_id}
                                         color={t.rgb_color}
                                         state={t.light_state}
                                         roomName={t.place}

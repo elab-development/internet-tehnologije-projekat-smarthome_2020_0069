@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import GlassDiv from "../Shared/GlassDiv";
-import { FaBatteryFull } from "react-icons/fa6";
+import { FaBatteryFull, FaBatteryHalf, FaBatteryEmpty } from "react-icons/fa6";
 import { BsFillVolumeDownFill } from "react-icons/bs";
 import "./SpeakerCard.scss";
 import IconButton from "../Shared/IconButton";
 import { FaStop } from "react-icons/fa6";
-import { IoIosSkipBackward } from "react-icons/io";
 import { FaPlay } from "react-icons/fa";
-import { IoIosSkipForward } from "react-icons/io";
+import { FaPause } from "react-icons/fa6";
 import { PiPlaylistFill } from "react-icons/pi";
 import { IoMdSearch } from "react-icons/io";
 import PopupModal from "../Shared/Modals/PopupModal";
 import TextBox from "../Shared/TextBox";
 import PrimaryButton from "../Shared/PrimaryButton";
 import Slider from "../Shared/Slider";
-import { useQuery } from "@tanstack/react-query";
+import { QueryObserverResult, useQuery } from "@tanstack/react-query";
 import { useGetTracksFromSearch } from "../../Api/Spotify/SpotifyApi";
 import { SpotifySong } from "../../Api/Spotify/SpotifyApi.types";
 import SongCard from "./SongCard";
+import { Speaker, SpeakersModel } from "../../Api/Speakers/SpeakersApi.types";
+import { usePatchSpeakerSong, usePatchSpeakerState } from "../../Api/Speakers/SpeakersApi";
 
 type Props = {
     roomName: string;
@@ -27,13 +28,20 @@ type Props = {
     author: string;
     batteryPercent: number;
     volumePercent: number;
+    isPlaying: boolean;
+    deviceId: string;
+    refechSongs: () => Promise<QueryObserverResult<SpeakersModel, Error>>;
 };
 
 const SpeakerCard = (props: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSearchSongModalOpen, setisSearchSongModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const [isPlaying, setIsPlaying] = useState<boolean>(props.isPlaying);
     const [tracksList, setTrackList] = useState<SpotifySong[]>([]);
+    const [song, setSong] = useState<string>("");
+    const [author, setAuthor] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string>("");
 
     const {
         data: tracks,
@@ -43,13 +51,49 @@ const SpeakerCard = (props: Props) => {
         refetch,
     } = useGetTracksFromSearch(searchText);
 
+    const {
+        data: patchedStateSpeaker,
+        error: patchedStateError,
+        isLoading: patchedStateLoading,
+        refetch: patchedStateRefetch,
+    } = usePatchSpeakerState(props.deviceId, isPlaying ? "running" : "stop");
+
+    const {
+        data: patchedTrackData,
+        error: patchedTrackError,
+        isLoading: patchedTrackLoading,
+        isFetching: patchedTrackIsFetching,
+        refetch: patchedTrackIsRefetch,
+    } = usePatchSpeakerSong(props.deviceId, song, author, imageUrl);
+
     const handleClick = async () => {
-        try {
-            await refetch();
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+        await refetch();
     };
+
+    const handleSongClick = async (track: SpotifySong) => {
+        setSong(track.name);
+        setAuthor(track.author);
+        setImageUrl(track.image);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await patchedTrackIsRefetch();
+            props.refechSongs();
+            setisSearchSongModalOpen(false);
+        };
+
+        if (song && author && imageUrl) {
+            fetchData();
+        }
+    }, [song, author, imageUrl, patchedTrackIsRefetch])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await patchedStateRefetch();
+        };
+        fetchData();
+    }, [isPlaying])
 
     useEffect(() => {
         if (!tracksLoading && !tracksError) {
@@ -86,7 +130,15 @@ const SpeakerCard = (props: Props) => {
                     </div>
                     <div className="speaker-info">
                         <div className="battery">
-                            <FaBatteryFull />
+                            {
+                                props.batteryPercent <= 100 && props.batteryPercent > 75 ?
+                                    (<FaBatteryFull />
+                                    )
+                                    : props.batteryPercent <= 75 && props.batteryPercent > 30 ?
+                                        (<FaBatteryHalf />
+                                        ) : (<FaBatteryEmpty />
+                                        )
+                            }
                             <div className="percent">
                                 {props.batteryPercent}%
                             </div>
@@ -100,26 +152,39 @@ const SpeakerCard = (props: Props) => {
                     </div>
                 </div>
                 <div className="playing-controls">
-                    <IconButton
+                    {/* <IconButton
                         background={false}
                         icon={<FaStop />}
-                        onClick={() => {}}
-                    />
-                    <IconButton
-                        background={false}
-                        icon={<IoIosSkipBackward />}
-                        onClick={() => {}}
-                    />
-                    <IconButton
-                        background={true}
-                        icon={<FaPlay />}
-                        onClick={() => {}}
-                    />
-                    <IconButton
-                        background={false}
-                        icon={<IoIosSkipForward />}
-                        onClick={() => {}}
-                    />
+                        onClick={() => { }}
+                    /> */}
+                    <div style={{ width: '40px' }}>
+
+                    </div>
+
+                    <div className="play-pause-button">
+                        {
+                            isPlaying ?
+                                (
+                                    <IconButton
+                                        background={true}
+                                        icon={<FaPause />}
+                                        onClick={() => {
+                                            setIsPlaying(false)
+                                        }}
+                                    />
+                                ) :
+                                (
+                                    <IconButton
+                                        background={true}
+                                        icon={<FaPlay />}
+                                        onClick={() => {
+                                            setIsPlaying(true)
+                                        }}
+                                    />
+                                )
+                        }
+
+                    </div>
                     <IconButton
                         background={false}
                         icon={<PiPlaylistFill />}
@@ -162,6 +227,9 @@ const SpeakerCard = (props: Props) => {
                                 {tracksList.map((track, index) => (
                                     <SongCard
                                         key={index}
+                                        onSongClick={async () => {
+                                            handleSongClick(track);
+                                        }}
                                         author={track.author}
                                         duration={track.duration}
                                         image={track.image}
@@ -184,7 +252,7 @@ const SpeakerCard = (props: Props) => {
                         label="Volume"
                         max={100}
                         min={0}
-                        onChanged={() => {}}
+                        onChanged={() => { }}
                         value={10}
                         unit="%"
                     />
@@ -192,7 +260,7 @@ const SpeakerCard = (props: Props) => {
                         label="Bass"
                         max={100}
                         min={0}
-                        onChanged={() => {}}
+                        onChanged={() => { }}
                         value={10}
                         unit="%"
                     />

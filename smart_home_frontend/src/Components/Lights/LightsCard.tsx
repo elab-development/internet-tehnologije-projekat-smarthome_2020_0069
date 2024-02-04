@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CardHeader from "../Devices/CardHeader";
 import GlassDiv from "../Shared/GlassDiv";
 import "./LightsCard.scss";
@@ -9,29 +9,42 @@ import TextBox from "../Shared/TextBox";
 import Slider from "../Shared/Slider";
 import PrimaryButton from "../Shared/PrimaryButton";
 import PopupModal from "../Shared/Modals/PopupModal";
+import { useGetLightState, usePatchLightColor } from "../../Api/Lights/LightsApi";
 
 type Props = {
     roomName: string;
     color: string;
-    state: boolean; 
+    state: boolean;
+    deviceId: string
 };
 
 const LightsCard = (props: Props) => {
 
-    function convertToHexColor(colorString: string) {
-        const r = parseInt(colorString.substring(0, 3), 10);
-        const g = parseInt(colorString.substring(3, 6), 10);
-        const b = parseInt(colorString.substring(6, 9), 10);
-    
-        const hexColor = `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
-    
-        return hexColor;
-    }
-    
-
     const [turnedOn, setTurnedOn] = useState(props.state);
-    const [lightColor, setLightColor] = useState(convertToHexColor(props.color));
+    const [lightColor, setLightColor] = useState(props.color);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { data, error, isLoading, refetch, isRefetching } = useGetLightState(props.deviceId, turnedOn);
+    const { data: patchColorData, error: patchColorError, isLoading: patchColorIsLoading, refetch: patchColorRefetch, isRefetching: patchColorIsRefetching } = usePatchLightColor(props.deviceId, lightColor);
+
+
+    useEffect(() => {
+        if (error) {
+            setTurnedOn(!turnedOn);
+        }
+    }, [refetch, isRefetching]);
+
+    useEffect(() => {
+        if(turnedOn !== props.state){
+            refetch();
+        }
+    }, [turnedOn]);
+
+    useEffect(() => {
+        if(lightColor!==props.color){
+            patchColorRefetch();
+        }
+    }, [lightColor]);
 
     return (
         <GlassDiv className="thermostat-card">
@@ -42,7 +55,9 @@ const LightsCard = (props: Props) => {
             <div className="card-body">
                 <button
                     className="light-switch"
-                    onClick={() => setTurnedOn(!turnedOn)}
+                    onClick={() => {
+                        setTurnedOn(!turnedOn)
+                    }}
                     style={{
                         backgroundColor: turnedOn ? lightColor : "#9e9e9e",
                     }}
@@ -72,7 +87,7 @@ const LightsCard = (props: Props) => {
                         label="Light level"
                         max={5}
                         min={1}
-                        onChanged={() => {}}
+                        onChanged={() => { }}
                         value={3}
                         unit=""
                     />

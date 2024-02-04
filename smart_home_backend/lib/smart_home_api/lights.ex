@@ -80,6 +80,7 @@ defmodule SmartHomeApi.Lights do
         on: ur.location_id == l.id,
         where: d.id == ^device_id and ur.user_id == ^user_id,
         select: %{
+          location_id: l.id,
           light_level: la.light_level,
           rgb_color: la.rgb_color,
           device_id: la.device_id,

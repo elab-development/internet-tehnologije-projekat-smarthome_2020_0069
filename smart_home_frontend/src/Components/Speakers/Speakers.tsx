@@ -62,11 +62,13 @@ const Speakers = (props: Props) => {
                     :
                     (
                         <div className="cards">
-
                             {
                                 speakers.map((t, i) => (
                                     <SpeakerCard
                                         key={i}
+                                        deviceId={t.device_id}
+                                        refechSongs={refetch}
+                                        isPlaying={t.state === "running"}
                                         songTitle={t.song}
                                         roomName={t.place}
                                         albumCover={t.image_url}

@@ -55,6 +55,7 @@ defmodule SmartHomeApiWeb.Router do
   scope "/device", SmartHomeApiWeb do
     pipe_through [:auth, :device]
     get "/get_devices", DeviceController, :index
+    patch "/:id", DeviceController, :update
     delete "/:id", DeviceController, :delete
   end
 

@@ -6,7 +6,7 @@ defmodule SmartHomeApiWeb.DeviceController do
   alias SmartHomeApi.Devices.Device
   alias SmartHomeApiWeb.Auth.ErrorResponse
 
-  action_fallback SmartHomeApiWeb.FallbackController
+  action_fallback(SmartHomeApiWeb.FallbackController)
 
   def index(conn, %{"page_number" => page_number, "page_size" => page_size}) do
     user_id = conn.assigns.user.id
@@ -44,6 +44,33 @@ defmodule SmartHomeApiWeb.DeviceController do
   end
 
   def update(conn, %{"id" => id, "device" => device_params}) do
+    case device = Devices.get_device(id) do
+      nil ->
+        raise ErrorResponse.BadRequest, message: "Invalid device id"
+
+      _ ->
+        case user_role = UserRoles.get_user_role(conn.assigns.user.id, device.location_id) do
+          nil ->
+            raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+
+          _ ->
+            if user_role.role == "ADMIN" do
+              case Devices.update_device(device, device_params) do
+                {:ok, %Device{} = patchedDevice} ->
+                  render(conn, "device.json", %{device: patchedDevice})
+
+                _ ->
+                  raise ErrorResponse.Database.DatabaseError, message: "Error when updating data"
+              end
+            else
+              raise ErrorResponse.Forbidden,
+                message: "You don't have permissions for this action."
+            end
+        end
+
+        raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
+    end
+
     device = Devices.get_device(id)
 
     with {:ok, %Device{} = device} <- Devices.update_device(device, device_params) do
@@ -55,6 +82,7 @@ defmodule SmartHomeApiWeb.DeviceController do
     case device = Devices.get_device(id) do
       nil ->
         raise ErrorResponse.BadRequest, message: "Invalid device id"
+
       _ ->
         case user_role = UserRoles.get_user_role(conn.assigns.user.id, device.location_id) do
           nil ->
@@ -69,6 +97,7 @@ defmodule SmartHomeApiWeb.DeviceController do
                 message: "You don't have permissions for this action."
             end
         end
+
         raise ErrorResponse.Forbidden, message: "You don't have permissions for this action."
     end
   end

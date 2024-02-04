@@ -83,7 +83,8 @@ defmodule SmartHomeApiWeb.LightController do
         light_object = %Light{
           device_id: light.device_id,
           light_level: light.light_level,
-          rgb_color: light.rgb_color
+          rgb_color: light.rgb_color,
+          light_state: light.light_state
         }
         case Lights.update_light(light_object, light_params) do
           {:ok, %Light{} = lightNew} ->

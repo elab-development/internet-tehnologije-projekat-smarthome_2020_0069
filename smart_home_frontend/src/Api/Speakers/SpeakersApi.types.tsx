@@ -10,6 +10,15 @@ export interface Speaker {
     image_url: string
 }
 
-export interface SpeakersModel{
+export interface SpeakersModel {
     speakers: Speaker[]
+}
+
+export interface DeviceModel {
+    device: {
+        id: string,
+        location_id: string,
+        place: string,
+        state: string
+    }
 }
